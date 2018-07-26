@@ -22,7 +22,7 @@ void		print_lst_name(t_lst *lst)
 	while (lst != NULL)
 	{
 		write (1, "[", 1);
-		ft_putstr(lst->name);
+		ft_putstr(lst->content);
 		write (1, "] ", 2);
 		lst = lst->next;
 	}

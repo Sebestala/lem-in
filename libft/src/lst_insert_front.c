@@ -20,7 +20,7 @@ t_lst		*lst_insert_front(t_lst *lst, int id, char *name)
 	element = ft_memalloc(sizeof(*element));
 	if (!element)
 		exit_str("Erreur : probleme allocation dynamique.");
-	element->name = name;
+	element->content = name;
 	element->id = id;
 	if (lst_is_empty(lst))
 		element->next = NULL;

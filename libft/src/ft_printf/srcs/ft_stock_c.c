@@ -33,10 +33,8 @@ t_print		strcat_c(char *str, t_print res, char c)
 char		*width_c(char *copy, char c, int w)
 {
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	while (i < w)
 		copy[i++] = c;
 	return (copy);

@@ -43,10 +43,10 @@ static int		verif_line(int fd, char **line, char **copy, t_read r)
 
 int				get_next_line(const int fd, char **line, int start)
 {
-	static	char	*copy[OPEN_MAX];
+	static	char	*copy[2048];
 	t_read			r;
 
-	if (fd < 0 || fd > OPEN_MAX || BUFF_SIZE <= 0 || !line)
+	if (fd < 0 || fd > 2048 || BUFF_SIZE <= 0 || !line)
 		return (-1);
 	r.i = -2;
 	r.buf[fd] = ft_strnew(BUFF_SIZE);

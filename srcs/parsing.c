@@ -14,30 +14,33 @@
 
 static t_ant	init_struct(t_ant ant)
 {
+	t_room		room;
+	t_ptr		ptr;
+
 	if (ant.line[ant.i] && ant.line[ant.i] == 'L')
 		exit_str("Error : enter is incorrect");
 	while (ant.line[ant.i] && ant.line[ant.i] != ' ')
 		ant.i++;
-	if (!(ant.room = (t_room *)malloc(sizeof(t_room))))
+	if (!(room.name = (char *)malloc(ant.i * sizeof(char))))
 		exit_str("Error : dynamic allocation problem in init_struct");
-	if (!(ant.room->name = (char *)malloc(ant.i * sizeof(char))))
-	{
-		free(ant.room);
+	ft_bzero(&room, sizeof(t_room));
+	ft_bzero(&ptr, sizeof(t_ptr));
+	room.name = ft_strncpy(room.name, ant.line, ant.i);
+	if (verif_name(ant, room.name) > 0)
 		exit_str("Error : dynamic allocation problem in init_struct");
-	}
-	ft_bzero(ant.room, sizeof(t_room));
-	if (!ant.lst)
+	ptr.ptr_room = &room;
+	if (!ant.room)
 	{
-		ant.lst = ant.room;
-		ant.begin = ant.lst;
+		ant.room = &ptr;
+		ant.room_begin = &ptr;
 	}
 	else
-		ant.lst->next = ant.room;
-	ant.room->next = NULL;
-	ant.lst = ant.room;
-	ant.room->name = ft_strncpy(ant.room->name, ant.line, ant.i);
-	if (verif_name(ant, ant.room->name) > 0)
-		exit_str("Error : dynamic allocation problem in init_struct");
+	{
+		while (ant.room->next != NULL)
+			ant.room = ant.room->next;
+		ant.room->next = &ptr;
+		ant.room = ant.room_begin;
+	}
 	return (ant);
 }
 
@@ -61,58 +64,90 @@ static t_ant		init_room2(t_ant ant)
 	return (ant);
 }
 
-static t_ant		command(t_ant ant)
+t_ant		command(t_ant ant)
 {
+	int		i;
+
+	i = 0;
 	if (ft_strcmp(ant.line, "##start"))
-	{
-		get_next_line(0, &ant.line, 0);
-		ant.i = 0;
-		ant.j = 0;
-		ant = comment(ant);
-		ant = init_struct(ant);
-		ant = init_room2(ant);
-		ant.start = ant.room;
-		get_next_line(0, &ant.line, 0);
-	}
+		i = 1;
 	if (ft_strcmp(ant.line, "##end"))
+		i = 2;
+	if (i > 0)
 	{
 		get_next_line(0, &ant.line, 0);
 		ant.i = 0;
 		ant.j = 0;
 		ant = comment(ant);
 		ant = init_struct(ant);
+		while (ant.room->next != NULL)
+			ant.room = ant.room->next;
+		if (i == 1)
+			ant.start = ant.room->ptr_room;
+		if (i == 2)
+			ant.end = ant.room->ptr_room;
+		ant.room = ant.room_begin;
 		ant = init_room2(ant);
-		ant.end = ant.room;
 		get_next_line(0, &ant.line, 0);
 	}
 	return (ant);
 }
 
+static void			path2(t_room *room1, t_room *room2)
+{
+	t_ptr	ptr;
+	t_ptr	ptr2;
+
+	ft_bzero(&ptr, sizeof(t_ptr));
+	ft_bzero(&ptr2, sizeof(t_ptr));
+	ptr.ptr_room = room1;
+	ptr2.ptr_room = room2;
+	if (room1->tube == NULL)
+		room1->tube = &ptr2;
+	else
+	{
+		while (room1->tube->next != NULL)
+			room1->tube = room1->tube->next;
+		room1->tube->next = &ptr2;
+	}
+	if (room2->tube == NULL)
+		room2->tube = &ptr;
+	else
+	{
+		while (room2->tube->next != NULL)
+			room2->tube = room2->tube->next;
+		room2->tube->next = &ptr;
+	}
+}
+
 static t_ant		path(t_ant ant)
 {
-	char	*str1;
-	char	*str2;
+	t_room		*room1;
+	t_room		*room2;
 
 	while (ant.line[ant.i] && ant.line[ant.i] != '-')
 		ant.i++;
-	str1 = ft_memalloc(ant.i);
-	while (ant.line[ant.j] && ant.line[ant.j] != '-')
-		str1[ant.j++] = ant.line[ant.j];
-	ant.i++;
-	ant.j++;
-	while (ant.line[ant.i])
-		ant.i++;
-	str2 = ft_memalloc(ant.i);
-	while (ant.line[ant.j] && ant.line[ant.j] != '-')
-		str2[ant.j++] = ant.line[ant.j];
-	ant.room = ant.begin;
-	while (ant.room)
+	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.i) &&
+	ant.room->ptr_room->name[ant.i] == '\0')
 	{
-		if (ft_strcmp(ant.room->name, str1) == 0)
-			init_path(ant, str1);
-
-
+		if (ant.room == NULL)
+			exit_str("Error : room enter in 2nd part is incorrect");
+		ant.room = ant.room->next;
 	}
+	room1 = ant.room->ptr_room;
+	ant.room = ant.room_begin;
+	ant.i++;
+	while (ant.line[ant.i + ant.j])
+		ant.j++;
+	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.j) &&
+	ant.room->ptr_room->name[ant.j] == '\0')
+	{
+		if (ant.room == NULL)
+			exit_str("Error : room enter in 2nd part is incorrect");
+		ant.room = ant.room->next;
+	}
+	room2 = ant.room->ptr_room;
+	path2(room1, room2);
 	return (ant);
 }
 
@@ -120,20 +155,19 @@ t_ant				init_room(t_ant ant)
 {
 	while (get_next_line(0, &ant.line, 0))
 	{
-		ant = command(ant);
 		ant.i = 0;
 		ant.j = 0;
 		ant = comment(ant);
-		if (is_str_on(ant.line, " "))
+		if (ant.check == 0 && !is_str_on(ant.line, " "))
+			ant.check = 1;
+		if (ant.check == 0)
 		{
+			ant = command(ant);
 			ant = init_struct(ant);
 			ant = init_room2(ant);
 		}
-		else
+		if (ant.check == 1)
 			ant = path(ant);
-
 	}
-//	if (ant.error > 0)//free le tout ou utiliser le return error de fbabin
-
 	return (ant);
 }

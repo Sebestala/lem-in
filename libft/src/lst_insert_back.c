@@ -18,8 +18,7 @@ t_lst		*lst_insert_back(t_lst *lst, int id, char *name)
 	t_lst		*tmp;
 
 	element = ft_memalloc(sizeof(*element));
-	write (1, "ENCULEUR DE MOUCHE\n", 19);
-	element->name = name;
+	element->content = name;
 	element->id = id;
 	element->next = NULL;
 	if (lst_is_empty(lst))

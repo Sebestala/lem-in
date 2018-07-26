@@ -57,12 +57,8 @@ char		*preci_ls(char *copy, t_print res)
 
 t_print		width_ls(char *tmp, t_print res)
 {
-	int		j;
 	int		len;
-	char	*copy;
 
-	j = 0;
-	copy = NULL;
 	len = ft_strlen(tmp);
 	if (res.c_bool.neg == 1)
 		res = ft_strcat_f(tmp, res, 0);

@@ -12,43 +12,43 @@
 
 #include "../includes/lem_in.h"
 
-static t_ant	init_ant(t_ant ant)
+static void		ptr_back(t_ptr *ptr)
+{
+	t_ptr	*element;
+
+	element = ptr;
+	ptr = ptr->next;
+	while (ptr != NULL)
+	{
+		ptr->back = element;
+		element = ptr;
+		ptr = ptr->next;
+	}
+}
+
+t_ant	init_ant(t_ant ant)
 {
 	ant.i = 0;
 	ant.j = 0;
-	ant.nb_ant = 0;
+	ant.check = 0;
 	return (ant);
-}
-
-int				verif_name(t_ant ant, char *str)
-{
-	int		i;
-
-	i = 0;
-	ant.room = ant.begin;
-	while (ant.room && ant.room->next != NULL)
-	{
-		if (ft_strcmp(ant.room->name, str) == 0)
-			i++;
-		ant.room = ant.room->next;
-	}
-	return (i);
 }
 
 t_ant			comment(t_ant ant)
 {
-	while (ant.line[0] && ant.line[0] == '#' && ant.line[1] != '#' &&
-			get_next_line(0, &ant.line, 0))
+	while (ant.line && ant.line[0] && ant.line[0] == '#' && ant.line[1] != '#')
 	{
 		ant.i = 0;
 		ant.j = 0;
-		ft_putstr(ant.line);
+		ft_putendl(ant.line);
+		get_next_line(0, &ant.line, 0);
 	}
 	return (ant);
 }
 
 static t_ant	is_valid(t_ant ant)
 {
+	ant = init_ant(ant);
 	get_next_line(0, &ant.line, 1);
 	ant = comment(ant);
 	if (!ant.line)
@@ -61,9 +61,16 @@ static t_ant	is_valid(t_ant ant)
 	}
 	ant.nb_ant = atoi_my(ant.line);
 	ant = init_room(ant);
-	get_next_line(0, &ant.line, 0);
-
-
+	ptr_back(ant.room);
+	if (ant.start->tube == NULL || ant.end->tube == NULL)
+		exit_str("Error : no path possible");
+	while (ant.end->tube != NULL)
+	{
+		ant.end->tube->id == 1;
+		ant.end->tube == ant.end->tube->next;
+	}
+	ant = init_ant(ant);
+	write (1, "\n", 1);
 	return (ant);
 }
 
@@ -71,8 +78,12 @@ int				main(void)
 {
 	t_ant	ant;
 
+	ant.nb_ant = 0;
 	ant = is_valid(ant);
-
+	if (ant.start == ant.end)
+		exit_str("Error : start room and end room should'nt be the same room");
+	ant = find_final_room(ant);
+	ant = deep_way(ant);
 
 
 	return (0);

@@ -31,10 +31,8 @@ t_print		strcat_percent(char *str, t_print res)
 char		*width_percent(char *copy, char c, int w)
 {
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	while (i < w)
 		copy[i++] = c;
 	return (copy);

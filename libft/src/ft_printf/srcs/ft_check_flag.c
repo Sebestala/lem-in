@@ -39,11 +39,9 @@ static t_print		flag_relou(const char *str, t_print res)
 
 static t_print		wildcards(t_print res, va_list ap)
 {
-	int		i;
 	int		value;
 
 	value = va_arg(ap, int);
-	i = 0;
 	if (res.c_bool.point > -1)
 		res.c_bool.point = value;
 	else

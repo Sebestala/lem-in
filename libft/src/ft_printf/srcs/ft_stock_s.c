@@ -65,11 +65,9 @@ char		*preci_s(char *tmp, t_print res)
 
 char		*width_s(char *tmp, t_print res)
 {
-	int		j;
 	int		len;
 	char	*copy;
 
-	j = 0;
 	len = ft_strlen(tmp);
 	copy = ft_memalloc(res.c_bool.width);
 	if (res.c_bool.width < len)

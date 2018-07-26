@@ -18,13 +18,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-
-typedef	struct		s_dlst
-{
-	int				len;
-	struct s_node	*begin;
-	struct s_node	*end;
-}					t_dlst;
+# include <stdint.h>
+# include <limits.h>
 
 typedef	struct		s_node
 {
@@ -35,11 +30,18 @@ typedef	struct		s_node
 	struct s_node	*back;
 }					t_node;
 
+typedef	struct		s_dlst
+{
+	int				len;
+	t_node			*begin;
+	t_node			*end;
+}					t_dlst;
+
 typedef	struct		s_lst
 {
 	int				id;
 	int				statut;
-	char			*name;
+	void			*content;
 	struct s_lst	*next;
 }					t_lst;
 

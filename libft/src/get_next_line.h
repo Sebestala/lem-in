@@ -18,7 +18,7 @@
 
 typedef	struct		s_read
 {
-	char	*buf[OPEN_MAX];
+	char	*buf[2048];
 	int		i;
 }					t_read;
 
