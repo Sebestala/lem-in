@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/06/17 16:31:15 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/01 19:47:54 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,7 @@ t_ant				command(t_ant ant);
 int					verif_name(t_ant ant, char *name2);
 t_ant				init_ant(t_ant ant);
 t_ant				find_final_room(t_ant ant);
+t_ant				deep_way(t_ant ant);
+t_ant				put_id_path(t_ant ant);
 
 #endif

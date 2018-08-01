@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 00:10:47 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/06/17 16:31:34 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/01 19:47:56 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ t_ant		command(t_ant ant)
 		i = 1;
 	if (ft_strcmp(ant.line, "##end"))
 		i = 2;
+	if ((i == 1 && ant.start != NULL) || (i == 2 && ant.end != NULL))
+		exit_str("Error : there must be only 1 start and 1 end");
 	if (i > 0)
 	{
 		get_next_line(0, &ant.line, 0);
@@ -127,8 +129,8 @@ static t_ant		path(t_ant ant)
 
 	while (ant.line[ant.i] && ant.line[ant.i] != '-')
 		ant.i++;
-	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.i) &&
-	ant.room->ptr_room->name[ant.i] == '\0')
+	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.i)
+			&& ant.room->ptr_room->name[ant.i] == '\0')
 	{
 		if (ant.room == NULL)
 			exit_str("Error : room enter in 2nd part is incorrect");
@@ -139,8 +141,8 @@ static t_ant		path(t_ant ant)
 	ant.i++;
 	while (ant.line[ant.i + ant.j])
 		ant.j++;
-	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.j) &&
-	ant.room->ptr_room->name[ant.j] == '\0')
+	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.j)
+			&& ant.room->ptr_room->name[ant.j] == '\0')
 	{
 		if (ant.room == NULL)
 			exit_str("Error : room enter in 2nd part is incorrect");

@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/06/17 16:31:27 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/01 19:32:14 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static t_ant	is_valid(t_ant ant)
 		exit_str("Error : no path possible");
 	while (ant.end->tube != NULL)
 	{
-		ant.end->tube->id == 1;
-		ant.end->tube == ant.end->tube->next;
+		ant.end->tube->id = 1;
+		ant.end->tube = ant.end->tube->next;
 	}
 	ant = init_ant(ant);
 	write (1, "\n", 1);
@@ -84,6 +84,7 @@ int				main(void)
 		exit_str("Error : start room and end room should'nt be the same room");
 	ant = find_final_room(ant);
 	ant = deep_way(ant);
+	ant = put_id_path(ant);
 
 
 	return (0);

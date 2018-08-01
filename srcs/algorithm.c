@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   algorithm.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
+/*   Updated: 2018/08/01 19:17:03 by sgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
 static t_ant	make_ptr_path(t_ant ant, t_room *ptr_room)
@@ -5,12 +17,17 @@ static t_ant	make_ptr_path(t_ant ant, t_room *ptr_room)
 	t_ptr	struct_ptr;
 
 	ft_bzero(&struct_ptr, sizeof(t_ptr));
-	while (ant.path->next != NULL)
-		ant.path = ant.path->next;
-	while (ant.path->ptr_path->room->next != NULL)
-		ant.path->ptr_path->room == ant.path->ptr_path->room->next;
-	struct_ptr.back = ant.path->ptr_path->room;
-	ant.path->ptr_path->room->next = &struct_ptr;
+	if (ant.path != NULL)
+	{
+		while (ant.path->next != NULL)
+			ant.path = ant.path->next;
+		while (ant.path->ptr_path->room->next != NULL)
+			ant.path->ptr_path->room = ant.path->ptr_path->room->next;
+		struct_ptr.back = ant.path->ptr_path->room;
+		ant.path->ptr_path->room->next = &struct_ptr;
+	}
+	else
+		ant.path = &struct_ptr;
 	struct_ptr.ptr_room = ptr_room;
 	return (ant);
 }
@@ -22,11 +39,11 @@ static t_ant	del_ptr_path(t_ant ant)
 	while (ant.path->next != NULL)
 		ant.path = ant.path->next;
 	while (ant.path->ptr_path->room->next != NULL)
-		ant.path->ptr_path->room == ant.path->ptr_path->room->next;
+		ant.path->ptr_path->room = ant.path->ptr_path->room->next;
 	ptr = ant.path->ptr_path->room;
-	ant.path->ptr_path->room->ptr_room->check == 0;
-	ant.path->ptr_path->room == ant.path->ptr_path->room->back;
-	ant.path->ptr_path->room->next == NULL;
+	ant.path->ptr_path->room->ptr_room->check = 0;
+	ant.path->ptr_path->room = ant.path->ptr_path->room->back;
+	ant.path->ptr_path->room->next = NULL;
 	free(ptr);
 	ft_bzero(ptr, sizeof(t_ptr));
 	ptr = NULL;
@@ -122,23 +139,33 @@ t_ant			deep_way(t_ant ant)
 		{
 			ant = on_end(ant, element);
 			ptr = ptr->back;
+			element = ptr->ptr_room;
+			element->check++;
 			ant = del_ptr_path(ant);
-
 		}
-		if (element->last_room == 1 && element != ant.start)//a verifier la condition
+		if (element->last_room == 1 && element != ant.start)
 		{
 			ant = find_end(ant, element);
+			ptr = ptr->back;
+			element = ptr->ptr_room;
+			element->check++;
 			ant = del_ptr_path(ant);
 		}
-		while (ant.i < element->check - 1 &&
-							element->last_room == 0 && ptr != NULL)
+		while (ant.i < element->check - 1
+				&& element->last_room == 0 && ptr != NULL)
 			ptr = ptr->next;
 		if (ptr == NULL)
+		{
+			ptr = ptr->back;
+			element = ptr->ptr_room;
+			element->check++;
 			ant = del_ptr_path(ant);
+		}
 		if (ptr->ptr_room->check == 0 && ptr->ptr_room->tube != NULL)
 		{
 			ant = make_ptr_path(ant, ptr->ptr_room);
 			element = ptr->ptr_room;
 		}
 	}
+	return (ant);
 }
