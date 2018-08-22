@@ -18,6 +18,16 @@ typedef	struct		s_ptr t_ptr;
 typedef	struct		s_room t_room;
 typedef	struct		s_path t_path;
 typedef	struct		s_ant t_ant;
+typedef	struct		s_poss t_poss;
+
+typedef	struct		s_poss
+{
+	int				id_poss;
+	int				nb_path;
+	int				total_power;
+	t_ptr			*id_path;
+	struct s_poss	*next;
+}					t_poss;
 
 typedef	struct		s_room
 {
@@ -52,7 +62,9 @@ typedef	struct		s_ant
 	int				power;
 	int				check;
 	int				nb_ant;
+	int				nb_path;
 	char			*line;
+	t_poss			*poss;
 	t_room			*start;
 	t_room			*end;
 	t_ptr			*path;
@@ -71,5 +83,6 @@ t_ant				init_ant(t_ant ant);
 t_ant				find_final_room(t_ant ant);
 t_ant				deep_way(t_ant ant);
 t_ant				put_id_path(t_ant ant);
+t_ant				possibility(t_ant ant);
 
 #endif

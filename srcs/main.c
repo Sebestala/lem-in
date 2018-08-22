@@ -85,7 +85,8 @@ int				main(void)
 	ant = find_final_room(ant);
 	ant = deep_way(ant);
 	ant = put_id_path(ant);
-
+	ant = init_ant(ant);
+	ant = possibility(ant);
 
 	return (0);
 }
