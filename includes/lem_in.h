@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/01 19:47:54 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/23 20:58:48 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ typedef	struct		s_ant
 	t_room			*start;
 	t_room			*end;
 	t_ptr			*path;
-	t_ptr			*path_begin;//pas utile d'apres mes tests,(si c'est ds une fonction void, si c'est ds une fct qui renvoit qnt c'est utile) a verifier
 	t_ptr			*room;
-	t_ptr			*room_begin;//idem
 }					t_ant;
 
 
@@ -86,3 +84,4 @@ t_ant				put_id_path(t_ant ant);
 t_ant				possibility(t_ant ant);
 
 #endif
+	t_ptr			*room_begin;//idem

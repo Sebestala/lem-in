@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 00:10:47 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/01 19:47:56 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/23 20:29:07 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,13 @@ static t_ant	init_struct(t_ant ant)
 		exit_str("Error : dynamic allocation problem in init_struct");
 	ptr.ptr_room = &room;
 	if (!ant.room)
-	{
 		ant.room = &ptr;
-		ant.room_begin = &ptr;
-	}
 	else
 	{
 		while (ant.room->next != NULL)
 			ant.room = ant.room->next;
 		ant.room->next = &ptr;
-		ant.room = ant.room_begin;
+		ptr.back = ant.room;
 	}
 	return (ant);
 }
@@ -61,6 +58,7 @@ static t_ant		init_room2(t_ant ant)
 		ant.i++;
 	if (ant.line[ant.i] != '\0' || ant.j != 3)
 		exit_str("Error : room enter is incorrect");
+	ant = init_ant(ant);
 	return (ant);
 }
 
@@ -78,8 +76,7 @@ t_ant		command(t_ant ant)
 	if (i > 0)
 	{
 		get_next_line(0, &ant.line, 0);
-		ant.i = 0;
-		ant.j = 0;
+		ant = init_ant(ant);
 		ant = comment(ant);
 		ant = init_struct(ant);
 		while (ant.room->next != NULL)
@@ -88,7 +85,6 @@ t_ant		command(t_ant ant)
 			ant.start = ant.room->ptr_room;
 		if (i == 2)
 			ant.end = ant.room->ptr_room;
-		ant.room = ant.room_begin;
 		ant = init_room2(ant);
 		get_next_line(0, &ant.line, 0);
 	}
@@ -111,6 +107,7 @@ static void			path2(t_room *room1, t_room *room2)
 		while (room1->tube->next != NULL)
 			room1->tube = room1->tube->next;
 		room1->tube->next = &ptr2;
+		ptr2.back = room1->tube;
 	}
 	if (room2->tube == NULL)
 		room2->tube = &ptr;
@@ -119,7 +116,20 @@ static void			path2(t_room *room1, t_room *room2)
 		while (room2->tube->next != NULL)
 			room2->tube = room2->tube->next;
 		room2->tube->next = &ptr;
+		ptr.back = room2->tube;
 	}
+}
+
+static t_room		*path1(t_ant ant, int nb)
+{
+	while (ft_strncmp(ant.line, ant.room->ptr_room->name, nb)
+			&& ant.room->ptr_room->name[nb] != '\0')
+	{
+		if (ant.room == NULL)
+			exit_str("Error : room enter in 2nd part is incorrect");
+		ant.room = ant.room->next;
+	}
+	return (ant.room->ptr_room);
 }
 
 static t_ant		path(t_ant ant)
@@ -129,26 +139,11 @@ static t_ant		path(t_ant ant)
 
 	while (ant.line[ant.i] && ant.line[ant.i] != '-')
 		ant.i++;
-	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.i)
-			&& ant.room->ptr_room->name[ant.i] == '\0')
-	{
-		if (ant.room == NULL)
-			exit_str("Error : room enter in 2nd part is incorrect");
-		ant.room = ant.room->next;
-	}
-	room1 = ant.room->ptr_room;
-	ant.room = ant.room_begin;
+	room1 = path1(ant, ant.i);
 	ant.i++;
 	while (ant.line[ant.i + ant.j])
 		ant.j++;
-	while (!ft_strncmp(ant.line, ant.room->ptr_room->name, ant.j)
-			&& ant.room->ptr_room->name[ant.j] == '\0')
-	{
-		if (ant.room == NULL)
-			exit_str("Error : room enter in 2nd part is incorrect");
-		ant.room = ant.room->next;
-	}
-	room2 = ant.room->ptr_room;
+	room2 = path1(ant, ant.j);
 	path2(room1, room2);
 	return (ant);
 }
@@ -165,8 +160,11 @@ t_ant				init_room(t_ant ant)
 		if (ant.check == 0)
 		{
 			ant = command(ant);
-			ant = init_struct(ant);
-			ant = init_room2(ant);
+			if (ant.line[0] && ant.line[0] != '#')
+			{
+				ant = init_struct(ant);
+				ant = init_room2(ant);
+			}
 		}
 		if (ant.check == 1)
 			ant = path(ant);

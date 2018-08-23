@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 16:18:32 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/01 19:47:52 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/23 20:59:52 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static t_ant		id_path(t_ant ant, t_path *path, t_room *room)
 				ptr = ptr->next;
 		}
 		if (ptr == NULL)
+	ant = deep_way(ant);
 			id_path2(ant, path, room->id_path->id);
 		room->id_path = room->id_path->next;
 	}

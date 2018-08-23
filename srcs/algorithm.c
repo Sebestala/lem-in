@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/01 19:17:03 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/23 20:59:43 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static t_ant	del_ptr_path(t_ant ant)
 	ant.path->ptr_path->room->ptr_room->check = 0;
 	ant.path->ptr_path->room = ant.path->ptr_path->room->back;
 	ant.path->ptr_path->room->next = NULL;
+	ant = deep_way(ant);
 	free(ptr);
 	ft_bzero(ptr, sizeof(t_ptr));
 	ptr = NULL;

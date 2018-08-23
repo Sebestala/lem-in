@@ -6,25 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/01 19:32:14 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/23 20:58:30 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-
-static void		ptr_back(t_ptr *ptr)
-{
-	t_ptr	*element;
-
-	element = ptr;
-	ptr = ptr->next;
-	while (ptr != NULL)
-	{
-		ptr->back = element;
-		element = ptr;
-		ptr = ptr->next;
-	}
-}
 
 t_ant	init_ant(t_ant ant)
 {
@@ -61,28 +47,46 @@ static t_ant	is_valid(t_ant ant)
 	}
 	ant.nb_ant = atoi_my(ant.line);
 	ant = init_room(ant);
-	ptr_back(ant.room);
 	if (ant.start->tube == NULL || ant.end->tube == NULL)
 		exit_str("Error : no path possible");
-	while (ant.end->tube != NULL)
-	{
-		ant.end->tube->id = 1;
-		ant.end->tube = ant.end->tube->next;
-	}
+	ant = find_final_room(ant);
 	ant = init_ant(ant);
 	write (1, "\n", 1);
 	return (ant);
+}
+
+static	void	verif(t_ant ant)
+{
+	t_ptr	*ptr;
+
+	if (!ant.start)
+		exit_str("Error : there is no start room");
+	if (!ant.end)
+		exit_str("Error : there is no end room");
+	if (ant.start == ant.end)
+		exit_str("Error : start room and end room should'nt be the same room");
+	ptr = NULL;
+	while (ant.room != NULL)
+	{
+		ptr = ant.room;
+		while (ptr->next != NULL)
+		{
+			ptr = ptr->next;
+			if (!ft_strcmp(ant.room->ptr_room->name, ptr->ptr_room->name))
+				exit_str("Error : two rooms have the same name");
+		}
+		ant.room = ant.room->next;
+	}
 }
 
 int				main(void)
 {
 	t_ant	ant;
 
-	ant.nb_ant = 0;
+	ft_bzero(&ant, sizeof(t_ant));
 	ant = is_valid(ant);
-	if (ant.start == ant.end)
-		exit_str("Error : start room and end room should'nt be the same room");
-	ant = find_final_room(ant);
+	verif(ant);
+// j4en suis la
 	ant = deep_way(ant);
 	ant = put_id_path(ant);
 	ant = init_ant(ant);
