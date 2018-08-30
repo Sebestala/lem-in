@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/23 20:58:30 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/29 19:54:23 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int				main(void)
 // j4en suis la
 	ant = deep_way(ant);
 	ant = put_id_path(ant);
-	ant = init_ant(ant);
+	ant = init_tab(ant);
 	ant = possibility(ant);
 
 	return (0);

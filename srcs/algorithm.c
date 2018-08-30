@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/23 20:59:43 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/08/28 17:19:34 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ t_ant			deep_way(t_ant ant)
 	t_ptr	*ptr;
 
 	element = ant.start;
-	ptr = element->tube;
 	while (!(element == ant.start && ptr == NULL))
 	{
 		ptr = element->tube;
