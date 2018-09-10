@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 16:18:32 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/10 19:06:09 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/10 19:52:51 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,19 @@
 static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
 {
 	t_ptr	*ptr;
+	t_ptr	*ptr2;
 
+	ptr2 = path->id_path;
 	ptr = memalloc_sterr(sizeof(t_ptr), "id_path2");
-	while (path->id_path->next != NULL)
-		path->id_path = path->id_path->next;
-	if (path->id_path != NULL)
+	while (ptr2 != NULL)
+		ptr2 = ptr2->next;
+	if (ptr2 != NULL)
 	{
-		ptr->back = path->id_path;
-		path->id_path->next = ptr;
+		ptr->back = ptr2;
+		ptr2->next = ptr;
 	}
 	else
-		path->id_path = ptr;
+		ptr2 = ptr;
 	ptr->id = id;
 	return (ant);
 }

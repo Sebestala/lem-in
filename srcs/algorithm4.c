@@ -5,20 +5,22 @@ t_ant			*choose_best_poss(t_ant *ant)
 {
 	int		best;
 	int		total;
+	t_poss	*poss;
 
 	best = 0;
 	total = 0;
-	while (ant->poss != NULL)
+	poss = ant->poss;
+	while (poss != NULL)
 	{
-		total = ((ant->poss->total_power + ant->nb_ant) / ant->poss->nb_path);
-		if (((ant->poss->total_power + ant->nb_ant) % ant->poss->nb_path) > 0)
+		total = ((poss->total_power + ant->nb_ant) / poss->nb_path);
+		if (((poss->total_power + ant->nb_ant) % poss->nb_path) > 0)
 			total++;
 		if (best == 0 || total <= best)
 		{
-			ant->best_poss = ant->poss;
+			ant->best_poss = poss;
 			best = total;
 		}
-		ant->poss = ant->poss->next;
+		poss = poss->next;
 	}
 	ant = init_ant(ant);
 	ant->i++;
@@ -92,14 +94,16 @@ t_ant			*begin_answer(t_ant *ant)
 
 static t_ant	*answer2(t_ant *ant, t_pawn *pawn)
 {
-	int	i;
+	int		i;
+	t_ptr	*ptr;
 
+	ptr = pawn->path->room;
 	i = 1;
 	write(1, "L-", 2);
 	ft_putnbr(pawn->id_pawn);
 	while (i < pawn->check)
-		pawn->path->room = pawn->path->room->next;
-	ft_putstr(pawn->path->room->ptr_room->name);
+		ptr = ptr->next;
+	ft_putstr(ptr->ptr_room->name);
 	write(1, " ", 1);
 	return (ant);
 }
