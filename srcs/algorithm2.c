@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 16:18:32 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/29 19:09:32 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/10 19:06:09 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,24 @@ static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
 static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 {
 	t_ptr	*ptr;
+	t_ptr	*ptr2;
 
+	ptr2 = room->id_path;
 	if (room != ant->start && room != ant->end)
 		path->power++;
-	while (room->id_path != NULL)
+	while (ptr2 != NULL)
 	{
 		ptr = path->id_path;
 		while (ptr != NULL)
 		{
-			if (room->id_path->id == ptr->id)
+			if (ptr2->id == ptr->id)
 				break ;
 			else
 				ptr = ptr->next;
 		}
 		if (ptr == NULL)
-			id_path2(ant, path, room->id_path->id);
-		room->id_path = room->id_path->next;
+			id_path2(ant, path, ptr2->id);
+		ptr2 = ptr2->next;
 	}
 	return (ant);
 }
@@ -56,44 +58,48 @@ static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 static t_ant		*put_id_room(t_ant *ant, t_room *room, int id)
 {
 	t_ptr	*ptr;
+	t_ptr	*ptr2;
 
 	ptr = memalloc_sterr(sizeof(t_ptr), "put_id_room");
 	ptr->id = id;
-	if (room->id_path != NULL)
+	ptr2 = room->id_path;
+	if (ptr2 != NULL)
 	{
-		while (room->id_path->next != NULL)
-			room->id_path = room->id_path->next;
-		ptr->back = room->id_path;
-		room->id_path->next = ptr;
+		while (ptr2->next != NULL)
+			ptr2 = ptr2->next;
+		ptr->back = ptr2;
+		ptr2->next = ptr;
 	}
 	else
-		room->id_path = ptr;
+		ptr2 = ptr;
 	return (ant);
 }
 
 t_ant				*put_id_path(t_ant *ant)
 {
 	t_ptr	*ptr;
+	t_ptr	*ptr2;
 
 	ptr = ant->path;
 	while (ptr != NULL)
 	{
-		while (ptr->ptr_path->room != NULL)
+		ptr2 = ptr->ptr_path->room;
+		while (ptr2 != NULL)
 		{
-			if (ptr->ptr_path->room->ptr_room != ant->start
-					&& ptr->ptr_path->room->ptr_room != ant->end)
-				ant = put_id_room(ant, ptr->ptr_path->room->ptr_room, ptr->id);
-			ptr->ptr_path->room = ptr->ptr_path->room->next;
+			if (ptr2->ptr_room != ant->start && ptr2->ptr_room != ant->end)
+				ant = put_id_room(ant, ptr2->ptr_room, ptr->id);
+			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;
 	}
 	ptr = ant->path;
 	while (ptr != NULL)
 	{
-		while (ptr->ptr_path->room != NULL)
+		ptr2 = ptr->ptr_path->room;
+		while (ptr2 != NULL)
 		{
-			ant = id_path(ant, ptr->ptr_path, ptr->ptr_path->room->ptr_room);
-			ptr->ptr_path->room = ptr->ptr_path->room->next;
+			ant = id_path(ant, ptr->ptr_path, ptr2->ptr_room);
+			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;
 	}

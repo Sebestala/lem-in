@@ -6,13 +6,13 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/28 17:19:34 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/10 17:49:41 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-static void		fct_test(t_ant *ant)
+void		fct_test1(t_ant *ant)
 {
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
@@ -40,6 +40,27 @@ static void		fct_test(t_ant *ant)
 
 }
 
+static t_ptr	*ptr_room(t_ptr *ptr, int nb)
+{
+	int		i;
+
+	i = 1;
+	printf("1   ptr = %p\n", ptr);
+	fflush(stdout);
+	while (ptr->back != NULL)
+		ptr = ptr->back;
+	printf("2   ptr = %p\n", ptr);
+	fflush(stdout);
+	while (ptr != NULL && i < nb)
+	{
+		ptr = ptr->next;
+		i++;
+	printf("3   ptr = %p\n", ptr);
+	fflush(stdout);
+	}
+	return (ptr);
+}
+
 static t_room	*ptr_room_end(t_ant *ant)
 {
 	t_ptr	*ptr1;
@@ -64,6 +85,8 @@ fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
+	if (ptr_room == ant->start)
+		return (ant);
 	ptr = ant->path;
 	struct_ptr = memalloc_sterr(sizeof(t_ptr), "make_ptr_path");
 	if (ptr != NULL)
@@ -211,12 +234,17 @@ ant->test++;
 	ptr = element->tube;
 printf("\n\n\nptr = %p \n", ptr);
 fflush(stdout);
-	while (1)
+	while (element != ant->start || ptr != NULL)
 	{
+	printf("START\n");
+	fflush(stdout);
 		ptr = element->tube;
+if (ptr)
+{
 printf("\n\n\nTEST DEBUT == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
+}
 		element->check++;
 		if (element == ant->end)
 		{
@@ -224,12 +252,14 @@ ant->test++;
 			element = ptr_room_end(ant);
 			ptr = element->tube;
 		}
+if (ptr)
+{
 printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
+}
 		if (element->last_room == 1 && element != ant->start)
 		{
-fct_test(ant);
 			ant = find_end(ant, ptr);
 			ant = del_ptr_path(ant);
 			element = ptr_room_end(ant);
@@ -237,33 +267,57 @@ fct_test(ant);
 			element->check++;
 printf("END room = %s   room_ptr = %s\n", element->name, ptr->ptr_room->name);
 fflush(stdout);
-fct_test(ant);
 		}
+if (ptr)
+{
 printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
+}
 		if (element->check > 1 && element->last_room == 0 && ptr != NULL)
-			ptr = ptr->next;
+			ptr = ptr_room(ptr, element->check);
+	printf("4\n");
+	fflush(stdout);
+if (ptr)
+{
 printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
-if (ant->test > 37)
-	exit(0);
-		if (ptr == NULL)
+}
+		while (ptr == NULL)
 		{
+	printf("5\n");
+	fflush(stdout);
 			if (element == ant->start)
 				break ;
-			ptr = ptr->back;
-			element = ptr->ptr_room;
-			element->check++;
+	printf("5\n");
+	fflush(stdout);
 			ant = del_ptr_path(ant);
+	printf("5\n");
+	fflush(stdout);
+			element = ptr_room_end(ant);
+	printf("5\n");
+	fflush(stdout);
+			element->check++;
+	printf("5\n");
+	fflush(stdout);
+			ptr = ptr_room(element->tube, element->check);
+	printf("5\n");
+	fflush(stdout);
 		}
+	printf("8\n");
+	fflush(stdout);
+if (ptr)
+{
 printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
 printf("check = %d  ptr = %p\n", ptr->ptr_room->check, ptr->ptr_room->tube);
 fflush(stdout);
-		if (ptr->ptr_room->check == 0 && ptr->ptr_room->tube != NULL)
+}
+	printf("9\n");
+	fflush(stdout);
+		if (ptr && ptr->ptr_room->check == 0 && ptr->ptr_room->tube != NULL)
 		{
 			ant = make_ptr_path(ant, ptr->ptr_room);
 			element = ptr->ptr_room;

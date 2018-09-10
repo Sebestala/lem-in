@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/30 20:26:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/06/17 16:31:30 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/10 18:32:01 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,5 +144,6 @@ int					dlst_is_empty(t_node *dlst);
 t_node				*dlst_delete_front(t_node *dlst);
 void				exit_str(char *str);
 void				*memalloc_sterr(size_t size, char *str);
+void				memdel_zero(void *ap, int size);
 
 #endif

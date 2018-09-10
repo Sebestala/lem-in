@@ -6,7 +6,7 @@
 #    By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/01 13:58:01 by sgarcia           #+#    #+#              #
-#    Updated: 2018/06/14 21:05:57 by sgarcia          ###   ########.fr        #
+#    Updated: 2018/09/10 18:27:58 by sgarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,7 +106,8 @@ SRC =		ft_bzero.c				\
 			lst_delete_back.c		\
 			lst_delete.c			\
 			exit_str.c				\
-			memalloc_sterr.c
+			memalloc_sterr.c		\
+			memdel_zero.c
 
 DIR_PRINTF = src/ft_printf/
 

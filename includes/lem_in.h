@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/30 17:36:11 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/10 18:33:53 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,7 @@ t_ant				*possibility(t_ant *ant);
 t_ant				*choose_best_poss(t_ant *ant);
 t_ant				*begin_answer(t_ant *ant);
 t_ant				*answer(t_ant *ant);
+void				fct_test1(t_ant *ant);
+void				delete_last_path(t_ant *ant);
 
 #endif

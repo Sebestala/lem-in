@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/29 19:54:23 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/10 18:35:34 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ int				main(void)
 	printf("\n\n\n		||||||DEEP WAY||||||\n\n\n\n");
 	fflush(stdout);
 	ant = deep_way(ant);
+	delete_last_path(ant);
+fct_test1(ant);
 	printf("\n\n\n		||||||PUT ID PATH||||||\n\n\n\n");
 	fflush(stdout);
 	ant = put_id_path(ant);
