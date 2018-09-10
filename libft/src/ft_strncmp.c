@@ -24,7 +24,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 	i = 0;
 	j = 0;
 	if (!n)
-		return (0);
+		return (-1);
 	while (str1[i] || str2[i])
 	{
 		j = str1[i] - str2[i];

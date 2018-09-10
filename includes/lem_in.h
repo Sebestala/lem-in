@@ -19,6 +19,16 @@ typedef	struct		s_room t_room;
 typedef	struct		s_path t_path;
 typedef	struct		s_ant t_ant;
 typedef	struct		s_poss t_poss;
+typedef	struct		s_pawn t_pawn;
+
+typedef	struct		s_pawn
+{
+	int				id_pawn;
+	int				check;
+	t_path			*path;
+	struct s_pawn	*next;
+	struct s_pawn	*back;
+}					t_pawn;
 
 typedef	struct		s_poss
 {
@@ -59,6 +69,7 @@ typedef	struct		s_ant
 {
 	int				i;
 	int				j;
+	int				test;
 	int				power;
 	int				check;
 	int				nb_ant;
@@ -66,23 +77,31 @@ typedef	struct		s_ant
 	int				*tab_id;
 	char			*line;
 	t_poss			*poss;
+	t_poss			*poss_begin;
+	t_poss			*best_poss;
 	t_room			*start;
 	t_room			*end;
 	t_ptr			*path;
+	t_ptr			*path_begin;
 	t_ptr			*room;
+	t_ptr			*room_begin;
+	t_pawn			*pawn;
+	t_pawn			*pawn_begin;
 }					t_ant;
 
 
 int					main(void);
-t_ant				init_room(t_ant ant);
-t_ant				comment(t_ant ant);
-t_ant				command(t_ant ant);
-int					verif_name(t_ant ant, char *name2);
-t_ant				init_ant(t_ant ant);
-t_ant				init_tab(t_ant ant);
-t_ant				find_final_room(t_ant ant);
-t_ant				deep_way(t_ant ant);
-t_ant				put_id_path(t_ant ant);
-t_ant				possibility(t_ant ant);
+t_ant				*init_room(t_ant *ant);
+t_ant				*comment(t_ant *ant);
+t_ant				*command(t_ant *ant);
+int					verif_name(t_ant *ant, char *name2);
+t_ant				*init_ant(t_ant *ant);
+t_ant				*find_final_room(t_ant *ant);
+t_ant				*deep_way(t_ant *ant);
+t_ant				*put_id_path(t_ant *ant);
+t_ant				*possibility(t_ant *ant);
+t_ant				*choose_best_poss(t_ant *ant);
+t_ant				*begin_answer(t_ant *ant);
+t_ant				*answer(t_ant *ant);
 
 #endif

@@ -12,85 +12,132 @@
 
 #include "../includes/lem_in.h"
 
-t_ant	init_ant(t_ant ant)
-{
-	ant.i = 0;
-	ant.j = 0;
-	ant.check = 0;
-	return (ant);
-}
-
-t_ant			comment(t_ant ant)
-{
-	while (ant.line && ant.line[0] && ant.line[0] == '#' && ant.line[1] != '#')
-	{
-		ant.i = 0;
-		ant.j = 0;
-		ft_putendl(ant.line);
-		get_next_line(0, &ant.line, 0);
-	}
-	return (ant);
-}
-
-static t_ant	is_valid(t_ant ant)
-{
-	ant = init_ant(ant);
-	get_next_line(0, &ant.line, 1);
-	ant = comment(ant);
-	if (!ant.line)
-		exit_str("Error : enter incorrect");
-	while (ant.line[ant.i])
-	{
-		if (ant.line[ant.i] < '0' || ant.line[ant.i] > '9')
-			exit_str("Error : number ants is incorrect");
-		ant.i++;
-	}
-	ant.nb_ant = atoi_my(ant.line);
-	ant = init_room(ant);
-	if (ant.start->tube == NULL || ant.end->tube == NULL)
-		exit_str("Error : no path possible");
-	ant = find_final_room(ant);
-	ant = init_ant(ant);
-	write (1, "\n", 1);
-	return (ant);
-}
-
-static	void	verif(t_ant ant)
+static void		fct_test(t_ant *ant)
 {
 	t_ptr	*ptr;
 
-	if (!ant.start)
-		exit_str("Error : there is no start room");
-	if (!ant.end)
-		exit_str("Error : there is no end room");
-	if (ant.start == ant.end)
-		exit_str("Error : start room and end room should'nt be the same room");
-	ptr = NULL;
-	while (ant.room != NULL)
+	printf("ANT  =	%d \n", ant->nb_ant);
+	fflush(stdout);
+	while (ant->room != NULL)
 	{
-		ptr = ant.room;
+		printf("NAME =	%s    LAST ROOM = %d\n", ant->room->ptr_room->name, ant->room->ptr_room->last_room);
+		fflush(stdout);
+		ptr = ant->room->ptr_room->tube;
+		while (ptr != NULL)
+		{
+			printf("	%s---%s\n", ant->room->ptr_room->name, ptr->ptr_room->name);
+			fflush(stdout);
+			ptr = ptr->next;
+		}
+		ant->room = ant->room->next;
+	}
+	ant = init_ant(ant);
+	printf("START	name = %s \n", ant->start->name);
+	fflush(stdout);
+	printf("END	name = %s \n", ant->end->name);
+	fflush(stdout);
+
+}
+
+t_ant			*init_ant(t_ant *ant)
+{
+	ant->poss = ant->poss_begin;
+	ant->path = ant->path_begin;
+	ant->room = ant->room_begin;
+	ant->pawn = ant->pawn_begin;
+	ant->i = 0;
+	ant->j = 0;
+	return (ant);
+}
+
+t_ant			*comment(t_ant *ant)
+{
+	while (ant->line && ant->line[0]
+	&& ant->line[0] == '#' && ant->line[1] != '#')
+	{
+		ant = init_ant(ant);
+		ft_putendl(ant->line);
+		get_next_line(0, &ant->line, 0);
+	}
+	return (ant);
+}
+
+static t_ant		*is_valid(t_ant *ant)
+{
+	ant = init_ant(ant);
+	get_next_line(0, &ant->line, 1);
+	ant = comment(ant);
+	if (!ant->line)
+		exit_str("Error : enter incorrect");
+	while (ant->line[ant->i])
+	{
+		if (ant->line[ant->i] < '0' || ant->line[ant->i] > '9')
+			exit_str("Error : number ants is incorrect");
+		ant->i++;
+	}
+	ant->nb_ant = atoi_my(ant->line);
+	ant = init_room(ant);
+	ant = init_ant(ant);
+	return (ant);
+}
+
+static t_ant		*verif(t_ant *ant)
+{
+	t_ptr	*ptr;
+
+	if (!ant->start)
+		exit_str("Error : there is no start room");
+	if (!ant->end)
+		exit_str("Error : there is no end room");
+	if (ant->start == ant->end)
+		exit_str("Error : start room and end room should'nt be the same room");
+	if (ant->start->tube == NULL || ant->end->tube == NULL)
+		exit_str("Error : no path possible");
+	ant = find_final_room(ant);
+	ptr = NULL;
+	while (ant->room != NULL)
+	{
+		ptr = ant->room;
 		while (ptr->next != NULL)
 		{
 			ptr = ptr->next;
-			if (!ft_strcmp(ant.room->ptr_room->name, ptr->ptr_room->name))
+			if (!ft_strcmp(ant->room->ptr_room->name, ptr->ptr_room->name))
 				exit_str("Error : two rooms have the same name");
 		}
-		ant.room = ant.room->next;
+		ant->room = ant->room->next;
 	}
+	ant = init_ant(ant);
+	return (ant);
 }
 
 int				main(void)
 {
-	t_ant	ant;
+	t_ant	*ant;
 
-	ft_bzero(&ant, sizeof(t_ant));
+	ant = memalloc_sterr(sizeof(t_ant), "main");
 	ant = is_valid(ant);
-	verif(ant);
-// j4en suis la
+	ant = verif(ant);
+	fct_test(ant);
+	printf("\n\n\n		||||||DEEP WAY||||||\n\n\n\n");
+	fflush(stdout);
 	ant = deep_way(ant);
+	printf("\n\n\n		||||||PUT ID PATH||||||\n\n\n\n");
+	fflush(stdout);
 	ant = put_id_path(ant);
-	ant = init_tab(ant);
+	ant->tab_id = memalloc_sterr((ant->nb_path + 1) * sizeof(int), "main");
+	printf("\n\n\n		||||||POSSIBILITY||||||\n\n\n\n");
+	fflush(stdout);
 	ant = possibility(ant);
+	printf("\n\n\n		||||||CHOOSE BEST POSS||||||\n\n\n\n");
+	fflush(stdout);
+	ant = choose_best_poss(ant);
+	printf("\n\n\n		||||||BEGIN ANSWER||||||\n\n\n\n");
+	fflush(stdout);
+	ant = begin_answer(ant);
+	printf("\n\n\n		||||||ANSWER||||||\n\n\n\n");
+	fflush(stdout);
+	ant = answer(ant);
+//	je met un espace en trop a la fin de chaques ligne pour les réponses
 
 	return (0);
 }

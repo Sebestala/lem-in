@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 char	*ft_strnew(size_t size)
 {
@@ -18,6 +19,7 @@ char	*ft_strnew(size_t size)
 	int		i;
 
 	i = 0;
+	str = NULL;
 	if (size < 4294967295)
 	{
 		if (!(str = (char *)malloc((size + 1) * sizeof(char))))

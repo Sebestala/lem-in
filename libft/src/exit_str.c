@@ -15,5 +15,5 @@
 void		exit_str(char *str)
 {
 	ft_putendl_fd(2, str);
-	exit(EXIT_FAILURE);
+	exit(1);
 }

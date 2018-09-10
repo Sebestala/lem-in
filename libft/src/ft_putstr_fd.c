@@ -21,7 +21,7 @@ void	ft_putstr_fd(int fd, char const *s)
 	{
 		while (s[i])
 		{
-			ft_putchar_fd(s[i], fd);
+			ft_putchar_fd(fd, s[i]);
 			i++;
 		}
 	}

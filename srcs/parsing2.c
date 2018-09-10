@@ -12,28 +12,33 @@
 
 #include "../includes/lem_in.h"
 
-t_ant	find_final_room(t_ant ant)
+t_ant	*find_final_room(t_ant *ant)
 {
-	while(ant.end->tube != NULL)
+	t_ptr	*begin;
+
+	begin = ant->end->tube;
+	while(begin != NULL)
 	{
-		if (ant.end->tube->ptr_room != ant.start)
-			ant.end->tube->ptr_room->last_room = 1;
-		ant.end->tube = ant.end->tube->next;
+		if (begin->ptr_room != ant->start)
+			begin->ptr_room->last_room = 1;
+		begin = begin->next;
 	}
 	return (ant);
 }
 
-int		verif_name(t_ant ant, char *name2)
+int		verif_name(t_ant *ant, char *name2)
 {
-	while (ant.room != NULL)
+	t_ptr	*room;
+
+	room = ant->room;
+	while (room != NULL)
 	{
-		if (ft_strcmp(ant.room->ptr_room->name, name2))
+		if (!ft_strcmp(room->ptr_room->name, name2))
 		{
-			ant.room = ant.room_begin;
+			room = ant->room;
 			return (1);
 		}
-		ant.room = ant.room->next;
+		room = room->next;
 	}
-	ant.room = ant.room_begin;
 	return (0);
 }

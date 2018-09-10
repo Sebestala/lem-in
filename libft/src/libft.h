@@ -143,5 +143,6 @@ void				lst_delete(t_lst **lst);
 int					dlst_is_empty(t_node *dlst);
 t_node				*dlst_delete_front(t_node *dlst);
 void				exit_str(char *str);
+void				*memalloc_sterr(size_t size, char *str);
 
 #endif

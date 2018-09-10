@@ -17,6 +17,6 @@ void	ft_putendl_fd(int fd, char const *s)
 	if (s)
 	{
 		ft_putstr_fd(fd, s);
-		ft_putchar_fd('\n', fd);
+		ft_putchar_fd(fd, '\n');
 	}
 }
