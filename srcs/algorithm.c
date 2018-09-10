@@ -28,28 +28,19 @@ static void		fct_test(t_ant *ant)
 		printf("\n\n	PATH %d \n", ptr->ptr_path->id);
 		fflush(stdout);
 		ptr2 = ptr->ptr_path->room;
-			printf("0\n");
-			fflush(stdout);
 		while (ptr2 != NULL)
 		{
-			printf("1\n");
-			fflush(stdout);
 			room = ptr2->ptr_room;
 			printf("	%s\n", room->name);
 			fflush(stdout);
-			ptr2 = ptr->next;
-			printf("2\n");
-			fflush(stdout);
+			ptr2 = ptr2->next;
 		}
-			printf("3\n");
-			fflush(stdout);
 		ptr = ptr->next;
 	}
 
 }
 
-
-static t_ant	*ptr_on_end(t_ant *ant, t_room *room, t_ptr *ptr)
+static t_room	*ptr_room_end(t_ant *ant)
 {
 	t_ptr	*ptr1;
 	t_ptr	*ptr2;
@@ -60,18 +51,18 @@ static t_ant	*ptr_on_end(t_ant *ant, t_room *room, t_ptr *ptr)
 	ptr2 = ptr1->ptr_path->room;
 	while (ptr2->next != NULL)
 		ptr2 = ptr2->next;
-	room = ptr2->ptr_room;
-	ptr = room->tube;
-	ptr = ptr;
-	return (ant);
+	return (ptr2->ptr_room);
 }
 
 static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
 printf("make_ptr_path    algorithm\n");
 fflush(stdout);
+printf("room = %s\n", ptr_room->name);
+fflush(stdout);
 	t_ptr	*struct_ptr;
 	t_ptr	*ptr;
+	t_ptr	*ptr2;
 
 	ptr = ant->path;
 	struct_ptr = memalloc_sterr(sizeof(t_ptr), "make_ptr_path");
@@ -79,10 +70,11 @@ fflush(stdout);
 	{
 		while (ptr->next != NULL)
 			ptr = ptr->next;
-		while (ptr->ptr_path->room->next != NULL)
-			ptr->ptr_path->room = ptr->ptr_path->room->next;
-		struct_ptr->back = ptr->ptr_path->room;
-		ptr->ptr_path->room->next = struct_ptr;
+		ptr2 = ptr->ptr_path->room;
+		while (ptr2->next != NULL)
+			ptr2 = ptr2->next;
+		struct_ptr->back = ptr2;
+		ptr2->next = struct_ptr;
 	}
 	else
 		ptr = struct_ptr;
@@ -100,15 +92,14 @@ fflush(stdout);
 	ptr2 = ant->path;
 	while (ptr2->next != NULL)
 		ptr2 = ptr2->next;
-	while (ptr2->ptr_path->room->next != NULL)
-		ptr2->ptr_path->room = ptr2->ptr_path->room->next;
 	ptr = ptr2->ptr_path->room;
-	ptr2->ptr_path->room->ptr_room->check = 0;
-	ptr2->ptr_path->room = ptr2->ptr_path->room->back;
-	ptr2->ptr_path->room->next = NULL;
+	while (ptr->next != NULL)
+		ptr = ptr->next;
+	ptr->ptr_room->check = 0;
+	ptr2 = ptr->back;
+	ptr2->next = NULL;
 	ft_bzero(ptr, sizeof(t_ptr));
 	free(ptr);
-	ptr = NULL;
 	return (ant);
 }
 
@@ -182,11 +173,10 @@ fflush(stdout);
 	room = ptr->ptr_room;
 	room->check++;
 	ant = del_ptr_path(ant);
-	ant = ptr_on_end(ant, room, ptr);
 	return (ant);
 }
 
-static t_ant	*find_end(t_ant *ant, t_room *room, t_ptr *ptr)
+static t_ant	*find_end(t_ant *ant, t_ptr *ptr)
 {
 printf("find_end    algorithm\n");
 fflush(stdout);
@@ -198,7 +188,6 @@ fflush(stdout);
 	}
 	if (ptr != NULL)
 	{
-		ant = make_ptr_path(ant, room);
 		ant = make_ptr_path(ant, ptr->ptr_room);
 		ant = valid_path(ant);
 		ant = del_ptr_path(ant);
@@ -219,55 +208,66 @@ printf("\n\n\nTEST ==	%d \n", ant->test);
 fflush(stdout);
 ant->test++;
 	ant = make_enter_path(ant, 1);
-	while (!(element == ant->start && ptr == NULL))
+	ptr = element->tube;
+printf("\n\n\nptr = %p \n", ptr);
+fflush(stdout);
+	while (1)
 	{
 		ptr = element->tube;
-printf("\n\n\nDEBUT TEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, element->tube->ptr_room->name, element->check);
+printf("\n\n\nTEST DEBUT == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
-		ant = init_ant(ant);
 		element->check++;
 		if (element == ant->end)
+		{
 			ant = on_end(ant, element, ptr);
-printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, element->tube->ptr_room->name, element->check);
+			element = ptr_room_end(ant);
+			ptr = element->tube;
+		}
+printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
 		if (element->last_room == 1 && element != ant->start)
 		{
-			ant = find_end(ant, element, ptr);
-			ant = ptr_on_end(ant, element, ptr);
-			element->check++;
+fct_test(ant);
+			ant = find_end(ant, ptr);
 			ant = del_ptr_path(ant);
-			ant = ptr_on_end(ant, element, ptr);
+			element = ptr_room_end(ant);
+			ptr = element->tube;
+			element->check++;
+printf("END room = %s   room_ptr = %s\n", element->name, ptr->ptr_room->name);
+fflush(stdout);
 fct_test(ant);
 		}
-printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, element->tube->ptr_room->name, element->check);
+printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
-		if (ant->i + 1 < element->check - 1
-				&& element->last_room == 0 && ptr != NULL)
+		if (element->check > 1 && element->last_room == 0 && ptr != NULL)
 			ptr = ptr->next;
-printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, element->tube->ptr_room->name, element->check);
+printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
+if (ant->test > 37)
+	exit(0);
 		if (ptr == NULL)
 		{
+			if (element == ant->start)
+				break ;
 			ptr = ptr->back;
 			element = ptr->ptr_room;
 			element->check++;
 			ant = del_ptr_path(ant);
 		}
-printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, element->tube->ptr_room->name, element->check);
+printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, ptr->ptr_room->name, element->check);
 fflush(stdout);
 ant->test++;
+printf("check = %d  ptr = %p\n", ptr->ptr_room->check, ptr->ptr_room->tube);
+fflush(stdout);
 		if (ptr->ptr_room->check == 0 && ptr->ptr_room->tube != NULL)
 		{
 			ant = make_ptr_path(ant, ptr->ptr_room);
 			element = ptr->ptr_room;
 		}
-printf("\n\n\nTEST == %d   NAME ROOM ACTUEL == %s   NAME ROOM TUBE == %s   CHECK = %d\n", ant->test, element->name, element->tube->ptr_room->name, element->check);
-fflush(stdout);
-ant->test++;
 	}
 	return (ant);
 }
