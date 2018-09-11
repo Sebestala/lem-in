@@ -20,46 +20,34 @@ fflush(stdout);
 	t_poss	*poss;
 	t_ptr	*ptr1;
 
-printf("1\n");
-fflush(stdout);
 	poss = ant->poss;
-printf("1\n");
-fflush(stdout);
 	ptr1 = poss->id_path;
-printf("1\n");
-fflush(stdout);
 	ptr = memalloc_sterr(sizeof(t_ptr), "new_ptr_id");
-printf("1\n");
-fflush(stdout);
 	while (poss->next != NULL)
 		poss = poss->next;
-printf("2   ptr = %p\n", ptr1);
+printf("2   ptr = %p   ptr_poss = %p\n", ptr1, ant->poss);
 fflush(stdout);
-	while (ptr1->next != NULL)
+	if (!ptr1)
+		poss->id_path = ptr;
+	else
 	{
-printf("3\n");
-fflush(stdout);
-		ptr1 = ptr1->next;
-	}
-printf("1\n");
-fflush(stdout);
-	if (poss->id_path)
+		while (ptr1 && ptr1->next != NULL)
+		{
+	printf("3\n");
+	fflush(stdout);
+			ptr1 = ptr1->next;
+		}
 		ptr->back = ptr1;
-printf("1\n");
-fflush(stdout);
+		ptr1->next = ptr;
+	}
 	ptr->ptr_path = path;
-printf("1\n");
-fflush(stdout);
 	ptr->id = path->id;
-printf("1\n");
-fflush(stdout);
-	ptr1->next = ptr;
-printf("1\n");
-fflush(stdout);
 }
 
 static t_ant	*new_poss2(t_ant *ant)
 {
+printf("new_poss2    algorithm3\n");
+fflush(stdout);
 	t_poss	*poss2;
 	t_poss	*poss;
 
@@ -76,6 +64,8 @@ static t_ant	*new_poss2(t_ant *ant)
 
 static t_ant	*start_poss(t_ant *ant)
 {
+printf("start_poss    algorithm3\n");
+fflush(stdout);
 	t_poss		*poss;
 
 	poss = memalloc_sterr(sizeof(t_poss), "start_poss");
@@ -84,13 +74,15 @@ static t_ant	*start_poss(t_ant *ant)
 	poss->id_poss = 1;
 	poss->nb_path = 1;
 	poss->total_power = ant->path->ptr_path->power;
-	new_ptr_id(ant, ant->path->ptr_path);
-	ant = new_poss2(ant);
+	new_ptr_id(ant, ant->path->ptr_path);//utile ?
+	ant = new_poss2(ant);// utile ?
 	return (ant);
 }
 
 static t_poss	*new_value(t_ant *ant, t_poss *poss)
 {
+printf("new_value    algorithm3\n");
+fflush(stdout);
 	t_ptr	*ptr;
 
 	ptr = poss->id_path;
@@ -109,6 +101,8 @@ static t_poss	*new_value(t_ant *ant, t_poss *poss)
 
 static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 {
+printf("modif_tab    algorithm3\n");
+fflush(stdout);
 	int		i;
 	t_ptr	*ptr;
 	t_ptr	*ptr1;
@@ -135,6 +129,8 @@ static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 
 static t_ant	*del_path(t_ant *ant, t_poss *poss)
 {
+printf("del_path    algorithm3\n");
+fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr1;
 
@@ -150,6 +146,8 @@ static t_ant	*del_path(t_ant *ant, t_poss *poss)
 
 static void		new_poss(t_ant *ant, int id)
 {
+printf("new_poss    algorithm3\n");
+fflush(stdout);
 	t_ptr	*ptr;
 
 	ptr = ant->path;
@@ -161,6 +159,8 @@ static void		new_poss(t_ant *ant, int id)
 
 t_ant			*possibility(t_ant *ant)
 {
+printf("possibility    algorithm3\n");
+fflush(stdout);
 	t_ptr	*ptr;
 
 	ptr = ant->path;

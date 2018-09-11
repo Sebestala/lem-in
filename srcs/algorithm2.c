@@ -14,12 +14,14 @@
 
 static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
 {
+printf("id_path2	algorithm2    id = %d     id_path = %d\n", id, path->id);
+fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
 	ptr2 = path->id_path;
 	ptr = memalloc_sterr(sizeof(t_ptr), "id_path2");
-	while (ptr2 != NULL)
+	while (ptr2 != NULL && ptr2->next != NULL)
 		ptr2 = ptr2->next;
 	if (ptr2 != NULL)
 	{
@@ -27,13 +29,15 @@ static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
 		ptr2->next = ptr;
 	}
 	else
-		ptr2 = ptr;
+		path->id_path = ptr;
 	ptr->id = id;
 	return (ant);
 }
 
 static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 {
+printf("id_path	algorithm2\n");
+fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
@@ -59,6 +63,8 @@ static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 
 static t_ant		*put_id_room(t_ant *ant, t_room *room, int id)
 {
+printf("put_id_room	algorithm2     name = %s        id = %d\n", room->name, id);
+fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
@@ -73,12 +79,14 @@ static t_ant		*put_id_room(t_ant *ant, t_room *room, int id)
 		ptr2->next = ptr;
 	}
 	else
-		ptr2 = ptr;
+		room->id_path = ptr;
 	return (ant);
 }
 
 t_ant				*put_id_path(t_ant *ant)
 {
+printf("put_id_path	algorithm2\n");
+fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
@@ -89,7 +97,7 @@ t_ant				*put_id_path(t_ant *ant)
 		while (ptr2 != NULL)
 		{
 			if (ptr2->ptr_room != ant->start && ptr2->ptr_room != ant->end)
-				ant = put_id_room(ant, ptr2->ptr_room, ptr->id);
+				ant = put_id_room(ant, ptr2->ptr_room, ptr->ptr_path->id);
 			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;

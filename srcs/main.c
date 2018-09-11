@@ -122,10 +122,10 @@ int				main(void)
 	fflush(stdout);
 	ant = deep_way(ant);
 	delete_last_path(ant);
-fct_test1(ant);
 	printf("\n\n\n		||||||PUT ID PATH||||||\n\n\n\n");
 	fflush(stdout);
 	ant = put_id_path(ant);
+fct_test1(ant);
 	ant->tab_id = memalloc_sterr((ant->nb_path + 1) * sizeof(int), "main");
 	printf("\n\n\n		||||||POSSIBILITY||||||\n\n\n\n");
 	fflush(stdout);
