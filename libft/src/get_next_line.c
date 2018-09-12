@@ -51,7 +51,7 @@ int				get_next_line(const int fd, char **line, int start)
 	r.i = -2;
 	r.buf[fd] = ft_strnew(BUFF_SIZE);
 	if (!copy[fd])
-		copy[fd] = ft_strnew(BUFF_SIZE);
+		copy[fd] = strnew_del(BUFF_SIZE, copy[fd]);
 	if (start == 0)
 		ft_strdel(line);
 	*line = ft_strdup(copy[fd]);

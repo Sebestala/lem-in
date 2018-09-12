@@ -104,6 +104,11 @@ t_ant				*choose_best_poss(t_ant *ant);
 t_ant				*begin_answer(t_ant *ant);
 t_ant				*answer(t_ant *ant);
 void				fct_test1(t_ant *ant);
-void				delete_last_path(t_ant *ant);
+void				fct_test2(t_ant *ant);
+void				fct_test3(t_ant *ant);
+void				delete_last_path(t_ant *ant, int i);
+void				delete_last_poss(t_ant *ant);
+int					finish(t_ant *ant);
+void				delete_lemin(t_ant *ant);
 
 #endif

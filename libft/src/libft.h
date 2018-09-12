@@ -145,5 +145,6 @@ t_node				*dlst_delete_front(t_node *dlst);
 void				exit_str(char *str);
 void				*memalloc_sterr(size_t size, char *str);
 void				memdel_zero(void *ap, int size);
+char				*strnew_del(size_t size, char *str);
 
 #endif

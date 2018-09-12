@@ -60,7 +60,10 @@ static t_ant		*init_room2(t_ant *ant)
 	while (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
 		ant->i++;
 	if (ant->line[ant->i] != '\0' || ant->j != 3)
+	{
+		ft_putendl(ant->line);
 		exit_str("Error : room enter is incorrect");
+	}
 	ant = init_ant(ant);
 	return (ant);
 }
@@ -165,11 +168,11 @@ t_ant				*init_room(t_ant *ant)
 	{
 		ant = init_ant(ant);
 		ant = comment(ant);
+		ant = command(ant);
 		if (ant->check == 0 && !is_str_on(ant->line, " ") && ant->line[0] && ant->line[0] != '#')
 			ant->check = 1;
 		if (ant->check == 0)
 		{
-			ant = command(ant);
 			if (ant->line[0] && ant->line[0] != '#')
 			{
 				ant = init_struct(ant);

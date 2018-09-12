@@ -3,6 +3,8 @@
 
 t_ant			*choose_best_poss(t_ant *ant)
 {
+printf("choose_best_poss    algorithm4\n");
+fflush(stdout);
 	int		best;
 	int		total;
 	t_poss	*poss;
@@ -38,26 +40,26 @@ static t_ant	*begin_answer2(t_ant *ant)
 	best = element->ptr_path->power;
 	while (pawn->next != NULL)
 		pawn = pawn->next;
-//
 	while (element != NULL)
 	{
 		if (best > element->ptr_path->power)
 			best = element->ptr_path->power;
 		element = element->next;
 	}
-//
 	while (pawn != NULL)
 	{
 		element = ant->best_poss->id_path;
 		while (element != NULL && best != element->ptr_path->power)
+		{
 			element = element->next;
-		if (!element)
-			best++;
-		else
+			if (!element)
 			{
-				element->ptr_path->power++;
-				pawn->path = element->ptr_path;
+				best++;
+				element = ant->best_poss->id_path;
 			}
+		}
+		element->ptr_path->power++;
+		pawn->path = element->ptr_path;
 		pawn = pawn->back;
 	}
 	return (ant);
@@ -99,12 +101,19 @@ static t_ant	*answer2(t_ant *ant, t_pawn *pawn)
 
 	ptr = pawn->path->room;
 	i = 1;
-	write(1, "L-", 2);
+	write(1, "L", 1);
 	ft_putnbr(pawn->id_pawn);
-	while (i < pawn->check)
+	write(1, "-", 1);
+	while (i <= pawn->check)
+	{
 		ptr = ptr->next;
+		i++;
+	}
 	ft_putstr(ptr->ptr_room->name);
-	write(1, " ", 1);
+	if (ant->i != ant->best_poss->nb_path)
+		write(1, " ", 1);
+	if (ptr->ptr_room == ant->end)
+		pawn->check = -1;
 	return (ant);
 }
 
@@ -127,12 +136,14 @@ t_ant			*answer(t_ant *ant)
 				pawn->check++;
 			if (pawn->check > 0)
 				answer2(ant, pawn);
-			if (ant->i > ant->best_poss->nb_path)
+			if (ant->i >= ant->best_poss->nb_path)
 				break ;
 			pawn = pawn->next;
 		}
-		write(1, "\n", 1);
 		pawn = ant->pawn;
+		if (finish(ant))
+			break ;
+		write(1, "\n", 1);
 	}
 	return (ant);
 }

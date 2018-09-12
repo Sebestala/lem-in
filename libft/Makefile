@@ -107,7 +107,8 @@ SRC =		ft_bzero.c				\
 			lst_delete.c			\
 			exit_str.c				\
 			memalloc_sterr.c		\
-			memdel_zero.c
+			memdel_zero.c			\
+			strnew_del.c
 
 DIR_PRINTF = src/ft_printf/
 

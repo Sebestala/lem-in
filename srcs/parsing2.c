@@ -12,6 +12,20 @@
 
 #include "../includes/lem_in.h"
 
+int		finish(t_ant *ant)
+{
+	t_pawn	*pawn;
+
+	pawn = ant->pawn;
+	while (pawn)
+	{
+		if (pawn->check != -1)
+			return (0);
+		pawn = pawn->next;
+	}
+	return (1);
+}
+
 t_ant	*find_final_room(t_ant *ant)
 {
 	t_ptr	*begin;
@@ -41,32 +55,4 @@ int		verif_name(t_ant *ant, char *name2)
 		room = room->next;
 	}
 	return (0);
-}
-
-void	delete_last_path(t_ant *ant)
-{
-	t_ptr	*ptr3;
-	t_ptr	*ptr2;
-	t_ptr	*ptr1;
-
-	ptr1 = ant->path;
-	while (ptr1->next != NULL)
-		ptr1 = ptr1->next;
-	ptr2 = ptr1->ptr_path->id_path;
-	while (ptr2 != NULL)
-	{
-		ptr3 = ptr2;
-		ptr2 = ptr2->next;
-		memdel_zero(ptr3, sizeof(t_ptr));
-	}
-	ptr2 = ptr1->ptr_path->room;
-	while (ptr2 != NULL)
-	{
-		ptr3 = ptr2;
-		ptr2 = ptr2->next;
-		memdel_zero(ptr3, sizeof(t_ptr));
-	}
-	ptr2 = ptr1->back;
-	ptr2->next = NULL;
-	memdel_zero(ptr1, sizeof(t_path));
 }
