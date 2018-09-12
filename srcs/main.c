@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/10 18:35:34 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/12 16:48:40 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,10 @@ int				main(void)
 	ant = memalloc_sterr(sizeof(t_ant), "main");
 	ant = is_valid(ant);
 	ant = verif(ant);
-	fct_test(ant);
 	printf("\n\n\n		||||||DEEP WAY||||||\n\n\n\n");
 	fflush(stdout);
 	ant = deep_way(ant);
-	delete_last_path(ant, 2);
+	delete_last_path(2, ant->path, NULL);
 	printf("\n\n\n		||||||PUT ID PATH||||||\n\n\n\n");
 	fflush(stdout);
 	ant = put_id_path(ant);
@@ -143,9 +142,11 @@ ant = init_ant(ant);
 fct_test3(ant);
 	ant = answer(ant);
 	write(1, "\n", 1);
-fct_test2(ant);
+	fct_test(ant);
+//fct_test1(ant);
+//fct_test2(ant);
+//fct_test3(ant);
 	delete_lemin(ant);
-//	je met un espace en trop a la fin de chaques ligne pour les réponses
 
 	return (0);
 }

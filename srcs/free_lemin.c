@@ -1,14 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_lemin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/12 16:45:34 by sgarcia           #+#    #+#             */
+/*   Updated: 2018/09/12 16:49:08 by sgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void		delete_last_path(t_ant *ant, int i)
+void		delete_last_path(int i, t_ptr *ptr1, t_path *path)
 {
 	t_ptr	*ptr3;
 	t_ptr	*ptr2;
-	t_ptr	*ptr1;
-	t_path	*path;
 
-	ptr1 = ant->path;
 	while (ptr1->next != NULL)
 		ptr1 = ptr1->next;
 	ptr2 = ptr1->ptr_path->id_path;
@@ -23,10 +31,12 @@ void		delete_last_path(t_ant *ant, int i)
 		i--;
 		ptr2 = ptr1->ptr_path->room;
 	}
-	if (ptr1->back)
+	if (ptr1->back != NULL)
+	{
 		ptr2 = ptr1->back;
-	ptr2->next = NULL;
-	path = ptr1->ptr_path;
+		ptr2->next = NULL;
+		path = ptr1->ptr_path;
+	}
 	memdel_zero(path, sizeof(t_path));
 }
 
@@ -131,7 +141,7 @@ void		delete_lemin(t_ant *ant)
 	while (ptr != NULL)
 	{
 		ptr = ptr->back;
-		delete_last_path(ant, 2);
+		delete_last_path(2, ant->path, NULL);
 	}
 	delete_all_pawn(ant);
 	delete_all_room(2, ant->room, NULL);

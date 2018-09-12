@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/10 18:33:53 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/12 16:48:27 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_ant				*answer(t_ant *ant);
 void				fct_test1(t_ant *ant);
 void				fct_test2(t_ant *ant);
 void				fct_test3(t_ant *ant);
-void				delete_last_path(t_ant *ant, int i);
+void				delete_last_path(int i, t_ptr *ptr1, t_path *path);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
 void				delete_lemin(t_ant *ant);
