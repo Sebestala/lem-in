@@ -91,10 +91,10 @@ t_ant			*begin_answer(t_ant *ant)
 			pawn->back = element;
 		}
 		else
-		{
+//		{
 			ant->pawn = pawn;
-			ant->pawn_begin = pawn;
-		}
+//			ant->pawn_begin = pawn;
+//		}
 		element = pawn;
 		element->id_pawn = ant->i;
 		pawn = pawn->next;

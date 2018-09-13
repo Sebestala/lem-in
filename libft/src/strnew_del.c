@@ -7,7 +7,6 @@ char	*strnew_del(size_t size, char *str)
 	int		i;
 
 	i = 0;
-	if (str)
 	ft_strdel(&str);
 	str = NULL;
 	if (size < 4294967295)

@@ -15,6 +15,7 @@
 static t_ant	*init_struct(t_ant *ant)
 {
 	t_room		*room;
+	t_ptr		*room2;
 	t_ptr		*ptr;
 
 	room = memalloc_sterr(sizeof(t_room), "init_struct");
@@ -29,17 +30,18 @@ static t_ant	*init_struct(t_ant *ant)
 		exit_str("Error : dynamic allocation problem in init_struct");
 	ptr->ptr_room = room;
 	if (!ant->room)
-	{
+//	{
 		ant->room = ptr;
-		ant->room_begin = ptr;
-	}
+//		ant->room_begin = ptr;
+//	}
 	else
 	{
-		while (ant->room->next != NULL)
-			ant->room = ant->room->next;
-		ant->room->next = ptr;
-		ptr->back = ant->room;
-		ant->room = ant->room_begin;
+		room2 = ant->room;
+		while (room2->next != NULL)
+			room2 = room2->next;
+		room2->next = ptr;
+		ptr->back = room2;
+//		ant->room = ant->room_begin;
 	}
 	return (ant);
 }
@@ -68,7 +70,7 @@ static t_ant		*init_room2(t_ant *ant)
 	return (ant);
 }
 
-t_ant		*command(t_ant *ant)
+t_ant		*command(t_ant *ant, t_ptr *ptr)
 {
 	int		i;
 
@@ -81,18 +83,19 @@ t_ant		*command(t_ant *ant)
 		exit_str("Error : there must be only 1 start and 1 end");
 	if (i > 0)
 	{
-		get_next_line(0, &ant->line, 0);
-		ant = init_ant(ant);
+		get_next_line(0, &ant->line);
 		ant = comment(ant);
 		ant = init_struct(ant);
-		while (ant->room->next != NULL)
-			ant->room = ant->room->next;
+		ptr = ant->room;
+		while (ptr->next != NULL)
+			ptr = ptr->next;
 		if (i == 1)
-			ant->start = ant->room->ptr_room;
+			ant->start = ptr->ptr_room;
 		if (i == 2)
-			ant->end = ant->room->ptr_room;
+			ant->end = ptr->ptr_room;
 		ant = init_room2(ant);
-		get_next_line(0, &ant->line, 0);
+		get_next_line(0, &ant->line);
+		ant = command(ant, ant->room);
 	}
 	return (ant);
 }
@@ -134,8 +137,12 @@ static t_room		*path1(t_ant *ant, int nb, int i)
 	t_ptr	*begin;
 
 	begin = ant->room;
+printf("path1    line = |%s|    nb = %d   i = %d   \n", ant->line, nb, i);
+fflush(stdout);
 	while (begin != NULL)
 	{
+printf("	name = |%s|\n", begin->ptr_room->name);
+fflush(stdout);
 		if (!ft_strncmp(ant->line + i, begin->ptr_room->name, nb)
 			&& ft_strlen(begin->ptr_room->name) == (size_t)nb)
 			break ;
@@ -164,11 +171,11 @@ static t_ant		*path(t_ant *ant)
 
 t_ant				*init_room(t_ant *ant)
 {
-	while (get_next_line(0, &ant->line, 0))
+	while (get_next_line(0, &ant->line))
 	{
 		ant = init_ant(ant);
 		ant = comment(ant);
-		ant = command(ant);
+		ant = command(ant, ant->room);
 		if (ant->check == 0 && !is_str_on(ant->line, " ") && ant->line[0] && ant->line[0] != '#')
 			ant->check = 1;
 		if (ant->check == 0)

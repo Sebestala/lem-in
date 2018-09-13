@@ -93,7 +93,11 @@ fflush(stdout);
 	ptr = ant->path;
 	while (ptr != NULL)
 	{
+printf("pute\n");
+fflush(stdout);
 		ptr2 = ptr->ptr_path->room;
+printf("pute\n");
+fflush(stdout);
 		while (ptr2 != NULL)
 		{
 			if (ptr2->ptr_room != ant->start && ptr2->ptr_room != ant->end)

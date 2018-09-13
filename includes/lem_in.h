@@ -77,23 +77,23 @@ typedef	struct		s_ant
 	int				*tab_id;
 	char			*line;
 	t_poss			*poss;
-	t_poss			*poss_begin;
+//	t_poss			*poss_begin;
 	t_poss			*best_poss;
 	t_room			*start;
 	t_room			*end;
 	t_ptr			*path;
-	t_ptr			*path_begin;
+//	t_ptr			*path_begin;
 	t_ptr			*room;
-	t_ptr			*room_begin;
+//	t_ptr			*room_begin;
 	t_pawn			*pawn;
-	t_pawn			*pawn_begin;
+//	t_pawn			*pawn_begin;
 }					t_ant;
 
 
 int					main(void);
 t_ant				*init_room(t_ant *ant);
 t_ant				*comment(t_ant *ant);
-t_ant				*command(t_ant *ant);
+t_ant				*command(t_ant *ant, t_ptr *ptr);
 int					verif_name(t_ant *ant, char *name2);
 t_ant				*init_ant(t_ant *ant);
 t_ant				*find_final_room(t_ant *ant);
@@ -106,7 +106,7 @@ t_ant				*answer(t_ant *ant);
 void				fct_test1(t_ant *ant);
 void				fct_test2(t_ant *ant);
 void				fct_test3(t_ant *ant);
-void				delete_last_path(int i, t_ptr *ptr1, t_path *path);
+void				delete_last_path(t_ant *ant, t_ptr *ptr1);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
 void				delete_lemin(t_ant *ant);

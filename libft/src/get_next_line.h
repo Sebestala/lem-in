@@ -16,12 +16,6 @@
 # include <limits.h>
 # define BUFF_SIZE 420
 
-typedef	struct		s_read
-{
-	char	*buf[2048];
-	int		i;
-}					t_read;
-
-int					get_next_line(const int fd, char **line, int start);
+int					get_next_line(const int fd, char **line);
 
 #endif

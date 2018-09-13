@@ -91,7 +91,7 @@ fflush(stdout);
 
 	poss = memalloc_sterr(sizeof(t_poss), "start_poss");
 	ant->poss = poss;
-	ant->poss_begin = poss;
+//	ant->poss_begin = poss;
 	poss->id_poss = 1;
 	poss->nb_path = 1;
 	poss->total_power = ant->path->ptr_path->power;
@@ -142,8 +142,6 @@ fflush(stdout);
 	ptr1 = poss->id_path;
 printf("del   nb_path = %d   ant-j = %d    ant-nbpath = %d    ptr1_id = %d\n", poss->nb_path, ant->j, ant->nb_path, ptr1->id);
 fflush(stdout);
-fct_test1(ant);
-fct_test2(ant);
 	if (poss->nb_path == 1/* && ((ant->j >= ant->nb_path) || (ant->j == ptr1->id) || ant->j == 0)*/)
 	{
 printf("123\n");

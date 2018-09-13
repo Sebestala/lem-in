@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-
+/*
 static void		fct_test(t_ant *ant)
 {
 	t_ptr	*ptr;
@@ -38,14 +38,14 @@ static void		fct_test(t_ant *ant)
 	fflush(stdout);
 
 }
-
+*/
 t_ant			*init_ant(t_ant *ant)
 {
-	ant->poss = ant->poss_begin;
+/*	ant->poss = ant->poss_begin;
 	ant->path = ant->path_begin;
 	ant->room = ant->room_begin;
 	ant->pawn = ant->pawn_begin;
-	ant->i = 0;
+*/	ant->i = 0;
 	ant->j = 0;
 	return (ant);
 }
@@ -57,7 +57,7 @@ t_ant			*comment(t_ant *ant)
 	{
 		ant = init_ant(ant);
 		ft_putendl(ant->line);
-		get_next_line(0, &ant->line, 0);
+		get_next_line(0, &ant->line);
 	}
 	return (ant);
 }
@@ -65,7 +65,7 @@ t_ant			*comment(t_ant *ant)
 static t_ant		*is_valid(t_ant *ant)
 {
 	ant = init_ant(ant);
-	get_next_line(0, &ant->line, 1);
+	get_next_line(0, &ant->line);
 	ant = comment(ant);
 	if (!ant->line)
 		exit_str("Error : enter incorrect");
@@ -76,6 +76,8 @@ static t_ant		*is_valid(t_ant *ant)
 		ant->i++;
 	}
 	ant->nb_ant = atoi_my(ant->line);
+	if (ant->nb_ant <= 0)
+		exit_str("Error : number ant must be more higher than 0");
 	ant = init_room(ant);
 	ant = init_ant(ant);
 	return (ant);
@@ -84,6 +86,7 @@ static t_ant		*is_valid(t_ant *ant)
 static t_ant		*verif(t_ant *ant)
 {
 	t_ptr	*ptr;
+	t_ptr	*ptr2;
 
 	if (!ant->start)
 		exit_str("Error : there is no start room");
@@ -94,17 +97,17 @@ static t_ant		*verif(t_ant *ant)
 	if (ant->start->tube == NULL || ant->end->tube == NULL)
 		exit_str("Error : no path possible");
 	ant = find_final_room(ant);
-	ptr = NULL;
-	while (ant->room != NULL)
+	ptr2 = ant->room;
+	while (ptr2 != NULL)
 	{
-		ptr = ant->room;
+		ptr = ptr2;
 		while (ptr->next != NULL)
 		{
 			ptr = ptr->next;
-			if (!ft_strcmp(ant->room->ptr_room->name, ptr->ptr_room->name))
+			if (!ft_strcmp(ptr2->ptr_room->name, ptr->ptr_room->name))
 				exit_str("Error : two rooms have the same name");
 		}
-		ant->room = ant->room->next;
+		ptr2 = ptr2->next;
 	}
 	ant = init_ant(ant);
 	return (ant);
@@ -120,16 +123,18 @@ int				main(void)
 	printf("\n\n\n		||||||DEEP WAY||||||\n\n\n\n");
 	fflush(stdout);
 	ant = deep_way(ant);
-	delete_last_path(2, ant->path, NULL);
+	delete_last_path(ant, ant->path);
 	printf("\n\n\n		||||||PUT ID PATH||||||\n\n\n\n");
 	fflush(stdout);
 	ant = put_id_path(ant);
+	if (!ant->path)
+		exit_str("Error : no path possible");
 	printf("\n\n\n		||||||POSSIBILITY||||||\n\n\n\n");
 	fflush(stdout);
 	ant = possibility(ant);
 	delete_last_poss(ant);
-fct_test1(ant);
-fct_test2(ant);
+//fct_test1(ant);
+//fct_test2(ant);
 	printf("\n\n\n		||||||CHOOSE BEST POSS||||||\n\n\n\n");
 	fflush(stdout);
 	ant = choose_best_poss(ant);
@@ -139,13 +144,9 @@ fct_test2(ant);
 	printf("\n\n\n		||||||ANSWER||||||\n\n\n\n");
 	fflush(stdout);
 ant = init_ant(ant);
-fct_test3(ant);
+//fct_test3(ant);
 	ant = answer(ant);
 	write(1, "\n", 1);
-	fct_test(ant);
-//fct_test1(ant);
-//fct_test2(ant);
-//fct_test3(ant);
 	delete_lemin(ant);
 
 	return (0);

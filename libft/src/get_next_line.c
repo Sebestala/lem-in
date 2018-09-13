@@ -6,121 +6,75 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 19:01:42 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 16:59:45 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/12 18:49:11 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-/*
-static int		verif_line(int fd, char **line, char **copy, t_read r)
+
+static void		put_in_str(int fd, char **line, char **copy, char **buf)
 {
-	slow_down(2);
-	if (r.i != 0 || (first_occ_of_char(*line, '\n') == -1
-				&& first_occ_of_char(*line, '\0') > 0))
+	int		i;
+	int		j;
+
+	j = 0;
+	i = first_occ_of_char(copy[fd], '\n');
+	if (i == -1)
+		i = first_occ_of_char(copy[fd], '\0');
+	*line = ft_strnew(i);
+	*line = ft_strncpy(*line, copy[fd], i);
+	while (copy[fd] && copy[fd][i + j])
+		j++;
+	buf[fd] = strnew_del(j, buf[fd]);
+	j = 0;
+	while ((first_occ_of_char(copy[fd], '\0') >= i + j + 1) && copy[fd] && copy[fd][i + j + 1])
 	{
-		if (r.i != -2)
-			ft_strdel(&copy[fd]);
-		if (r.i == -1)
-			return (-1);
-		else
-		{
-			if (r.i > 0 && first_occ_of_char(*line, '\n') != -1)
-				copy[fd] = strdup_free(r.buf[fd]);
-			if ((r.i == -2 || r.i > 0) && first_occ_of_char(*line, '\n') >= 0)
-			{
-				line[0][first_occ_of_char(*line, '\n')] = '\0';
-				r.i = ft_strlen(ft_strchr(copy[fd], '\n') + 1) + 1;
-				copy[fd] = ft_memcpy(copy[fd],
-						(ft_strchr(copy[fd], '\n') + 1), r.i);
-			}
-			return (1);
-		}
+		buf[fd][j] = copy[fd][i + j + 1];
+		j++;
 	}
-	if (r.buf[fd])
-		ft_strdel(&r.buf[fd]);
-	return (0);
+	ft_strdel(&copy[fd]);
+	copy[fd] = ft_strdup(buf[fd]);
+	ft_strdel(&buf[fd]);
 }
 
-int				get_next_line(const int fd, char **line, int start)
+static int		gnl2(int fd, char **line, char **copy, char **buf)
 {
-	static	char	*copy[2048];
-	t_read			r;
+	int		i;
+
+	if (copy[fd])
+		ft_strdel(line);
+	else
+		copy[fd] = ft_strnew(BUFF_SIZE);
+	i = first_occ_of_char(copy[fd], '\n');
+	buf[fd] = ft_strnew(BUFF_SIZE);
+	if (i >= 0)
+		put_in_str(fd, line, copy, buf);
+	return (i);
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	static char		*copy[2048];
+	char			*buf[2048];
+	int				i;
 
 	if (fd < 0 || fd > 2048 || BUFF_SIZE <= 0 || !line)
 		return (-1);
-	r.i = -2;
-	r.buf[fd] = ft_strnew(BUFF_SIZE);
-	if (!copy[fd])
-		copy[fd] = strnew_del(BUFF_SIZE, copy[fd]);
-	if (start == 0)
-		ft_strdel(line);
-	*line = ft_strdup(copy[fd]);
-	while ((first_occ_of_char(*line, '\n') == -1)
-			&& (r.i == BUFF_SIZE || r.i == -2))
+	i = gnl2(fd, line, copy, buf);
+	if (i == -1)
 	{
-		r.i = read(fd, r.buf[fd], BUFF_SIZE);
-		if (r.i >= 0)
+		while (first_occ_of_char(copy[fd], '\n') == -1 && i != 0)
 		{
-			r.buf[fd][r.i] = '\0';
-			*line = strjoin_free1(*line, r.buf[fd]);
+			i = read(fd, buf[fd], BUFF_SIZE);
+			if (i < 0)
+				return (-1);
+			copy[fd] = strjoin_free1(copy[fd], buf[fd]);
 		}
-	}
-	return (verif_line(fd, line, copy, r));
-}
-*/
-static int		verif_line(int fd, char **line, char **copy, t_read *r)
-{
-	slow_down(2);
-	if (r->i != 0 || (first_occ_of_char(*line, '\n') == -1
-				&& first_occ_of_char(*line, '\0') > 0))
-	{
-		if (r->i != -2)
+		put_in_str(fd, line, copy, buf);
+		if (i == 0)
 			ft_strdel(&copy[fd]);
-		if (r->i == -1)
-			return (-1);
-		else
-		{
-			if (r->i > 0 && first_occ_of_char(*line, '\n') != -1)
-				copy[fd] = strdup_free(r->buf[fd]);
-			if ((r->i == -2 || r->i > 0) && first_occ_of_char(*line, '\n') >= 0)
-			{
-				line[0][first_occ_of_char(*line, '\n')] = '\0';
-				r->i = ft_strlen(ft_strchr(copy[fd], '\n') + 1) + 1;
-				copy[fd] = ft_memcpy(copy[fd],
-						(ft_strchr(copy[fd], '\n') + 1), r->i);
-			}
-			return (1);
-		}
 	}
-	if (r->buf[fd])
-		ft_strdel(&r->buf[fd]);
-	return (0);
-}
-
-int				get_next_line(const int fd, char **line, int start)
-{
-	static	char	*copy[2048];
-	t_read			*r;
-
-	r = memalloc_sterr(sizeof(t_read), "Allocation problem in GNL");
-	if (fd < 0 || fd > 2048 || BUFF_SIZE <= 0 || !line)
-		return (-1);
-	r->i = -2;
-	r->buf[fd] = ft_strnew(BUFF_SIZE);
-	if (!copy[fd])
-		copy[fd] = strnew_del(BUFF_SIZE, copy[fd]);
-	if (start == 0)
-		ft_strdel(line);
-	*line = ft_strdup(copy[fd]);
-	while ((first_occ_of_char(*line, '\n') == -1)
-			&& (r->i == BUFF_SIZE || r->i == -2))
-	{
-		r->i = read(fd, r->buf[fd], BUFF_SIZE);
-		if (r->i >= 0)
-		{
-			r->buf[fd][r->i] = '\0';
-			*line = strjoin_free1(*line, r->buf[fd]);
-		}
-	}
-	return (verif_line(fd, line, copy, r));
+	if (i == 0 && !copy[fd])
+		return (0);
+	return (1);
 }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-
+/*
 void		fct_test3(t_ant *ant)
 {
 	t_pawn	*pawn;
@@ -123,7 +123,7 @@ void		fct_test1(t_ant *ant)
 	printf("\n\n");
 	fflush(stdout);
 }
-
+*/
 static t_ptr	*ptr_room(t_ptr *ptr, int nb)
 {
 	int		i;
@@ -224,10 +224,10 @@ fflush(stdout);
 	struct_ptr = memalloc_sterr(sizeof(t_ptr), "make_enter_path");
 	struct_ptr_in_path = memalloc_sterr(sizeof(t_ptr), "make_enter_path");
 	if (ant->path == NULL)
-	{
+//	{
 		ant->path = struct_ptr;
-		ant->path_begin = struct_ptr;
-	}
+//		ant->path_begin = struct_ptr;
+//	}
 	else
 	{
 		while (ptr->next != NULL)
@@ -270,15 +270,12 @@ fflush(stdout);
 	return (ant);
 }
 
-static t_ant	*on_end(t_ant *ant, t_room *room, t_ptr *ptr)
+static t_ant	*on_end(t_ant *ant)
 {
 printf("on_end    algorithm\n");
 fflush(stdout);
-	ant = make_ptr_path(ant, room);
 	ant = valid_path(ant);
-	ptr = ptr->back;
-	room = ptr->ptr_room;
-	room->check++;
+	ant->start->check++;
 	ant = del_ptr_path(ant);
 	return (ant);
 }
@@ -332,8 +329,8 @@ ant->test++;
 		element->check++;
 		if (element == ant->end)
 		{
-			ant = on_end(ant, element, ptr);
-			element = ptr_room_end(ant);
+			ant = on_end(ant);
+			element = ant->start;
 			ptr = element->tube;
 		}
 if (ptr)

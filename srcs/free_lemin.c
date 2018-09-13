@@ -12,31 +12,37 @@
 
 #include "../includes/lem_in.h"
 
-void		delete_last_path(int i, t_ptr *ptr1, t_path *path)
+static void		delete_last_path2(t_ptr *ptr2)
 {
-	t_ptr	*ptr3;
+	t_ptr	*ptr;
+
+	while (ptr2 != NULL)
+	{
+		ptr = ptr2;
+		ptr2 = ptr2->next;
+		memdel_zero(ptr, sizeof(t_ptr));
+	}
+}
+
+void			delete_last_path(t_ant *ant, t_ptr *ptr1)
+{
 	t_ptr	*ptr2;
+	t_path	*path;
 
 	while (ptr1->next != NULL)
 		ptr1 = ptr1->next;
 	ptr2 = ptr1->ptr_path->id_path;
-	while (i > 0)
-	{
-		while (ptr2 != NULL)
-		{
-			ptr3 = ptr2;
-			ptr2 = ptr2->next;
-			memdel_zero(ptr3, sizeof(t_ptr));
-		}
-		i--;
-		ptr2 = ptr1->ptr_path->room;
-	}
+	delete_last_path2(ptr1->ptr_path->id_path);
+	delete_last_path2(ptr1->ptr_path->room);
 	if (ptr1->back != NULL)
 	{
 		ptr2 = ptr1->back;
 		ptr2->next = NULL;
-		path = ptr1->ptr_path;
 	}
+	else
+		ant->path = NULL;
+	path = ptr1->ptr_path;
+	memdel_zero(ptr1, sizeof(t_ptr));
 	memdel_zero(path, sizeof(t_path));
 }
 
@@ -141,7 +147,7 @@ void		delete_lemin(t_ant *ant)
 	while (ptr != NULL)
 	{
 		ptr = ptr->back;
-		delete_last_path(2, ant->path, NULL);
+		delete_last_path(ant, ant->path);
 	}
 	delete_all_pawn(ant);
 	delete_all_room(2, ant->room, NULL);

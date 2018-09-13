@@ -116,7 +116,7 @@ int					first_occ_of_char(char *str, char c);
 char				*strjoin_free(char const *s1, char const *s2);
 char				*strjoin_free1(char *s1, char *s2);
 char				*strjoin_free2(char const *s1, char const *s2);
-int					get_next_line(const int fd, char **line, int start);
+int					get_next_line(const int fd, char **line);
 int					atoi_end_index(char **str);
 int					atoi_my(char *str);
 int					atoi_start_index(char **str);
