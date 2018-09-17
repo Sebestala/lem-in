@@ -14,8 +14,6 @@ NAME = libft.a
 
 CFLAGS = -Wall -Wextra -Werror
 
-HEADER = src/
-
 DIR_S = src/
 
 SRC =		ft_bzero.c				\

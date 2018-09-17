@@ -5,33 +5,45 @@ CC = gcc
 
 FLAGS = -Wall -Wextra -Werror
 
-LIB = libft
+LIB = libft.a
 
-SRC = $(wildcard *.c)
+DLIB = libft/
 
-OBJ = $(addprefix src/, $(SRC:.c=.o))
+DSRC = src/
 
-all : $(NAME)
+SRC = 	main.c		\
+		algorithm.c	\
+		algorithm2.c\
+		algorithm3.c\
+		algorithm4.c\
+		parsing.c	\
+		parsing2.c	\
+		free_lemin.c
 
-obj/%.o : %.c include/$(NAME).h
-	mkdir obj
+OBJ = $(addprefix $(DSRC), $(SRC:.c=.o))
+
+all: $(NAME)
+
+$(NAME): $(LIB) $(OBJ)
+	cd $(DLIB) && cp $< ../lem-in.a
+	ar rc $(NAME).a $(OBJ)
+	ranlib $(NAME).a
+	$(CC) $(FLAGS) -o $@ $(NAME).a
+
+$(DSRC)%.o: $(DSRC)%.c includes/$(NAME).h
 	@echo "compilation de $< \033[32m ok \033[0m"
-	$(CC) $(FLAGS) -o ./obj/$@ -c $<
+	@$(CC) $(FLAGS) -o $@ -c $<
 
-$(NAME) : $(OBJ) $(LIB)
-	$(CC) -o $@ ./obj/$^
-	ranlib $@
+$(LIB): 
+	make -C $(DLIB)
 
-$(LIB) : 
-	make -C ./$@/
-	cp ./$@/$@.a ./obj/
+clean:
+	make -C $(DLIB) clean
+	rm -r $(OBJ)
 
-clean :
-	make -C $(LIB)/ clean
-	rm -rf obj/
+fclean: clean
+	make -C $(DLIB) fclean
+	rm -r $(NAME)
+	rm -r $(NAME).a
 
-fclean : clean
-	make -C $(LIB)/ fclean
-	rm -rf $(NAME)
-
-re : fclean all
+re: fclean all

@@ -69,24 +69,20 @@ typedef	struct		s_ant
 {
 	int				i;
 	int				j;
-	int				test;
 	int				power;
+	int				test;
 	int				check;
 	int				nb_ant;
 	int				nb_path;
 	int				*tab_id;
 	char			*line;
 	t_poss			*poss;
-//	t_poss			*poss_begin;
 	t_poss			*best_poss;
 	t_room			*start;
 	t_room			*end;
 	t_ptr			*path;
-//	t_ptr			*path_begin;
 	t_ptr			*room;
-//	t_ptr			*room_begin;
 	t_pawn			*pawn;
-//	t_pawn			*pawn_begin;
 }					t_ant;
 
 
@@ -103,9 +99,6 @@ t_ant				*possibility(t_ant *ant);
 t_ant				*choose_best_poss(t_ant *ant);
 t_ant				*begin_answer(t_ant *ant);
 t_ant				*answer(t_ant *ant);
-void				fct_test1(t_ant *ant);
-void				fct_test2(t_ant *ant);
-void				fct_test3(t_ant *ant);
 void				delete_last_path(t_ant *ant, t_ptr *ptr1);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
