@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 19:01:42 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 18:49:11 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/18 16:48:13 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "./get_next_line.h"
 
 static void		put_in_str(int fd, char **line, char **copy, char **buf)
 {
@@ -20,7 +20,12 @@ static void		put_in_str(int fd, char **line, char **copy, char **buf)
 	j = 0;
 	i = first_occ_of_char(copy[fd], '\n');
 	if (i == -1)
-		i = first_occ_of_char(copy[fd], '\0');
+	{
+		*line = ft_strdup(copy[fd]);
+		ft_strdel(&copy[fd]);
+		ft_strdel(&buf[fd]);
+		return ;
+	}
 	*line = ft_strnew(i);
 	*line = ft_strncpy(*line, copy[fd], i);
 	while (copy[fd] && copy[fd][i + j])
@@ -63,18 +68,20 @@ int				get_next_line(const int fd, char **line)
 	i = gnl2(fd, line, copy, buf);
 	if (i == -1)
 	{
-		while (first_occ_of_char(copy[fd], '\n') == -1 && i != 0)
+		i = BUFF_SIZE;
+		while (first_occ_of_char(copy[fd], '\n') == -1 && i == BUFF_SIZE)
 		{
 			i = read(fd, buf[fd], BUFF_SIZE);
 			if (i < 0)
 				return (-1);
-			copy[fd] = strjoin_free1(copy[fd], buf[fd]);
+			if (i != 0)
+				copy[fd] = strjoin_free1(copy[fd], buf[fd]);
 		}
 		put_in_str(fd, line, copy, buf);
 		if (i == 0)
 			ft_strdel(&copy[fd]);
 	}
 	if (i == 0 && !copy[fd])
-		return (0);
+		return ((ft_strlen(*line) > 0) ? 1 : 0);
 	return (1);
 }

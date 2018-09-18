@@ -1,5 +1,6 @@
-*
-static void		fct_test(t_ant *ant)
+
+#include "../includes/lem-in.h"
+void		fct_test(t_ant *ant)
 {
 	t_ptr	*ptr;
 

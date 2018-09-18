@@ -6,7 +6,7 @@
 #    By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/01 13:58:01 by sgarcia           #+#    #+#              #
-#    Updated: 2018/09/10 18:27:58 by sgarcia          ###   ########.fr        #
+#    Updated: 2018/09/18 16:45:32 by sgarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS = -Wall -Wextra -Werror
 DIR_S = src/
 
 SRC =		ft_bzero.c				\
+			get_next_line.c			\
 			ft_memset.c				\
 			ft_memcpy.c				\
 			ft_memccpy.c			\
@@ -79,7 +80,6 @@ SRC =		ft_bzero.c				\
 			strdup_free.c			\
 			strjoin_free1.c			\
 			strjoin_free2.c			\
-			get_next_line.c			\
 			atoi_end_index.c		\
 			atoi_start_index.c		\
 			atoi_my.c				\

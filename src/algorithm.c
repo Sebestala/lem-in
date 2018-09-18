@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 16:48:44 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/18 18:41:36 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static t_ptr	*ptr_room(t_ptr *ptr, int nb)
 {
+//printf("ptr_room\n");
+//fflush(stdout);
 	int		i;
 
 	i = 1;
@@ -29,6 +31,8 @@ static t_ptr	*ptr_room(t_ptr *ptr, int nb)
 
 static t_room	*ptr_room_end(t_ant *ant)
 {
+//printf("ptr_room_end\n");
+//fflush(stdout);
 	t_ptr	*ptr1;
 	t_ptr	*ptr2;
 
@@ -43,6 +47,8 @@ static t_room	*ptr_room_end(t_ant *ant)
 
 static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
+//printf("make_ptr_path\n");
+//fflush(stdout);
 	t_ptr	*struct_ptr;
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
@@ -69,6 +75,8 @@ static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 
 static t_ant	*del_ptr_path(t_ant *ant)
 {
+//printf("del_ptr_path\n");
+//fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
@@ -88,6 +96,8 @@ static t_ant	*del_ptr_path(t_ant *ant)
 
 static t_ant	*make_enter_path(t_ant *ant, int i)
 {
+//printf("make_enter_path\n");
+//fflush(stdout);
 	t_path	*path;
 	t_ptr	*struct_ptr;
 	t_ptr	*struct_ptr_in_path;
@@ -119,6 +129,8 @@ static t_ant	*make_enter_path(t_ant *ant, int i)
 
 t_ant		*valid_path(t_ant *ant)
 {
+//printf("valid_path\n");
+//fflush(stdout);
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
@@ -132,11 +144,21 @@ t_ant		*valid_path(t_ant *ant)
 		ant = make_ptr_path(ant, ptr2->ptr_room);
 		ptr2 = ptr2->next;
 	}
+//fct_test1(ant);
+//slow_down(999999);
+ant->test++;
+if (ant->test % 100 == 0)
+{
+printf("ID PATH  = |%d|\n", ant->test);
+fflush(stdout);
+}
 	return (ant);
 }
 
 static t_ant	*on_end(t_ant *ant)
 {
+//printf("on_end\n");
+//fflush(stdout);
 	ant = valid_path(ant);
 	ant->start->check++;
 	ant = del_ptr_path(ant);
@@ -145,6 +167,8 @@ static t_ant	*on_end(t_ant *ant)
 
 static t_ant	*find_end(t_ant *ant, t_ptr *ptr)
 {
+//printf("find_end\n");
+//fflush(stdout);
 	while (ptr != NULL)
 	{
 		if (ptr->ptr_room == ant->end)
@@ -172,8 +196,8 @@ t_ant			*deep_way(t_ant *ant)
 	ptr = element->tube;
 	while (element != ant->start || ptr != NULL)
 	{
-	printf("NAME = |%s|\n", element->name);
-	fflush(stdout);
+
+//	printf("NAME = |%s|\n", element->name);
 		ptr = element->tube;
 		element->check++;
 		if (element == ant->end)

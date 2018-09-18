@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 13:44:58 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/06/07 22:46:59 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/18 16:32:29 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ char	*strjoin_free1(char *s1, char *s2)
 	}
 	str[i + j] = '\0';
 	ft_strdel(&s1);
+	ft_bzero(s2, j);
 	return (str);
 }
