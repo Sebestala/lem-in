@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:45:21 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 16:48:54 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/19 18:46:32 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,12 @@ static t_ant	*answer2(t_ant *ant, t_pawn *pawn)
 t_ant			*answer(t_ant *ant)
 {
 	t_pawn		*pawn;
+	int			i = 0;
 
 	pawn = ant->pawn;
 	while (1)
 	{
+		i++;
 		ant->i = 0;
 		while (pawn != NULL)
 		{
@@ -151,5 +153,6 @@ t_ant			*answer(t_ant *ant)
 			break ;
 		write(1, "\n", 1);
 	}
+	printf("\nI = %d\n", i);
 	return (ant);
 }

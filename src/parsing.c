@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 00:10:47 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/08/23 20:29:07 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/19 20:35:13 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ static void			path2(t_room *room1, t_room *room2)
 {
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
-	t_ptr	*begin;
 
 	ptr = memalloc_sterr(sizeof(t_ptr), "path2");
 	ptr2 = memalloc_sterr(sizeof(t_ptr), "path2");
@@ -112,22 +111,18 @@ static void			path2(t_room *room1, t_room *room2)
 		room1->tube = ptr2;
 	else
 	{
-		begin = room1->tube;
-		while (begin->next != NULL)
-			begin = begin->next;
-		begin->next = ptr2;
-		ptr2->back = begin;
+		room1->tube_end->next = ptr2;
+		ptr2->back = room1->tube_end;
 	}
+	room1->tube_end = ptr2;
 	if (room2->tube == NULL)
 		room2->tube = ptr;
 	else
 	{
-		begin = room2->tube;
-		while (begin->next != NULL)
-			begin = begin->next;
-		begin->next = ptr;
-		ptr->back = begin;
+		room2->tube_end->next = ptr;
+		ptr->back = room2->tube_end;
 	}
+	room2->tube_end = ptr;
 }
 
 static t_room		*path1(t_ant *ant, int nb, int i)

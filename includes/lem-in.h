@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/18 18:38:36 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/19 19:56:42 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ typedef	struct		s_room
 	int				check;
 	int				last_room;
 	char			*name;
+	t_ptr			*id_path_end;
 	t_ptr			*id_path;
+	t_ptr			*tube_end;
 	t_ptr			*tube;
 }					t_room;
 
@@ -61,7 +63,9 @@ typedef	struct		s_path
 {
 	int				id;
 	int				power;
+	t_ptr			*id_path_end;
 	t_ptr			*id_path;
+	t_ptr			*room_end;
 	t_ptr			*room;
 }					t_path;
 
@@ -70,8 +74,8 @@ typedef	struct		s_ant
 	int				i;
 	int				j;
 	int				power;
-	int				test;
 	int				check;
+	int				firewall;
 	int				nb_ant;
 	int				nb_path;
 	int				*tab_id;
@@ -81,6 +85,7 @@ typedef	struct		s_ant
 	t_room			*start;
 	t_room			*end;
 	t_ptr			*path;
+	t_ptr			*path_end;
 	t_ptr			*room;
 	t_pawn			*pawn;
 }					t_ant;

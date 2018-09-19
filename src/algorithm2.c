@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 16:18:32 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 16:45:14 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/19 21:43:16 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,18 @@ static t_ant		*put_id_room(t_ant *ant, t_room *room, int id)
 
 	ptr = memalloc_sterr(sizeof(t_ptr), "put_id_room");
 	ptr->id = id;
-	ptr2 = room->id_path;
-	if (ptr2 != NULL)
+	ptr2 = room->id_path_end;
+	if (room->id_path != NULL)
 	{
-		while (ptr2->next != NULL)
-			ptr2 = ptr2->next;
 		ptr->back = ptr2;
 		ptr2->next = ptr;
+		room->id_path_end = ptr;
 	}
 	else
+	{
 		room->id_path = ptr;
+		room->id_path_end = ptr;
+	}
 	return (ant);
 }
 

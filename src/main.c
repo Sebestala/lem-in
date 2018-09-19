@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/18 16:05:25 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/19 19:45:46 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ int				main(void)
 	fflush(stdout);
 	ant = init_ant(ant);
 	ant = answer(ant);
-	printf("FREE\n");
-	fflush(stdout);
 	write(1, "\n", 1);
 //	fct_test(ant);
 //	fct_test1(ant);
