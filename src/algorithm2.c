@@ -17,10 +17,8 @@ static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
 	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
-	ptr2 = path->id_path;
+	ptr2 = path->id_path_end;
 	ptr = memalloc_sterr(sizeof(t_ptr), "id_path2");
-	while (ptr2 != NULL && ptr2->next != NULL)
-		ptr2 = ptr2->next;
 	if (ptr2 != NULL)
 	{
 		ptr->back = ptr2;
@@ -28,6 +26,7 @@ static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
 	}
 	else
 		path->id_path = ptr;
+	path->id_path_end = ptr;
 	ptr->id = id;
 	return (ant);
 }

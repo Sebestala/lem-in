@@ -98,8 +98,9 @@ int				main(void)
 	printf("DEEP WAY\n");
 	fflush(stdout);
 	ant = deep_way(ant);
-	delete_last_path(ant, ant->path);
-	printf("PUT ID PATH\n");
+	delete_last_path(ant, ant->path_end);
+	ant->nb_path = ant->path_end->ptr_path->id;
+	printf("PUT ID PATH   nb = %d\n", ant->nb_path);
 	fflush(stdout);
 	ant = put_id_path(ant);
 	printf("POSSIBILITY\n");
@@ -120,7 +121,7 @@ int				main(void)
 	ant = answer(ant);
 	write(1, "\n", 1);
 //	fct_test(ant);
-//	fct_test1(ant);
+	fct_test1(ant);
 //	fct_test2(ant);
 //	fct_test3(ant);
 	delete_lemin(ant);

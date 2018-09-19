@@ -166,12 +166,7 @@ static void		new_poss(t_ant *ant, int id)
 t_ant			*possibility(t_ant *ant)
 {
 	t_poss	*poss;
-	t_ptr	*ptr;
 
-	ptr = ant->path;
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ant->nb_path = ptr->ptr_path->id;
 	ant->tab_id = memalloc_sterr((ant->nb_path * 50) * sizeof(int), "main");
 	ant = start_poss(ant);
 	poss = ant->poss->next;

@@ -29,8 +29,6 @@ void			delete_last_path(t_ant *ant, t_ptr *ptr1)
 	t_ptr	*ptr2;
 	t_path	*path;
 
-	while (ptr1->next != NULL)
-		ptr1 = ptr1->next;
 	ptr2 = ptr1->ptr_path->id_path;
 	delete_last_path2(ptr1->ptr_path->id_path);
 	delete_last_path2(ptr1->ptr_path->room);
@@ -42,6 +40,7 @@ void			delete_last_path(t_ant *ant, t_ptr *ptr1)
 	else
 		ant->path = NULL;
 	path = ptr1->ptr_path;
+	ant->path_end = ant->path_end->back;
 	memdel_zero(ptr1, sizeof(t_ptr));
 	memdel_zero(path, sizeof(t_path));
 }
@@ -147,7 +146,7 @@ void		delete_lemin(t_ant *ant)
 	while (ptr != NULL)
 	{
 		ptr = ptr->back;
-		delete_last_path(ant, ant->path);
+		delete_last_path(ant, ant->path_end);
 	}
 	delete_all_pawn(ant);
 	delete_all_room(2, ant->room, NULL);
