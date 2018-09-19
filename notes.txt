@@ -1,5 +1,0 @@
--grace a l'algo de dijxtra on va trouver tous les chemins (normalement il cherche seulement le chemin le plus rapide mais le je vais faire en sorte aue ils trouve tous les chemins,  qu'ils les notent et que si le nombre de fourmis le permet, on les empruntes si cela est rentable)
--on peut utliser plusieurs chemons en meme temps seulement si a la base il y a plus de un chemins qui part de l'entree.
--on va utiliser des listes doublement chainees, ac l,adresse du suivant et du precedent.
--il faut prendre en compte le fait que une case ne sera jamais empruntee par plus de 1 chemin, sauf start et end
-
