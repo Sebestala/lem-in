@@ -56,8 +56,8 @@ static t_ant		*is_valid(t_ant *ant)
 
 static t_ant		*verif(t_ant *ant)
 {
-	t_ptr	*ptr;
-	t_ptr	*ptr2;
+	t_room	*ptr;
+	t_room	*ptr2;
 
 	if (!ant->start)
 		exit_str("Error : there is no start room");
@@ -75,7 +75,7 @@ static t_ant		*verif(t_ant *ant)
 		while (ptr->next != NULL)
 		{
 			ptr = ptr->next;
-			if (!ft_strcmp(ptr2->ptr_room->name, ptr->ptr_room->name))
+			if (!ft_strcmp(ptr2->name, ptr->name))
 				exit_str("Error : two rooms have the same name");
 		}
 		ptr2 = ptr2->next;
@@ -121,7 +121,7 @@ int				main(void)
 	ant = answer(ant);
 	write(1, "\n", 1);
 //	fct_test(ant);
-	fct_test1(ant);
+//	fct_test1(ant);
 //	fct_test2(ant);
 //	fct_test3(ant);
 	delete_lemin(ant);

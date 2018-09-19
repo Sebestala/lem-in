@@ -8,12 +8,12 @@ void		fct_test(t_ant *ant)
 	fflush(stdout);
 	while (ant->room != NULL)
 	{
-		printf("NAME =	%s    LAST ROOM = %d\n", ant->room->ptr_room->name, ant->room->ptr_room->last_room);
+		printf("NAME =	%s    LAST ROOM = %d\n", ant->room->name, ant->room->last_room);
 		fflush(stdout);
-		ptr = ant->room->ptr_room->tube;
+		ptr = ant->room->tube;
 		while (ptr != NULL)
 		{
-			printf("	%s---%s\n", ant->room->ptr_room->name, ptr->ptr_room->name);
+			printf("	%s---%s\n", ant->room->name, ptr->ptr_room->name);
 			fflush(stdout);
 			ptr = ptr->next;
 		}

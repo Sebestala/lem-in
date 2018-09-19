@@ -15,11 +15,8 @@
 static t_ant	*init_struct(t_ant *ant)
 {
 	t_room		*room;
-	t_ptr		*room2;
-	t_ptr		*ptr;
 
 	room = memalloc_sterr(sizeof(t_room), "init_struct");
-	ptr = memalloc_sterr(sizeof(t_ptr), "init_struct");
 	if (ant->line[ant->i] && ant->line[ant->i] == 'L')
 		exit_str("Error : enter is incorrect");
 	while (ant->line[ant->i] && ant->line[ant->i] != ' ')
@@ -28,16 +25,15 @@ static t_ant	*init_struct(t_ant *ant)
 	room->name = ft_strncpy(room->name, ant->line, ant->i);
 	if (verif_name(ant, room->name) > 0)
 		exit_str("Error : dynamic allocation problem in init_struct");
-	ptr->ptr_room = room;
 	if (!ant->room)
-		ant->room = ptr;
+	{
+		ant->room = room;
+		ant->room_end = room;
+	}
 	else
 	{
-		room2 = ant->room;
-		while (room2->next != NULL)
-			room2 = room2->next;
-		room2->next = ptr;
-		ptr->back = room2;
+		ant->room_end->next = room;
+		ant->room_end = room;
 	}
 	return (ant);
 }
@@ -66,7 +62,7 @@ static t_ant		*init_room2(t_ant *ant)
 	return (ant);
 }
 
-t_ant		*command(t_ant *ant, t_ptr *ptr)
+t_ant		*command(t_ant *ant)
 {
 	int		i;
 
@@ -83,17 +79,14 @@ t_ant		*command(t_ant *ant, t_ptr *ptr)
 		ft_putendl(ant->line);
 		ant = comment(ant);
 		ant = init_struct(ant);
-		ptr = ant->room;
-		while (ptr->next != NULL)
-			ptr = ptr->next;
 		if (i == 1)
-			ant->start = ptr->ptr_room;
+			ant->start = ant->room_end;
 		if (i == 2)
-			ant->end = ptr->ptr_room;
+			ant->end = ant->room_end;
 		ant = init_room2(ant);
 		get_next_line(0, &ant->line);
 		ft_putendl(ant->line);
-		ant = command(ant, ant->room);
+		ant = command(ant);
 	}
 	return (ant);
 }
@@ -127,19 +120,19 @@ static void			path2(t_room *room1, t_room *room2)
 
 static t_room		*path1(t_ant *ant, int nb, int i)
 {
-	t_ptr	*begin;
+	t_room		*begin;
 
 	begin = ant->room;
 	while (begin != NULL)
 	{
-		if (!ft_strncmp(ant->line + i, begin->ptr_room->name, nb)
-			&& ft_strlen(begin->ptr_room->name) == (size_t)nb)
+		if (!ft_strncmp(ant->line + i, begin->name, nb)
+		&& ft_strlen(begin->name) == (size_t)nb)
 			break ;
 		begin = begin->next;
 	}
 	if (begin == NULL)
 		exit_str("Error : room enter in path1 is incorrect");
-	return (begin->ptr_room);
+	return (begin);
 }
 
 static t_ant		*path(t_ant *ant)
@@ -165,7 +158,7 @@ t_ant				*init_room(t_ant *ant)
 		ft_putendl(ant->line);
 		ant = init_ant(ant);
 		ant = comment(ant);
-		ant = command(ant, ant->room);
+		ant = command(ant);
 		if (ant->check == 0 && !is_str_on(ant->line, " ") && ant->line[0] && ant->line[0] != '#')
 			ant->check = 1;
 		if (ant->check == 0)

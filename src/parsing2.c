@@ -52,12 +52,12 @@ t_ant	*find_final_room(t_ant *ant)
 
 int		verif_name(t_ant *ant, char *name2)
 {
-	t_ptr	*room;
+	t_room	*room;
 
 	room = ant->room;
 	while (room != NULL)
 	{
-		if (!ft_strcmp(room->ptr_room->name, name2))
+		if (!ft_strcmp(room->name, name2))
 		{
 			room = ant->room;
 			return (1);

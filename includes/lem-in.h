@@ -48,6 +48,8 @@ typedef	struct		s_room
 	t_ptr			*id_path;
 	t_ptr			*tube_end;
 	t_ptr			*tube;
+	struct s_room	*next;
+	struct s_room	*back;
 }					t_room;
 
 typedef	struct		s_ptr
@@ -86,7 +88,8 @@ typedef	struct		s_ant
 	t_room			*end;
 	t_ptr			*path;
 	t_ptr			*path_end;
-	t_ptr			*room;
+	t_room			*room;
+	t_room			*room_end;
 	t_pawn			*pawn;
 }					t_ant;
 
@@ -94,7 +97,7 @@ typedef	struct		s_ant
 int					main(void);
 t_ant				*init_room(t_ant *ant);
 t_ant				*comment(t_ant *ant);
-t_ant				*command(t_ant *ant, t_ptr *ptr);
+t_ant				*command(t_ant *ant);
 int					verif_name(t_ant *ant, char *name2);
 t_ant				*init_ant(t_ant *ant);
 t_ant				*find_final_room(t_ant *ant);
