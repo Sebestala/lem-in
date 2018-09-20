@@ -18,7 +18,7 @@ static t_ptr	*ptr_room(t_ant *ant, t_room *room)
 	t_ptr	*ptr1;
 	t_ptr	*ptr;
 
-	ptr1 = ant->path_end->ptr_path->room_end;
+	ptr1 = ant->path_end->room_end;
 	i = 1;
 	ptr = room->tube;
 	while (ptr != NULL && i < room->check)
@@ -36,52 +36,41 @@ static t_ptr	*ptr_room(t_ant *ant, t_room *room)
 
 static t_room	*ptr_room_end(t_ant *ant)
 {
-	t_ptr	*ptr1;
-	t_ptr	*ptr2;
-
-	ptr1 = ant->path_end;
-	ptr2 = ptr1->ptr_path->room_end;
-	return (ptr2->ptr_room);
+	return (ant->path_end->room_end->ptr_room);
 }
 
 static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
 	t_ptr	*struct_ptr;
-	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
 	if (ptr_room == ant->start)
 		return (ant);
-	ptr = ant->path_end;
 	struct_ptr = memalloc_sterr(sizeof(t_ptr), "make_ptr_path");
-	if (ptr != NULL)
+	if (ant->path_end != NULL)
 	{
-		ptr2 = ptr->ptr_path->room_end;
+		ptr2 = ant->path_end->room_end;
 		struct_ptr->back = ptr2;
 		struct_ptr->id = ptr2->id + 1;
 		ptr2->next = struct_ptr;
-		ptr->ptr_path->room_end = struct_ptr;
+		ant->path_end->room_end = struct_ptr;
 	}
-	else
-		ptr = struct_ptr;
 	struct_ptr->ptr_room = ptr_room;
-	if (ptr->ptr_path->room_end->ptr_room->name != ptr_room->name)
-	printf("NAME END = |%s|      NAME = |%s|\n", ptr->ptr_path->room_end->ptr_room->name, ptr_room->name);
+	if (ant->path_end->room_end->ptr_room->name != ptr_room->name)
+	printf("NAME END = |%s|      NAME = |%s|\n", ant->path_end->room_end->ptr_room->name, ptr_room->name);
 	return (ant);
 }
 
 static t_ant	*del_ptr_path(t_ant *ant)
 {
 	t_ptr	*ptr;
-	t_ptr	*ptr2;
 	t_ptr	*ptr3;
 
-	ptr2 = ant->path_end;
-	ptr = ptr2->ptr_path->room_end;
+	ptr = ant->path_end->room_end;
 	ptr->ptr_room->check = 0;
 	ptr3 = ptr->back;
 	ptr3->next = NULL;
-	ptr2->ptr_path->room_end = ptr3;
+	ant->path_end->room_end = ptr3;
 	ft_bzero(ptr, sizeof(t_ptr));
 	free(ptr);
 	return (ant);
@@ -90,28 +79,23 @@ static t_ant	*del_ptr_path(t_ant *ant)
 static t_ant	*make_enter_path(t_ant *ant)
 {
 	t_path	*path;
-	t_ptr	*struct_ptr;
 	t_ptr	*struct_ptr_in_path;
-	t_ptr	*ptr;
 
 	path = memalloc_sterr(sizeof(t_path), "make_enter_path");
-	struct_ptr = memalloc_sterr(sizeof(t_ptr), "make_enter_path");
 	struct_ptr_in_path = memalloc_sterr(sizeof(t_ptr), "make_enter_path");
 	if (ant->path == NULL)
 	{
-		ant->path = struct_ptr;
+		ant->path = path;
 		ant->path_end = ant->path;
 	}
 	else
 	{
-		ptr = ant->path_end;
-		path->id = ant->path_end->ptr_path->id;
-		ant->path_end = struct_ptr;
-		ptr->next = struct_ptr;
-		struct_ptr->back = ptr;
+		path->id = ant->path_end->id;
+		path->back = ant->path_end;
+		ant->path_end->next = path;
+		ant->path_end = path;
 	}
-	struct_ptr->ptr_path = path;
-	path->id = ant->path_end->ptr_path->id + 1;
+	path->id = ant->path_end->id + 1;
 	path->room = struct_ptr_in_path;
 	path->room_end = struct_ptr_in_path;
 	struct_ptr_in_path->ptr_room = ant->start;
@@ -120,11 +104,9 @@ static t_ant	*make_enter_path(t_ant *ant)
 
 t_ant		*valid_path(t_ant *ant)
 {
-	t_ptr	*ptr;
 	t_ptr	*ptr2;
 
-	ptr = ant->path_end;
-	ptr2 = ptr->ptr_path->room;
+	ptr2 = ant->path_end->room;
 	ant = make_enter_path(ant);
 	while (ptr2 != NULL)
 	{

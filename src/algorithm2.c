@@ -80,17 +80,17 @@ static t_ant		*put_id_room(t_ant *ant, t_room *room, int id)
 
 t_ant				*put_id_path(t_ant *ant)
 {
-	t_ptr	*ptr;
+	t_path	*ptr;
 	t_ptr	*ptr2;
 
 	ptr = ant->path;
 	while (ptr != NULL)
 	{
-		ptr2 = ptr->ptr_path->room;
+		ptr2 = ptr->room;
 		while (ptr2 != NULL)
 		{
 			if (ptr2->ptr_room != ant->start && ptr2->ptr_room != ant->end)
-				ant = put_id_room(ant, ptr2->ptr_room, ptr->ptr_path->id);
+				ant = put_id_room(ant, ptr2->ptr_room, ptr->id);
 			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;
@@ -98,10 +98,10 @@ t_ant				*put_id_path(t_ant *ant)
 	ptr = ant->path;
 	while (ptr != NULL)
 	{
-		ptr2 = ptr->ptr_path->room;
+		ptr2 = ptr->room;
 		while (ptr2 != NULL)
 		{
-			ant = id_path(ant, ptr->ptr_path, ptr2->ptr_room);
+			ant = id_path(ant, ptr, ptr2->ptr_room);
 			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;

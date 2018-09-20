@@ -83,7 +83,7 @@ void		fct_test2(t_ant *ant)
 
 void		fct_test1(t_ant *ant)
 {
-	t_ptr	*ptr;
+	t_path	*ptr;
 	t_ptr	*ptr2;
 	t_ptr	*ptr3;
 	t_ptr	*ptr4;
@@ -92,13 +92,13 @@ void		fct_test1(t_ant *ant)
 	printf("PATH\n");
 	fflush(stdout);
 	ptr = ant->path;
-	ptr2 = ptr->ptr_path->room;
+	ptr2 = ptr->room;
 	room = ptr2->ptr_room;
 	while (ptr != NULL)
 	{
-		printf("\n\n	PATH %d   POWER = %d   ID = ", ptr->ptr_path->id, ptr->ptr_path->power);
+		printf("\n\n	PATH %d   POWER = %d   ID = ", ptr->id, ptr->power);
 		fflush(stdout);
-		ptr3 = ptr->ptr_path->id_path;
+		ptr3 = ptr->id_path;
 		while (ptr3 != NULL)
 		{
 			printf("{%d} ", ptr3->id);
@@ -107,7 +107,7 @@ void		fct_test1(t_ant *ant)
 		}
 	printf("\n");
 	fflush(stdout);
-		ptr2 = ptr->ptr_path->room;
+		ptr2 = ptr->room;
 		while (ptr2 != NULL)
 		{
 			room = ptr2->ptr_room;

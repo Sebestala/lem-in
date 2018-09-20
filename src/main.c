@@ -99,7 +99,7 @@ int				main(void)
 	fflush(stdout);
 	ant = deep_way(ant);
 	delete_last_path(ant, ant->path_end);
-	ant->nb_path = ant->path_end->ptr_path->id;
+	ant->nb_path = ant->path_end->id;
 	printf("PUT ID PATH   nb = %d\n", ant->nb_path);
 	fflush(stdout);
 	ant = put_id_path(ant);

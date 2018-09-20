@@ -18,19 +18,19 @@ static void		new_ptr_id(t_ant *ant, t_path *path)
 	t_poss	*poss;
 	t_ptr	*ptr1;
 
-	poss = ant->poss;
+	poss = ant->poss_end;
 	ptr = memalloc_sterr(sizeof(t_ptr), "new_ptr_id");
-	while (poss->next != NULL)
-		poss = poss->next;
-	ptr1 = poss->id_path;
+	ptr1 = poss->id_path_end;
 	if (!ptr1)
+	{
 		poss->id_path = ptr;
+		poss->id_path_end = ptr;
+	}
 	else
 	{
-		while (ptr1 && ptr1->next != NULL)
-			ptr1 = ptr1->next;
 		ptr->back = ptr1;
 		ptr1->next = ptr;
+		poss->id_path_end = ptr;
 	}
 	ptr->ptr_path = path;
 	ptr->id = path->id;
@@ -59,12 +59,11 @@ static t_ant	*copy_poss(t_ant *ant)
 	t_poss	*poss;
 	t_ptr	*ptr;
 
-	poss = ant->poss;
+	poss = ant->poss_end;
 	copy = memalloc_sterr(sizeof(t_poss), "new_poss2");
-	while (poss->next != NULL)
-		poss = poss->next;
 	poss = new_value(ant, poss);
 	poss->next = copy;
+	ant->poss_end = copy;
 	copy->id_poss = poss->id_poss + 1;
 	copy->nb_path = poss->nb_path;
 	copy->total_power = poss->total_power;
@@ -83,10 +82,11 @@ static t_ant	*start_poss(t_ant *ant)
 
 	poss = memalloc_sterr(sizeof(t_poss), "start_poss");
 	ant->poss = poss;
+	ant->poss_end = poss;
 	poss->id_poss = 1;
 	poss->nb_path = 1;
-	poss->total_power = ant->path->ptr_path->power;
-	new_ptr_id(ant, ant->path->ptr_path);
+	poss->total_power = ant->path->power;
+	new_ptr_id(ant, ant->path);
 	ant = copy_poss(ant);
 	return (ant);
 }
@@ -122,8 +122,9 @@ static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 
 static t_ant	*del_path(t_ant *ant, t_poss *poss)
 {
-	t_ptr	*ptr;
+	t_path	*ptr;
 	t_ptr	*ptr1;
+	t_ptr	*ptr3;
 
 	poss = new_value(ant, poss);
 	ptr1 = poss->id_path;
@@ -136,30 +137,30 @@ static t_ant	*del_path(t_ant *ant, t_poss *poss)
 			return (ant);
 		}
 		ptr = ant->path;
-		while (ptr && ptr1->id != ptr->ptr_path->id)
+		while (ptr && ptr1->id != ptr->id)
 			ptr = ptr->next;
-		ptr1->ptr_path = ptr->ptr_path;
+		ptr1->ptr_path = ptr;
 		ant->j = ptr1->id;
 		ant = copy_poss(ant);
 		return (ant);
 	}
-	while (ptr1->next->next != NULL)
-		ptr1 = ptr1->next;
-	ptr = ptr1->next;
-	ant->j = ptr->id;
+	ptr1 = poss->id_path_end->back;
+	ptr3 = ptr1->next;
+	ant->j = ptr3->id;
 	ptr1->next = NULL;
-	memdel_zero(ptr, sizeof(t_ptr));
+	poss->id_path_end = ptr1;
+	memdel_zero(ptr3, sizeof(t_ptr));
 	return (ant);
 }
 
 static void		new_poss(t_ant *ant, int id)
 {
-	t_ptr	*ptr;
+	t_path	*ptr;
 
 	ptr = ant->path;
-	while (ptr->ptr_path->id != id)
+	while (ptr->id != id)
 		ptr = ptr->next;
-	new_ptr_id(ant, ptr->ptr_path);
+	new_ptr_id(ant, ptr);
 	ant = copy_poss(ant);
 }
 
@@ -167,7 +168,7 @@ t_ant			*possibility(t_ant *ant)
 {
 	t_poss	*poss;
 
-	ant->tab_id = memalloc_sterr((ant->nb_path * 50) * sizeof(int), "main");
+	ant->tab_id = memalloc_sterr((ant->nb_path + 2) * sizeof(char), "main");
 	ant = start_poss(ant);
 	poss = ant->poss->next;
 	while (poss->nb_path != 0)

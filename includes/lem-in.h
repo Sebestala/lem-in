@@ -36,6 +36,7 @@ typedef	struct		s_poss
 	int				nb_path;
 	int				total_power;
 	t_ptr			*id_path;
+	t_ptr			*id_path_end;
 	struct s_poss	*next;
 }					t_poss;
 
@@ -49,14 +50,13 @@ typedef	struct		s_room
 	t_ptr			*tube_end;
 	t_ptr			*tube;
 	struct s_room	*next;
-	struct s_room	*back;
 }					t_room;
 
 typedef	struct		s_ptr
 {
 	int				id;
-	t_room			*ptr_room;
 	t_path			*ptr_path;
+	t_room			*ptr_room;
 	struct s_ptr	*back;
 	struct s_ptr	*next;
 }					t_ptr;
@@ -69,6 +69,8 @@ typedef	struct		s_path
 	t_ptr			*id_path;
 	t_ptr			*room_end;
 	t_ptr			*room;
+	struct s_path	*next;
+	struct s_path	*back;
 }					t_path;
 
 typedef	struct		s_ant
@@ -80,16 +82,17 @@ typedef	struct		s_ant
 	int				firewall;
 	int				nb_ant;
 	int				nb_path;
-	int				*tab_id;
+	char			*tab_id;
 	char			*line;
-	t_poss			*poss;
-	t_poss			*best_poss;
-	t_room			*start;
-	t_room			*end;
-	t_ptr			*path;
-	t_ptr			*path_end;
 	t_room			*room;
 	t_room			*room_end;
+	t_room			*start;
+	t_room			*end;
+	t_path			*path;
+	t_path			*path_end;
+	t_poss			*poss;
+	t_poss			*poss_end;
+	t_poss			*best_poss;
 	t_pawn			*pawn;
 }					t_ant;
 
@@ -107,7 +110,7 @@ t_ant				*possibility(t_ant *ant);
 t_ant				*choose_best_poss(t_ant *ant);
 t_ant				*begin_answer(t_ant *ant);
 t_ant				*answer(t_ant *ant);
-void				delete_last_path(t_ant *ant, t_ptr *ptr1);
+void				delete_last_path(t_ant *ant, t_path *ptr1);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
 void				delete_lemin(t_ant *ant);
