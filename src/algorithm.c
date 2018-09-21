@@ -12,21 +12,28 @@
 
 #include "../includes/lem-in.h"
 
-static t_ptr	*ptr_room(t_ant *ant, t_room *room)
+static t_room	*room_in_tab_tube(t_room *room)
 {
-	int		i;
+//	printf("room_in_tab_tube\n");
+	t_tab	*tab;
+
+	tab = room->tube;
+	while (tab->next)
+		tab = tab->next;
+	return (tab->tab[room->check % 100]);
+}
+
+static t_room	*ptr_room(t_ant *ant, t_room *room)
+{
+//	printf("ptr_room\n");
 	t_ptr	*ptr1;
-	t_ptr	*ptr;
+	t_room	*ptr;
 
 	ptr1 = ant->path_end->room_end;
-	i = 1;
-	ptr = room->tube;
-	while (ptr != NULL && i < room->check)
-	{
-		ptr = ptr->next;
-		i++;
-	}
-	if (ptr && ptr1->id > 1 && ptr->ptr_room->last_room == -1)
+	room->check--;
+	ptr = room_in_tab_tube(room);
+	room->check++;
+	if (ptr && ptr1->id > 1 && ptr->last_room == -1)
 	{
 		room->check++;
 		ptr = ptr->next;
@@ -34,13 +41,9 @@ static t_ptr	*ptr_room(t_ant *ant, t_room *room)
 	return (ptr);
 }
 
-static t_room	*ptr_room_end(t_ant *ant)
-{
-	return (ant->path_end->room_end->ptr_room);
-}
-
 static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
+//	printf("make_ptr_path   room = %s\n", ptr_room->name);
 	t_ptr	*struct_ptr;
 	t_ptr	*ptr2;
 
@@ -63,6 +66,7 @@ static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 
 static t_ant	*del_ptr_path(t_ant *ant)
 {
+//	printf("del_ptr_path\n");
 	t_ptr	*ptr;
 	t_ptr	*ptr3;
 
@@ -78,6 +82,7 @@ static t_ant	*del_ptr_path(t_ant *ant)
 
 static t_ant	*make_enter_path(t_ant *ant)
 {
+//	printf("make_enter_path\n");
 	t_path	*path;
 	t_ptr	*struct_ptr_in_path;
 
@@ -104,6 +109,7 @@ static t_ant	*make_enter_path(t_ant *ant)
 
 t_ant		*valid_path(t_ant *ant)
 {
+//	printf("valid_path\n");
 	t_ptr	*ptr2;
 
 	ptr2 = ant->path_end->room;
@@ -124,23 +130,26 @@ fflush(stdout);
 
 static t_ant	*on_end(t_ant *ant)
 {
+//	printf("on_end\n");
 	ant = valid_path(ant);
 	ant->start->check++;
 	ant = del_ptr_path(ant);
 	return (ant);
 }
 
-static t_ant	*find_end(t_ant *ant, t_ptr *ptr)
+static t_ant	*find_end(t_ant *ant, t_room *ptr, t_room *element)
 {
+//	printf("find_end\n");
 	while (ptr != NULL)
 	{
-		if (ptr->ptr_room == ant->end)
+		if (ptr == ant->end)
 			break ;
-		ptr = ptr->next;
+		ptr = room_in_tab_tube(element);
+		element->check++;
 	}
 	if (ptr != NULL)
 	{
-		ant = make_ptr_path(ant, ptr->ptr_room);
+		ant = make_ptr_path(ant, ptr);
 		ant = valid_path(ant);
 		ant = del_ptr_path(ant);
 	}
@@ -151,46 +160,52 @@ static t_ant	*find_end(t_ant *ant, t_ptr *ptr)
 
 t_ant			*deep_way(t_ant *ant)
 {
+//	printf("ANT_ROOM = |%s|\n", ant->room->name);
 	t_room	*element;
-	t_ptr	*ptr;
+	t_room	*ptr;
 ant->firewall = 1;
 	element = ant->start;
 	ant = make_enter_path(ant);
-	ptr = element->tube;
+	ptr = room_in_tab_tube(element);
 	while (element != ant->start || ptr != NULL)
 	{
-//	printf("NAME = |%s|\n", element->name);
-		ptr = element->tube;
+	if (element)
+//	printf("\nNAME = |%s|\n", element->name);
+		ptr = room_in_tab_tube(element);
+	if (ptr)
+//	printf("NAME2 = |%s|\n", ptr->name);
 		element->check++;
 		if (element == ant->end)
 		{
 			ant = on_end(ant);
 			element = ant->start;
-			ptr = element->tube;
+			ptr = room_in_tab_tube(element);
 		}
 		if (element->last_room == 1 && element != ant->start)
 		{
-			ant = find_end(ant, ptr);
+			ant = find_end(ant, ptr, element);
 			ant = del_ptr_path(ant);
-			element = ptr_room_end(ant);
-			ptr = element->tube;
+			element = ant->path_end->room_end->ptr_room;
+			ptr = room_in_tab_tube(element);
 			element->check++;
 		}
 		if (element->check > 1 && element->last_room <= 0 && ptr != NULL)
 			ptr = ptr_room(ant, element);
+//	if (ptr)
+//	printf("NAME2 = |%s|\n", ptr->name);
 		while (ptr == NULL)
 		{
 			if (element == ant->start)
 				break ;
 			ant = del_ptr_path(ant);
-			element = ptr_room_end(ant);
+			element = ant->path_end->room_end->ptr_room;
 			element->check++;
 			ptr = ptr_room(ant, element);
 		}
-		if (ptr && ptr->ptr_room->check == 0 && ptr->ptr_room->tube != NULL)
+		if (ptr && ptr->check == 0 && ptr->tube != NULL)
 		{
-			ant = make_ptr_path(ant, ptr->ptr_room);
-			element = ptr->ptr_room;
+			ant = make_ptr_path(ant, ptr);
+			element = ptr;
 		}
 //		if (ant->firewall % 400 == 0)
 //			break ;

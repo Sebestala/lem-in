@@ -104,9 +104,9 @@ static void	delete_all_pawn(t_ant *ant)
 	}
 }
 
-static void	delete_all_room(t_room *room, t_ptr *ptr2)
+static void	delete_all_room(t_room *room, t_tab *ptr2)
 {
-	t_ptr	*ptr3;
+	t_tab	*ptr3;
 	t_room	*room2;
 
 	while (room)
@@ -114,9 +114,10 @@ static void	delete_all_room(t_room *room, t_ptr *ptr2)
 		ptr2 = room->tube;
 		while (ptr2)
 		{
+//			ft_memdel(ptr2->tab);
 			ptr3 = ptr2;
 			ptr2 = ptr2->next;
-			memdel_zero(ptr3, sizeof(t_ptr));
+			memdel_zero(ptr3, sizeof(t_tab));
 		}
 		room2 = room;
 		room = room->next;

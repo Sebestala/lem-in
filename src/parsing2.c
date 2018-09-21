@@ -11,7 +11,23 @@
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
+/*
+void	make_room_tab(t_ant *ant)
+{
+	int		i;
+	t_room	*room;
 
+	ant->room_tab = memalloc_sterr(sizeof(t_room *) * (ant->room_end->id + 1), "make_room_tab");
+	i = 0;
+	room = ant->room;
+	while (room)
+	{
+		ant->room_tab[i] = room;
+		room = room->next;
+		i++;
+	}
+}
+*/
 int		finish(t_ant *ant)
 {
 	t_pawn	*pawn;
@@ -28,24 +44,31 @@ int		finish(t_ant *ant)
 
 t_ant	*find_final_room(t_ant *ant)
 {
-	t_ptr	*begin;
+	t_tab	*begin;
 	t_room	*room;
+	int		i;
 
+	i = 0;
 	begin = ant->end->tube;
-	while(begin != NULL)
+	while(i <= ant->end->tube_end)
 	{
-		room = begin->ptr_room;
+		room = begin->tab[i % 100];
 		if (room != ant->start)
 			room->last_room = 1;
-		begin = begin->next;
+		i++;
+		if (i % 100 == 0)
+			begin = begin->next;
 	}
+	i = 0;
 	begin = ant->start->tube;
-	while(begin != NULL)
+	while(i <= ant->start->tube_end)
 	{
-		room = begin->ptr_room;
+		room = begin->tab[i % 100];
 		if (room != ant->end && room->last_room == 0)
 			room->last_room = -1;
-		begin = begin->next;
+		i++;
+		if (i % 100 == 0)
+			begin = begin->next;
 	}
 	return (ant);
 }

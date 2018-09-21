@@ -32,6 +32,7 @@ static t_ant	*init_struct(t_ant *ant)
 	}
 	else
 	{
+		room->id = ant->room_end->id + 1;
 		ant->room_end->next = room;
 		ant->room_end = room;
 	}
@@ -91,31 +92,34 @@ t_ant		*command(t_ant *ant)
 	return (ant);
 }
 
-static void			path2(t_room *room1, t_room *room2)
+static void			path2(t_room *room, t_room *room0, t_room *room1, int i)
 {
-	t_ptr	*ptr;
-	t_ptr	*ptr2;
+	t_tab	*tab;
+	t_tab	*tab2;
 
-	ptr = memalloc_sterr(sizeof(t_ptr), "path2");
-	ptr2 = memalloc_sterr(sizeof(t_ptr), "path2");
-	ptr->ptr_room = room1;
-	ptr2->ptr_room = room2;
-	if (room1->tube == NULL)
-		room1->tube = ptr2;
-	else
+	while (i < 2)
 	{
-		room1->tube_end->next = ptr2;
-		ptr2->back = room1->tube_end;
+		tab = room->tube;
+		if (tab)
+			room->tube_end++;
+		if (tab != NULL && room->tube_end % 100 == 0)
+		{
+			while (tab->next)
+				tab = tab->next;
+			tab2 = memalloc_sterr(sizeof(t_tab), "path2");
+			tab->next = tab2;
+		}
+		if (room->tube == NULL)
+			room->tube = memalloc_sterr(sizeof(t_tab), "path2");
+		tab = room->tube;
+		while (tab->next)
+			tab = tab->next;
+		tab->tab[room->tube_end % 100] = room0;
+		room1 = room0;
+		room0 = room;
+		room = room1;
+		i++;
 	}
-	room1->tube_end = ptr2;
-	if (room2->tube == NULL)
-		room2->tube = ptr;
-	else
-	{
-		room2->tube_end->next = ptr;
-		ptr->back = room2->tube_end;
-	}
-	room2->tube_end = ptr;
 }
 
 static t_room		*path1(t_ant *ant, int nb, int i)
@@ -147,7 +151,7 @@ static t_ant		*path(t_ant *ant)
 	while (ant->line[ant->i + ant->j])
 		ant->j++;
 	room2 = path1(ant, ant->j, ant->i);
-	path2(room1, room2);
+	path2(room1, room2, NULL, 0);
 	return (ant);
 }
 
@@ -160,7 +164,10 @@ t_ant				*init_room(t_ant *ant)
 		ant = comment(ant);
 		ant = command(ant);
 		if (ant->check == 0 && !is_str_on(ant->line, " ") && ant->line[0] && ant->line[0] != '#')
+		{
 			ant->check = 1;
+//			make_room_tab(ant);
+		}
 		if (ant->check == 0)
 		{
 			if (ant->line[0] && ant->line[0] != '#')

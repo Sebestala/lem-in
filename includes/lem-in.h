@@ -20,6 +20,13 @@ typedef	struct		s_path t_path;
 typedef	struct		s_ant t_ant;
 typedef	struct		s_poss t_poss;
 typedef	struct		s_pawn t_pawn;
+typedef	struct		s_tab t_tab;
+
+typedef	struct		s_tab
+{
+	void			*tab[100];
+	struct s_tab	*next;
+}					t_tab;
 
 typedef	struct		s_pawn
 {
@@ -42,12 +49,13 @@ typedef	struct		s_poss
 
 typedef	struct		s_room
 {
+	int				id;
 	int				check;
 	int				last_room;
 	char			*name;
 	char			*id_path;
-	t_ptr			*tube_end;
-	t_ptr			*tube;
+	int				tube_end;
+	t_tab			*tube;
 	struct s_room	*next;
 }					t_room;
 
@@ -84,6 +92,7 @@ typedef	struct		s_ant
 	char			*line;
 	t_room			*room;
 	t_room			*room_end;
+//	t_room			**room_tab;
 	t_room			*start;
 	t_room			*end;
 	t_path			*path;
@@ -112,6 +121,7 @@ void				delete_last_path(t_ant *ant, t_path *ptr1);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
 void				delete_lemin(t_ant *ant);
+//void				make_room_tab(t_ant *ant);
 void				fct_test(t_ant *ant);
 void				fct_test1(t_ant *ant);
 void				fct_test2(t_ant *ant);

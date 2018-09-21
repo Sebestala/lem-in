@@ -123,7 +123,7 @@ int				main(void)
 //	fct_test(ant);
 //	fct_test1(ant);
 //	fct_test2(ant);
-	fct_test3(ant);
+//	fct_test3(ant);
 	delete_lemin(ant);
 
 	return (0);

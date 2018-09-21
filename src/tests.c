@@ -2,22 +2,34 @@
 #include "../includes/lem-in.h"
 void		fct_test(t_ant *ant)
 {
-	t_ptr	*ptr;
+	t_tab	*ptr;
+	t_room	*room;
+	t_room	*room0;
+	int		i = 0;
 
+	room0 = ant->room;
 	printf("ANT  =	%d \n", ant->nb_ant);
 	fflush(stdout);
-	while (ant->room != NULL)
+	while (room0 != NULL)
 	{
-		printf("NAME =	%s    LAST ROOM = %d\n", ant->room->name, ant->room->last_room);
+		printf("NAME =	%s    LAST ROOM = %d\n", room0->name, room0->last_room);
 		fflush(stdout);
-		ptr = ant->room->tube;
+		ptr = room0->tube;
 		while (ptr != NULL)
 		{
-			printf("	%s---%s\n", ant->room->name, ptr->ptr_room->name);
-			fflush(stdout);
+			i = 0;
+			while (ptr->tab[i])
+			{
+				room = ptr->tab[i];
+				printf("	%s---%s\n", room0->name, room->name);
+				fflush(stdout);
+				i++;
+			}
 			ptr = ptr->next;
 		}
-		ant->room = ant->room->next;
+	printf("\n");
+	fflush(stdout);
+		room0 = room0->next;
 	}
 	ant = init_ant(ant);
 	printf("START	name = %s \n", ant->start->name);
@@ -55,11 +67,11 @@ fflush(stdout);
 	printf("\n\n");
 	fflush(stdout);
 
-	t_room	*room;
+//	t_room	*room;
 	t_poss	*poss1;
 	t_path	*path1;
 	t_ptr	*ptr1;
-
+/*
 	printf("ID IN PTR TUBE ROOM\n");
 	fflush(stdout);
 	room = ant->room;
@@ -74,7 +86,7 @@ fflush(stdout);
 		}
 		room = room->next;
 	}
-	printf("ID IN PATH ROOM\n");
+*/	printf("ID IN PATH ROOM\n");
 	fflush(stdout);
 	path1 = ant->path;
 	while (path1)
