@@ -20,17 +20,12 @@ char	*ft_strnew(size_t size)
 
 	i = 0;
 	str = NULL;
-//	if (size < 4294967295)
+	if (!(str = (char *)malloc((size + 1) * sizeof(char))))
+		return (NULL);
+	while (i <= (int)size)
 	{
-		if (!(str = (char *)malloc((size + 1) * sizeof(char))))
-			return (NULL);
-		while (i <= (int)size)
-		{
-			str[i] = '\0';
-			i++;
-		}
+		str[i] = '\0';
+		i++;
 	}
-//	else
-//		return (NULL);
 	return (str);
 }

@@ -45,8 +45,7 @@ typedef	struct		s_room
 	int				check;
 	int				last_room;
 	char			*name;
-	t_ptr			*id_path_end;
-	t_ptr			*id_path;
+	char			*id_path;
 	t_ptr			*tube_end;
 	t_ptr			*tube;
 	struct s_room	*next;
@@ -65,8 +64,7 @@ typedef	struct		s_path
 {
 	int				id;
 	int				power;
-	t_ptr			*id_path_end;
-	t_ptr			*id_path;
+	char			*id_path;
 	t_ptr			*room_end;
 	t_ptr			*room;
 	struct s_path	*next;

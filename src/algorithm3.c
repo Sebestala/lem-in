@@ -95,25 +95,22 @@ static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 {
 	int		i;
 	t_ptr	*ptr;
-	t_ptr	*ptr2;
 
 	ptr = poss->id_path;
 	i = 0;
-	while (ant->tab_id[i])
-		ant->tab_id[i++] = 0;
+	while (i <= ant->nb_path + 1)
+		ant->tab_id[i++] = '0';
 	i = 0;
 	while (i <= id || i <= poss->id_path->id)
-	{
-		ant->tab_id[i] = 1;
-		i++;
-	}
+		ant->tab_id[i++] = '1';
 	while (ptr != NULL)
 	{
-		ptr2 = ptr->ptr_path->id_path;
-		while (ptr2 != NULL)
+		i = 0;
+		while (ptr->ptr_path->id_path[i])
 		{
-			ant->tab_id[ptr2->id] = 1;
-			ptr2 = ptr2->next;
+			if (ptr->ptr_path->id_path[i] == '1')
+				ant->tab_id[i] = '1';
+			i++;
 		}
 		ptr = ptr->next;
 	}
@@ -155,12 +152,12 @@ static t_ant	*del_path(t_ant *ant, t_poss *poss)
 
 static void		new_poss(t_ant *ant, int id)
 {
-	t_path	*ptr;
+	t_path	*path;
 
-	ptr = ant->path;
-	while (ptr->id != id)
-		ptr = ptr->next;
-	new_ptr_id(ant, ptr);
+	path = ant->path;
+	while (path->id != id)
+		path = path->next;
+	new_ptr_id(ant, path);
 	ant = copy_poss(ant);
 }
 
@@ -177,7 +174,7 @@ t_ant			*possibility(t_ant *ant)
 		ant->i = 1;
 		while (1)
 		{
-			if (ant->tab_id[ant->i] == 0)
+			if (ant->tab_id[ant->i] == '0')
 			{
 				new_poss(ant, ant->i);
 				break ;

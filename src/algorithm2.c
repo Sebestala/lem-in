@@ -11,69 +11,44 @@
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
-
-static t_ant		*id_path2(t_ant *ant, t_path *path, int id)
+static void			put_str_id_path(t_ant *ant)
 {
-	t_ptr	*ptr;
-	t_ptr	*ptr2;
+	t_room	*room;
+	t_path	*path;
+	int		i;
 
-	ptr2 = path->id_path_end;
-	ptr = memalloc_sterr(sizeof(t_ptr), "id_path2");
-	if (ptr2 != NULL)
+	room = ant->room;
+	path = ant->path;
+	while (room)
 	{
-		ptr->back = ptr2;
-		ptr2->next = ptr;
+		i = 0;
+		room->id_path = ft_strnew(ant->nb_path + 2);
+		while (i <= ant->nb_path + 1)
+			room->id_path[i++] = '0';
+		room = room->next;
 	}
-	else
-		path->id_path = ptr;
-	path->id_path_end = ptr;
-	ptr->id = id;
-	return (ant);
+	while (path)
+	{
+		i = 0;
+		path->id_path = ft_strnew(ant->nb_path + 2);
+		while (i <= ant->nb_path + 1)
+			path->id_path[i++] = '0';
+		path = path->next;
+	}
 }
 
 static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 {
-	t_ptr	*ptr;
-	t_ptr	*ptr2;
+	int	i;
 
-	ptr2 = room->id_path;
+	i = 0;
 	if (room != ant->start && room != ant->end)
 		path->power++;
-	while (ptr2 != NULL)
+	while (path->id_path[i])
 	{
-		ptr = path->id_path;
-		while (ptr != NULL)
-		{
-			if (ptr2->id == ptr->id)
-				break ;
-			else
-				ptr = ptr->next;
-		}
-		if (ptr == NULL)
-			id_path2(ant, path, ptr2->id);
-		ptr2 = ptr2->next;
-	}
-	return (ant);
-}
-
-static t_ant		*put_id_room(t_ant *ant, t_room *room, int id)
-{
-	t_ptr	*ptr;
-	t_ptr	*ptr2;
-
-	ptr = memalloc_sterr(sizeof(t_ptr), "put_id_room");
-	ptr->id = id;
-	ptr2 = room->id_path_end;
-	if (room->id_path != NULL)
-	{
-		ptr->back = ptr2;
-		ptr2->next = ptr;
-		room->id_path_end = ptr;
-	}
-	else
-	{
-		room->id_path = ptr;
-		room->id_path_end = ptr;
+		if (room->id_path[i] == '1')
+			path->id_path[i] = '1';
+		i++;
 	}
 	return (ant);
 }
@@ -83,6 +58,7 @@ t_ant				*put_id_path(t_ant *ant)
 	t_path	*ptr;
 	t_ptr	*ptr2;
 
+	put_str_id_path(ant);
 	ptr = ant->path;
 	while (ptr != NULL)
 	{
@@ -90,7 +66,7 @@ t_ant				*put_id_path(t_ant *ant)
 		while (ptr2 != NULL)
 		{
 			if (ptr2->ptr_room != ant->start && ptr2->ptr_room != ant->end)
-				ant = put_id_room(ant, ptr2->ptr_room, ptr->id);
+				ptr2->ptr_room->id_path[ptr->id] = '1';
 			ptr2 = ptr2->next;
 		}
 		ptr = ptr->next;

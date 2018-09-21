@@ -54,6 +54,62 @@ fflush(stdout);
 	}
 	printf("\n\n");
 	fflush(stdout);
+
+	t_room	*room;
+	t_poss	*poss1;
+	t_path	*path1;
+	t_ptr	*ptr1;
+
+	printf("ID IN PTR TUBE ROOM\n");
+	fflush(stdout);
+	room = ant->room;
+	while (room)
+	{
+		ptr1 = room->tube;
+		while (ptr1)
+		{
+			printf("ID = %d\n", ptr1->id);
+			fflush(stdout);
+			ptr1 = ptr1->next;
+		}
+		room = room->next;
+	}
+	printf("ID IN PATH ROOM\n");
+	fflush(stdout);
+	path1 = ant->path;
+	while (path1)
+	{
+		ptr1 = path1->room;
+			printf("ID PATH = %d \n", path1->id);
+			fflush(stdout);
+		while (ptr1)
+		{
+			printf("ID = %d \n", ptr1->id);
+			fflush(stdout);
+			ptr1 = ptr1->next;
+		}
+		path1 = path1->next;
+	}
+	printf("ID IN POSS ID_PATH\n");
+	fflush(stdout);
+	poss1 = ant->poss;
+	while (poss1)
+	{
+		ptr1 = poss1->id_path;
+			printf("ID POSS = %d \n", poss1->id_poss);
+			fflush(stdout);
+		while (ptr1)
+		{
+			printf("ID = %d ID IN PATH = %d\n", ptr1->id, ptr1->ptr_path->id);
+			fflush(stdout);
+			ptr1 = ptr1->next;
+		}
+		poss1 = poss1->next;
+	}
+
+
+
+
 }
 
 void		fct_test2(t_ant *ant)
@@ -85,9 +141,8 @@ void		fct_test1(t_ant *ant)
 {
 	t_path	*ptr;
 	t_ptr	*ptr2;
-	t_ptr	*ptr3;
-	t_ptr	*ptr4;
 	t_room	*room;
+	int		i = 0;
 
 	printf("PATH\n");
 	fflush(stdout);
@@ -98,14 +153,17 @@ void		fct_test1(t_ant *ant)
 	{
 		printf("\n\n	PATH %d   POWER = %d   ID = ", ptr->id, ptr->power);
 		fflush(stdout);
-		ptr3 = ptr->id_path;
-		while (ptr3 != NULL)
+		i = 0; 
+		while (ptr->id_path[i])
 		{
-			printf("{%d} ", ptr3->id);
-			fflush(stdout);
-			ptr3 = ptr3->next;
+			if (ptr->id_path[i] == '1')
+			{
+				printf("{%d} ", i);
+				fflush(stdout);
+			}
+			i++;
 		}
-	printf("\n");
+	printf("\n\n");
 	fflush(stdout);
 		ptr2 = ptr->room;
 		while (ptr2 != NULL)
@@ -113,12 +171,15 @@ void		fct_test1(t_ant *ant)
 			room = ptr2->ptr_room;
 			printf("	%s   id = ", room->name);
 			fflush(stdout);
-			ptr4 = room->id_path;
-			while (ptr4 != NULL)
+			i = 0;
+			while (room->id_path[i])
 			{
-				printf("{%d} ", ptr4->id);
-				fflush(stdout);
-				ptr4 = ptr4->next;
+				if (room->id_path[i] == '1')
+				{
+					printf("{%d} ", i);
+					fflush(stdout);
+				}
+				i++;
 			}
 	printf("\n\n");
 	fflush(stdout);
@@ -126,14 +187,17 @@ void		fct_test1(t_ant *ant)
 		}
 		ptr = ptr->next;
 	}
-	int i = 1;
+	int j = 1;
 	printf("NB_PATH = %d  TAB = ", ant->nb_path);
 	fflush(stdout);
-	while (i <= ant->nb_path)
+	while (j <= ant->nb_path)
 	{
-		printf("[%d] ", ant->tab_id[i]);
-		fflush(stdout);
-		i++;
+		if (ant->tab_id[j] == '1')
+		{
+			printf("{%d} ", j);
+			fflush(stdout);
+		}
+		j++;
 	}
 	printf("\n\n");
 	fflush(stdout);
