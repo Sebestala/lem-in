@@ -19,7 +19,6 @@ static void		delete_last_path2(t_tab *tab)
 	while (tab != NULL)
 	{
 		ptr = tab;
-//		ft_memdel(ptr->tab);
 		tab = tab->next;
 		memdel_zero(ptr, sizeof(t_tab));
 	}

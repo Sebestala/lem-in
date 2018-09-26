@@ -20,18 +20,13 @@ static void		new_ptr_id(t_ant *ant, t_path *path)
 
 	poss = ant->poss_end;
 	ptr = memalloc_sterr(sizeof(t_ptr), "new_ptr_id");
-	ptr1 = poss->id_path_end;
+	ptr1 = poss->id_path;
+	while (ptr1 && ptr1->next)
+		ptr1 = ptr1->next;
 	if (!ptr1)
-	{
 		poss->id_path = ptr;
-		poss->id_path_end = ptr;
-	}
 	else
-	{
-		ptr->back = ptr1;
 		ptr1->next = ptr;
-		poss->id_path_end = ptr;
-	}
 	ptr->ptr_path = path;
 	ptr->id = path->id;
 }
@@ -141,11 +136,12 @@ static t_ant	*del_path(t_ant *ant, t_poss *poss)
 		ant = copy_poss(ant);
 		return (ant);
 	}
-	ptr1 = poss->id_path_end->back;
+	ptr1 = poss->id_path;
+	while (ptr1 && ptr1->next->next)
+		ptr1 = ptr1->next;
 	ptr3 = ptr1->next;
 	ant->j = ptr3->id;
 	ptr1->next = NULL;
-	poss->id_path_end = ptr1;
 	memdel_zero(ptr3, sizeof(t_ptr));
 	return (ant);
 }

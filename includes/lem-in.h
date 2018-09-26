@@ -28,6 +28,17 @@ typedef	struct		s_tab
 	struct s_tab	*next;
 }					t_tab;
 
+typedef	struct		s_path
+{
+	int				id;
+	int				power;
+	char			*id_path;
+	int				room_end;
+	t_tab			*room;
+	struct s_path	*next;
+	struct s_path	*back;
+}					t_path;
+
 typedef	struct		s_pawn
 {
 	int				id_pawn;
@@ -36,16 +47,6 @@ typedef	struct		s_pawn
 	struct s_pawn	*next;
 	struct s_pawn	*back;
 }					t_pawn;
-
-typedef	struct		s_poss
-{
-	int				id_poss;
-	int				nb_path;
-	int				total_power;
-	t_ptr			*id_path;
-	t_ptr			*id_path_end;
-	struct s_poss	*next;
-}					t_poss;
 
 typedef	struct		s_room
 {
@@ -63,21 +64,17 @@ typedef	struct		s_ptr
 {
 	int				id;
 	t_path			*ptr_path;
-	t_room			*ptr_room;
-	struct s_ptr	*back;
 	struct s_ptr	*next;
 }					t_ptr;
 
-typedef	struct		s_path
+typedef	struct		s_poss
 {
-	int				id;
-	int				power;
-	char			*id_path;
-	int				room_end;
-	t_tab			*room;
-	struct s_path	*next;
-	struct s_path	*back;
-}					t_path;
+	int				id_poss;
+	int				nb_path;
+	int				total_power;
+	t_ptr			*id_path;
+	struct s_poss	*next;
+}					t_poss;
 
 typedef	struct		s_ant
 {
