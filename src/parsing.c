@@ -159,7 +159,7 @@ t_ant				*init_room(t_ant *ant)
 {
 	while (get_next_line(0, &ant->line))
 	{
-		ft_putendl(ant->line);
+//		ft_putendl(ant->line);
 		ant = init_ant(ant);
 		ant = comment(ant);
 		ant = command(ant);

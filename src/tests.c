@@ -66,12 +66,12 @@ fflush(stdout);
 	}
 	printf("\n\n");
 	fflush(stdout);
-
-//	t_room	*room;
+/*
+	t_room	*room;
 	t_poss	*poss1;
 	t_path	*path1;
 	t_ptr	*ptr1;
-/*
+
 	printf("ID IN PTR TUBE ROOM\n");
 	fflush(stdout);
 	room = ant->room;
@@ -86,7 +86,7 @@ fflush(stdout);
 		}
 		room = room->next;
 	}
-*/	printf("ID IN PATH ROOM\n");
+	printf("ID IN PATH ROOM\n");
 	fflush(stdout);
 	path1 = ant->path;
 	while (path1)
@@ -119,7 +119,7 @@ fflush(stdout);
 		poss1 = poss1->next;
 	}
 
-
+*/
 
 
 }
@@ -151,24 +151,24 @@ void		fct_test2(t_ant *ant)
 
 void		fct_test1(t_ant *ant)
 {
-	t_path	*ptr;
-	t_ptr	*ptr2;
+	t_path	*path;
 	t_room	*room;
+	t_tab	*tab;
 	int		i = 0;
+	int		j = 0;
 
 	printf("PATH\n");
 	fflush(stdout);
-	ptr = ant->path;
-	ptr2 = ptr->room;
-	room = ptr2->ptr_room;
-	while (ptr != NULL)
+	path = ant->path;
+	tab = path->room;
+	while (path != NULL)
 	{
-		printf("\n\n	PATH %d   POWER = %d   ID = ", ptr->id, ptr->power);
+		printf("\n\n	PATH %d   POWER = %d   ID = ", path->id, path->power);
 		fflush(stdout);
 		i = 0; 
-		while (ptr->id_path[i])
+		while (path->id_path[i])
 		{
-			if (ptr->id_path[i] == '1')
+			if (path->id_path[i] == '1')
 			{
 				printf("{%d} ", i);
 				fflush(stdout);
@@ -177,13 +177,14 @@ void		fct_test1(t_ant *ant)
 		}
 	printf("\n\n");
 	fflush(stdout);
-		ptr2 = ptr->room;
-		while (ptr2 != NULL)
+		tab = path->room;
+		j = 0;
+		while (tab->tab[j])
 		{
-			room = ptr2->ptr_room;
+			i = 0;
+			room = tab->tab[j];
 			printf("	%s   id = ", room->name);
 			fflush(stdout);
-			i = 0;
 			while (room->id_path[i])
 			{
 				if (room->id_path[i] == '1')
@@ -193,23 +194,23 @@ void		fct_test1(t_ant *ant)
 				}
 				i++;
 			}
+			j++;
 	printf("\n\n");
 	fflush(stdout);
-			ptr2 = ptr2->next;
 		}
-		ptr = ptr->next;
+		path = path->next;
 	}
-	int j = 1;
+	int k = 1;
 	printf("NB_PATH = %d  TAB = ", ant->nb_path);
 	fflush(stdout);
-	while (j <= ant->nb_path)
+	while (k <= ant->nb_path)
 	{
-		if (ant->tab_id[j] == '1')
+		if (ant->tab_id[k] == '1')
 		{
-			printf("{%d} ", j);
+			printf("{%d} ", k);
 			fflush(stdout);
 		}
-		j++;
+		k++;
 	}
 	printf("\n\n");
 	fflush(stdout);

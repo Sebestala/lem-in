@@ -49,23 +49,23 @@ t_ant	*find_final_room(t_ant *ant)
 	int		i;
 
 	i = 0;
-	begin = ant->end->tube;
-	while(i <= ant->end->tube_end)
-	{
-		room = begin->tab[i % 100];
-		if (room != ant->start)
-			room->last_room = 1;
-		i++;
-		if (i % 100 == 0)
-			begin = begin->next;
-	}
-	i = 0;
 	begin = ant->start->tube;
 	while(i <= ant->start->tube_end)
 	{
 		room = begin->tab[i % 100];
 		if (room != ant->end && room->last_room == 0)
 			room->last_room = -1;
+		i++;
+		if (i % 100 == 0)
+			begin = begin->next;
+	}
+	i = 0;
+	begin = ant->end->tube;
+	while(i <= ant->end->tube_end)
+	{
+		room = begin->tab[i % 100];
+		if (room != ant->start)
+			room->last_room = 1;
 		i++;
 		if (i % 100 == 0)
 			begin = begin->next;

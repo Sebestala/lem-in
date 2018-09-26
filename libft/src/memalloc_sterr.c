@@ -23,7 +23,7 @@ void	*memalloc_sterr(size_t size, char *str)
 		exit_str(str);
 	}
 	i = 0;
-	while (i <= size + 1)
+	while (i < size + 1)
 	{
 		((char *)mall)[i] = '\0';
 		i++;

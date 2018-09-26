@@ -12,86 +12,117 @@
 
 #include "../includes/lem-in.h"
 
-static t_room	*room_in_tab_tube(t_room *room)
+static t_room	*room_in_path_room(t_ant *ant)
 {
-//	printf("room_in_tab_tube\n");
+	printf("room_in_path_room\n");
 	t_tab	*tab;
 
-	tab = room->tube;
+	tab = ant->path_end->room;
 	while (tab->next)
 		tab = tab->next;
-	return (tab->tab[room->check % 100]);
+	return (tab->tab[ant->path_end->room_end % 100]);
+}
+
+static t_room	*room_in_tab_tube(t_room *room)
+{
+//	printf("room_in_tab_tube     room enter = %s  \n", room->name);
+	printf("room_in_tab_tube\n");
+	t_tab	*tab;
+	int		nb;
+
+	if (!room)
+		return (NULL);
+	nb = room->check;
+	tab = room->tube;
+	while (nb > 99)
+	{
+		tab = tab->next;
+		nb -= 100;
+	}
+//	printf("name = %s   check = %d  \n", room->name, room->check);
+	return (tab->tab[nb]);
 }
 
 static t_room	*ptr_room(t_ant *ant, t_room *room)
 {
-//	printf("ptr_room\n");
-	t_ptr	*ptr1;
+//	printf("ptr_room   nb = %d \n", ant->path_end->room_end);
+	printf("ptr_room\n");
 	t_room	*ptr;
 
-	ptr1 = ant->path_end->room_end;
-	room->check--;
 	ptr = room_in_tab_tube(room);
-	room->check++;
-	if (ptr && ptr1->id > 1 && ptr->last_room == -1)
+//	if (ptr)
+//	printf("room = %s    nb = %d\n", ptr->name, ant->path_end->room_end);
+	if (ptr && ant->path_end->room_end > 1 && ptr->last_room == -1)
 	{
 		room->check++;
 		ptr = ptr->next;
 	}
+//	if (ptr)
+//	printf("room = %s\n", ptr->name);
 	return (ptr);
 }
 
 static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
-//	printf("make_ptr_path   room = %s\n", ptr_room->name);
-	t_ptr	*struct_ptr;
-	t_ptr	*ptr2;
+	printf("make_ptr_path\n");
+//	printf("				make_ptr_path   room = %s   check = %d\n", ptr_room->name, ptr_room->check);
+	t_tab	*struct_ptr;
+	t_tab	*tab;
 
 	if (ptr_room == ant->start)
 		return (ant);
-	struct_ptr = memalloc_sterr(sizeof(t_ptr), "make_ptr_path");
-	if (ant->path_end != NULL)
+	tab = ant->path_end->room;
+	ant->path_end->room_end++;
+	if (ant->path_end->room_end != 0 && ant->path_end->room_end % 100 == 0)
 	{
-		ptr2 = ant->path_end->room_end;
-		struct_ptr->back = ptr2;
-		struct_ptr->id = ptr2->id + 1;
-		ptr2->next = struct_ptr;
-		ant->path_end->room_end = struct_ptr;
+		struct_ptr = memalloc_sterr(sizeof(t_tab), "make_ptr_path");
+		while (tab->next)
+			tab = tab->next;
+		tab->next = struct_ptr;
 	}
-	struct_ptr->ptr_room = ptr_room;
-	if (ant->path_end->room_end->ptr_room->name != ptr_room->name)
-	printf("NAME END = |%s|      NAME = |%s|\n", ant->path_end->room_end->ptr_room->name, ptr_room->name);
+	while (tab->next)
+		tab = tab->next;
+	tab->tab[ant->path_end->room_end % 100] = ptr_room;
 	return (ant);
 }
 
 static t_ant	*del_ptr_path(t_ant *ant)
 {
-//	printf("del_ptr_path\n");
-	t_ptr	*ptr;
-	t_ptr	*ptr3;
+	printf("del_ptr_path\n");
+	t_room	*room;
+	t_tab	*tab;
+	t_tab	*tab2;
 
-	ptr = ant->path_end->room_end;
-	ptr->ptr_room->check = 0;
-	ptr3 = ptr->back;
-	ptr3->next = NULL;
-	ant->path_end->room_end = ptr3;
-	ft_bzero(ptr, sizeof(t_ptr));
-	free(ptr);
+	tab = ant->path_end->room;
+	while (tab->next)
+		tab = tab->next;
+	room = tab->tab[ant->path_end->room_end % 100];
+	room->check = 0;
+	tab->tab[ant->path_end->room_end % 100] = 0;
+	ant->path_end->room_end--;
+	if (ant->path_end->room_end % 100 == 99)
+	{
+		tab2 = ant->path_end->room;
+		while (tab2->next->next != NULL)
+			tab2 = tab2->next;
+		tab2->next = NULL;
+		memdel_zero(tab, sizeof(t_tab));
+	}
 	return (ant);
 }
 
 static t_ant	*make_enter_path(t_ant *ant)
 {
-//	printf("make_enter_path\n");
+	printf("make_enter_path\n");
 	t_path	*path;
-	t_ptr	*struct_ptr_in_path;
+	t_tab	*struct_ptr_in_path;
 
 	path = memalloc_sterr(sizeof(t_path), "make_enter_path");
-	struct_ptr_in_path = memalloc_sterr(sizeof(t_ptr), "make_enter_path");
+	struct_ptr_in_path = memalloc_sterr(sizeof(t_tab), "make_enter_path");
 	if (ant->path == NULL)
 	{
 		ant->path = path;
-		ant->path_end = ant->path;
+		ant->path_end = path;
 	}
 	else
 	{
@@ -102,22 +133,29 @@ static t_ant	*make_enter_path(t_ant *ant)
 	}
 	path->id = ant->path_end->id + 1;
 	path->room = struct_ptr_in_path;
-	path->room_end = struct_ptr_in_path;
-	struct_ptr_in_path->ptr_room = ant->start;
+	struct_ptr_in_path->tab[0] = ant->start;
 	return (ant);
 }
 
 t_ant		*valid_path(t_ant *ant)
 {
-//	printf("valid_path\n");
-	t_ptr	*ptr2;
+	printf("valid_path\n");
+	t_tab	*tab;
+	t_room	*room;
+	int		i;
 
-	ptr2 = ant->path_end->room;
+	tab = ant->path_end->room;
 	ant = make_enter_path(ant);
-	while (ptr2 != NULL)
+	while (tab)
 	{
-		ant = make_ptr_path(ant, ptr2->ptr_room);
-		ptr2 = ptr2->next;
+		i = 0;
+		while (tab->tab[i])
+		{
+			room = tab->tab[i];
+			ant = make_ptr_path(ant, room);
+			i++;
+		}
+		tab = tab->next;
 	}
 	ant->firewall++;
 if (ant->firewall % 100 == 0)
@@ -130,7 +168,7 @@ fflush(stdout);
 
 static t_ant	*on_end(t_ant *ant)
 {
-//	printf("on_end\n");
+	printf("on_end\n");
 	ant = valid_path(ant);
 	ant->start->check++;
 	ant = del_ptr_path(ant);
@@ -139,7 +177,7 @@ static t_ant	*on_end(t_ant *ant)
 
 static t_ant	*find_end(t_ant *ant, t_room *ptr, t_room *element)
 {
-//	printf("find_end\n");
+	printf("find_end\n");
 	while (ptr != NULL)
 	{
 		if (ptr == ant->end)
@@ -166,49 +204,55 @@ t_ant			*deep_way(t_ant *ant)
 ant->firewall = 1;
 	element = ant->start;
 	ant = make_enter_path(ant);
-	ptr = room_in_tab_tube(element);
+		ptr = room_in_tab_tube(element);
 	while (element != ant->start || ptr != NULL)
 	{
-	if (element)
-//	printf("\nNAME = |%s|\n", element->name);
+//	if (element)
+//	printf("\n				NAME = |%s|\n", element->name);
 		ptr = room_in_tab_tube(element);
-	if (ptr)
-//	printf("NAME2 = |%s|\n", ptr->name);
+		if (element->check > 1 && element->last_room <= 0 && ptr != NULL)
+		ptr = ptr_room(ant, element);
+//	if (ptr)
+//	printf("				NAME2 = |%s|\n", ptr->name);
 		element->check++;
+		if (ptr && ptr->check == 0 && ptr->tube != NULL)
+		{
+			ant = make_ptr_path(ant, ptr);
+			element = ptr;
+		}
 		if (element == ant->end)
 		{
 			ant = on_end(ant);
 			element = ant->start;
 			ptr = room_in_tab_tube(element);
 		}
-		if (element->last_room == 1 && element != ant->start)
+		else if (element->last_room == 1 && element != ant->start)
 		{
 			ant = find_end(ant, ptr, element);
 			ant = del_ptr_path(ant);
-			element = ant->path_end->room_end->ptr_room;
+			element = room_in_path_room(ant);
 			ptr = room_in_tab_tube(element);
-			element->check++;
+//			element->check++;
 		}
-		if (element->check > 1 && element->last_room <= 0 && ptr != NULL)
-			ptr = ptr_room(ant, element);
 //	if (ptr)
-//	printf("NAME2 = |%s|\n", ptr->name);
+//	printf("				NAME2 = |%s|\n", ptr->name);
 		while (ptr == NULL)
 		{
+		printf("QQQ\n");
 			if (element == ant->start)
 				break ;
 			ant = del_ptr_path(ant);
-			element = ant->path_end->room_end->ptr_room;
-			element->check++;
+			element = room_in_path_room(ant);
+//			element->check++;
+//	if (element)
+//	printf("ELEMENT = |%s|\n", element->name);
 			ptr = ptr_room(ant, element);
-		}
-		if (ptr && ptr->check == 0 && ptr->tube != NULL)
-		{
-			ant = make_ptr_path(ant, ptr);
-			element = ptr;
+//	if (ptr)
+//	printf("PTR = |%s|\n", ptr->name);
 		}
 //		if (ant->firewall % 400 == 0)
 //			break ;
 	}
+//	printf("		ANT->LAST ROOM = %d\n", ant->start->last_room);
 	return (ant);
 }

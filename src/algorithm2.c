@@ -13,7 +13,7 @@
 #include "../includes/lem-in.h"
 static void			put_str_id_path(t_ant *ant)
 {
-//	printf("put_str_id_path   nb_path = %d\n", ant->nb_path);
+	printf("put_str_id_path   nb_path = %d\n", ant->nb_path);
 	t_room	*room;
 	t_path	*path;
 	int		i;
@@ -58,34 +58,47 @@ static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 t_ant				*put_id_path(t_ant *ant)
 {
 	t_path	*path;
-	t_ptr	*ptr2;
+	t_room	*room;
+	t_tab	*tab;
+	int		i;
 
 	put_str_id_path(ant);
 	path = ant->path;
 	while (path != NULL)
 	{
-		ptr2 = path->room;
-		while (ptr2 != NULL)
+		tab = path->room;
+		while (tab)
 		{
-//	printf("TEST2   id path = %d    ptr_room = %p\n", path->id, ptr2->ptr_room);
-//	fflush(stdout);
-			if (ptr2->ptr_room != ant->start && ptr2->ptr_room != ant->end)
-				ptr2->ptr_room->id_path[path->id] = '1';
-//	printf("TEST1\n");
-//	fflush(stdout);
-			ptr2 = ptr2->next;
+			i = 0;
+			while (tab->tab[i])
+			{
+				room = tab->tab[i];
+				if (room != ant->start && room != ant->end)
+					room->id_path[path->id] = '1';
+				i++;
+				if (i % 100 == 0)
+					tab = tab->next;
+			}
+			tab = tab->next;
 		}
 		path = path->next;
 	}
-//	printf("TEST\n");
 	path = ant->path;
 	while (path != NULL)
 	{
-		ptr2 = path->room;
-		while (ptr2 != NULL)
+		tab = path->room;
+		while (tab)
 		{
-			ant = id_path(ant, path, ptr2->ptr_room);
-			ptr2 = ptr2->next;
+			i = 0;
+			while (tab->tab[i])
+			{
+				room = tab->tab[i];
+				ant = id_path(ant, path, room);
+				i++;
+				if (i % 100 == 0)
+					tab = tab->next;
+			}
+			tab = tab->next;
 		}
 		path = path->next;
 	}

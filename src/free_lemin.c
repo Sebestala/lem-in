@@ -12,15 +12,16 @@
 
 #include "../includes/lem-in.h"
 
-static void		delete_last_path2(t_ptr *ptr2)
+static void		delete_last_path2(t_tab *tab)
 {
-	t_ptr	*ptr;
+	t_tab	*ptr;
 
-	while (ptr2 != NULL)
+	while (tab != NULL)
 	{
-		ptr = ptr2;
-		ptr2 = ptr2->next;
-		memdel_zero(ptr, sizeof(t_ptr));
+		ptr = tab;
+//		ft_memdel(ptr->tab);
+		tab = tab->next;
+		memdel_zero(ptr, sizeof(t_tab));
 	}
 }
 
@@ -37,7 +38,10 @@ void			delete_last_path(t_ant *ant, t_path *ptr1)
 		ptr2->next = NULL;
 	}
 	else
+	{
 		ant->path = NULL;
+		ant->path_end = NULL;
+	}
 	path = ptr1;
 	ant->path_end = ant->path_end->back;
 	memdel_zero(path, sizeof(t_path));

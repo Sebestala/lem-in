@@ -24,7 +24,7 @@ typedef	struct		s_tab t_tab;
 
 typedef	struct		s_tab
 {
-	void			*tab[100];
+	void			*tab[101];
 	struct s_tab	*next;
 }					t_tab;
 
@@ -73,8 +73,8 @@ typedef	struct		s_path
 	int				id;
 	int				power;
 	char			*id_path;
-	t_ptr			*room_end;
-	t_ptr			*room;
+	int				room_end;
+	t_tab			*room;
 	struct s_path	*next;
 	struct s_path	*back;
 }					t_path;
@@ -92,7 +92,6 @@ typedef	struct		s_ant
 	char			*line;
 	t_room			*room;
 	t_room			*room_end;
-//	t_room			**room_tab;
 	t_room			*start;
 	t_room			*end;
 	t_path			*path;

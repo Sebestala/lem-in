@@ -102,23 +102,25 @@ t_ant			*begin_answer(t_ant *ant)
 
 static t_ant	*answer2(t_ant *ant, t_pawn *pawn)
 {
+	t_room	*room;
+	t_tab	*tab;
 	int		i;
-	t_ptr	*ptr;
 
-	ptr = pawn->path->room;
-	i = 1;
+	tab = pawn->path->room;
+	i = pawn->check;
+	while (tab->next && pawn->check / 100 >= 1)
+	{
+		i -= 100;
+		tab = tab->next;
+	}
+	room = tab->tab[i];
 	write(1, "L", 1);
 	ft_putnbr(pawn->id_pawn);
 	write(1, "-", 1);
-	while (i <= pawn->check)
-	{
-		ptr = ptr->next;
-		i++;
-	}
-	ft_putstr(ptr->ptr_room->name);
+	ft_putstr(room->name);
 	if (ant->i != ant->best_poss->nb_path)
 		write(1, " ", 1);
-	if (ptr->ptr_room == ant->end)
+	if (room == ant->end)
 		pawn->check = -1;
 	return (ant);
 }
@@ -153,6 +155,6 @@ t_ant			*answer(t_ant *ant)
 			break ;
 		write(1, "\n", 1);
 	}
-	printf("\nI = %d\n", i);
+	printf("\nI = %d    NB PATH = %d\n", i, ant->nb_path);
 	return (ant);
 }
