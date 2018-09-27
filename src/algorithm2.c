@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
+
 static void			put_str_id_path(t_ant *ant)
 {
-	printf("put_str_id_path   nb_path = %d\n", ant->nb_path);
+//	printf("put_str_id_path   nb_path = %d\n", ant->nb_path);
 	t_room	*room;
 	t_path	*path;
 	int		i;

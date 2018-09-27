@@ -14,7 +14,7 @@
 
 static t_room	*room_in_path_room(t_ant *ant)
 {
-	printf("room_in_path_room\n");
+//	printf("room_in_path_room\n");
 	t_tab	*tab;
 
 	tab = ant->path_end->room;
@@ -26,7 +26,7 @@ static t_room	*room_in_path_room(t_ant *ant)
 static t_room	*room_in_tab_tube(t_room *room)
 {
 //	printf("room_in_tab_tube     room enter = %s  \n", room->name);
-	printf("room_in_tab_tube\n");
+//	printf("room_in_tab_tube\n");
 	t_tab	*tab;
 	int		nb;
 
@@ -46,7 +46,7 @@ static t_room	*room_in_tab_tube(t_room *room)
 static t_room	*ptr_room(t_ant *ant, t_room *room)
 {
 //	printf("ptr_room   nb = %d \n", ant->path_end->room_end);
-	printf("ptr_room\n");
+//	printf("ptr_room\n");
 	t_room	*ptr;
 
 	ptr = room_in_tab_tube(room);
@@ -64,7 +64,7 @@ static t_room	*ptr_room(t_ant *ant, t_room *room)
 
 static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
-	printf("make_ptr_path\n");
+//	printf("make_ptr_path\n");
 //	printf("				make_ptr_path   room = %s   check = %d\n", ptr_room->name, ptr_room->check);
 	t_tab	*struct_ptr;
 	t_tab	*tab;
@@ -88,7 +88,7 @@ static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 
 static t_ant	*del_ptr_path(t_ant *ant)
 {
-	printf("del_ptr_path\n");
+//	printf("del_ptr_path\n");
 	t_room	*room;
 	t_tab	*tab;
 	t_tab	*tab2;
@@ -113,7 +113,7 @@ static t_ant	*del_ptr_path(t_ant *ant)
 
 static t_ant	*make_enter_path(t_ant *ant)
 {
-	printf("make_enter_path\n");
+//	printf("make_enter_path\n");
 	t_path	*path;
 	t_tab	*struct_ptr_in_path;
 
@@ -139,7 +139,7 @@ static t_ant	*make_enter_path(t_ant *ant)
 
 t_ant		*valid_path(t_ant *ant)
 {
-	printf("valid_path\n");
+//	printf("valid_path\n");
 	t_tab	*tab;
 	t_room	*room;
 	int		i;
@@ -158,7 +158,7 @@ t_ant		*valid_path(t_ant *ant)
 		tab = tab->next;
 	}
 	ant->firewall++;
-if (ant->firewall % 100 == 0)
+if (ant->firewall % 1000 == 0)
 {
 printf("ID PATH  = |%d|\n", ant->firewall);
 fflush(stdout);
@@ -168,7 +168,7 @@ fflush(stdout);
 
 static t_ant	*on_end(t_ant *ant)
 {
-	printf("on_end\n");
+//	printf("on_end\n");
 	ant = valid_path(ant);
 	ant->start->check++;
 	ant = del_ptr_path(ant);
@@ -177,7 +177,7 @@ static t_ant	*on_end(t_ant *ant)
 
 static t_ant	*find_end(t_ant *ant, t_room *ptr, t_room *element)
 {
-	printf("find_end\n");
+//	printf("find_end\n");
 	while (ptr != NULL)
 	{
 		if (ptr == ant->end)
@@ -236,9 +236,9 @@ ant->firewall = 1;
 		}
 //	if (ptr)
 //	printf("				NAME2 = |%s|\n", ptr->name);
-		while (ptr == NULL)
+		while (ptr == NULL || (ant->path_end->id > 1 && ant->path_end->room_end > 5))
 		{
-		printf("QQQ\n");
+//		printf("QQQ\n");
 			if (element == ant->start)
 				break ;
 			ant = del_ptr_path(ant);
