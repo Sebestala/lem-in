@@ -28,6 +28,7 @@ void			delete_last_path(t_ant *ant, t_path *ptr1)
 {
 	t_path	*ptr2;
 	t_path	*path;
+	t_tab2	*tab2;
 
 	ft_strdel(&ptr1->id_path);
 	delete_last_path2(ptr1->room);
@@ -37,12 +38,11 @@ void			delete_last_path(t_ant *ant, t_path *ptr1)
 		ptr2->next = NULL;
 	}
 	else
-	{
-		ant->path = NULL;
 		ant->path_end = NULL;
-	}
 	path = ptr1;
 	ant->path_end = ant->path_end->back;
+	tab2 = ant->path[ant->path_end->id / 1000];
+	tab2->tab2[ant->path_end->id % 1000] = NULL;
 	memdel_zero(path, sizeof(t_path));
 }
 
@@ -132,17 +132,17 @@ static void	delete_all_room(t_room *room, t_tab *ptr2)
 
 void		delete_lemin(t_ant *ant)
 {
-	t_path	*ptr;
+//	t_path	*ptr;
 
 	delete_all_poss(ant);
-	ptr =  ant->path;
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	while (ptr != NULL)
-	{
-		ptr = ptr->back;
-		delete_last_path(ant, ant->path_end);
-	}
+//	ptr =  ant->path;
+//	while (ptr->next != NULL)
+//		ptr = ptr->next;
+//	while (ptr != NULL)
+//	{
+//		ptr = ptr->back;
+//		delete_last_path(ant, ant->path_end);
+//	}
 	delete_all_pawn(ant);
 	delete_all_room(ant->room, NULL);
 	ft_strdel(&ant->line);

@@ -103,7 +103,6 @@ int				main(void)
 	printf("PUT ID PATH   nb = %d\n", ant->nb_path);
 	fflush(stdout);
 	ant = put_id_path(ant);
-//	fct_test1(ant);
 	printf("POSSIBILITY\n");
 	fflush(stdout);
 	if (!ant->path)

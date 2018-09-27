@@ -12,6 +12,32 @@
 
 #include "../includes/lem-in.h"
 
+static void		put_path_in_tab2(t_ant *ant, t_path *path)
+{
+	t_tab2	*tab;
+	int		i;
+
+	i = ant->path_end->id;
+	if (i % 1000 == 0)
+	{
+		tab = memalloc_sterr(sizeof(t_tab2), "make_tab2");
+		ant->path[i / 1000] = tab;
+	}
+	tab = ant->path[i / 1000];
+	tab->tab2[i % 1000] = path;
+	fflush(stdout);
+	printf("I = %d\n", i);
+}
+
+static void		make_tab2(t_ant *ant, t_path *path)
+{
+	t_tab2	*tab;
+
+	tab = memalloc_sterr(sizeof(t_tab2), "make_tab2");
+	ant->path[0] = tab;
+	tab->tab2[0] = path;
+}
+
 static t_room	*room_in_path_room(t_ant *ant)
 {
 //	printf("room_in_path_room\n");
@@ -119,9 +145,9 @@ static t_ant	*make_enter_path(t_ant *ant)
 
 	path = memalloc_sterr(sizeof(t_path), "make_enter_path");
 	struct_ptr_in_path = memalloc_sterr(sizeof(t_tab), "make_enter_path");
-	if (ant->path == NULL)
+	if (!ant->path[0])
 	{
-		ant->path = path;
+		make_tab2(ant, path);
 		ant->path_end = path;
 	}
 	else
@@ -130,6 +156,7 @@ static t_ant	*make_enter_path(t_ant *ant)
 		path->back = ant->path_end;
 		ant->path_end->next = path;
 		ant->path_end = path;
+		put_path_in_tab2(ant, path);
 	}
 	path->id = ant->path_end->id + 1;
 	path->room = struct_ptr_in_path;

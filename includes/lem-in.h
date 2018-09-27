@@ -12,6 +12,7 @@
 
 #ifndef LEM_IN_H
 # define LEM_IN_H
+# define MAX_PATH 1000
 # include "../libft/src/libft.h"
 
 typedef	struct		s_ptr t_ptr;
@@ -21,6 +22,11 @@ typedef	struct		s_ant t_ant;
 typedef	struct		s_poss t_poss;
 typedef	struct		s_pawn t_pawn;
 typedef	struct		s_tab t_tab;
+
+typedef	struct		s_tab2
+{
+	void			*tab2[1001];
+}					t_tab2;
 
 typedef	struct		s_tab
 {
@@ -91,7 +97,8 @@ typedef	struct		s_ant
 	t_room			*room_end;
 	t_room			*start;
 	t_room			*end;
-	t_path			*path;
+	t_tab2			*path[MAX_PATH];
+//	t_path			*path;
 	t_path			*path_end;
 	t_poss			*poss;
 	t_poss			*poss_end;

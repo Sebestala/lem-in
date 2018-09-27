@@ -151,67 +151,75 @@ void		fct_test2(t_ant *ant)
 
 void		fct_test1(t_ant *ant)
 {
+	t_tab2	*tab2;
 	t_path	*path;
-	t_room	*room;
-	t_tab	*tab;
-	int		i = 0;
-	int		j = 0;
+//	t_room	*room;
+//	t_tab	*tab;
+//	int		i = 0;
+//	int		j = 0;
+	int		k = 0;
+	int		l = 0;
 
-	printf("PATH\n");
+	printf("PATH   ID PATH END = %d\n", ant->path_end->id);
 	fflush(stdout);
-	path = ant->path;
-	tab = path->room;
-	while (path != NULL)
+	while (ant->path[k])
 	{
-		printf("\n\n	PATH %d   POWER = %d   ID = ", path->id, path->power);
-		fflush(stdout);
-		i = 0; 
-		while (path->id_path[i])
+		tab2 = ant->path[k];
+		l = 0;
+		while (tab2->tab2[l])
 		{
-			if (path->id_path[i] == '1')
-			{
-				printf("{%d} ", i);
-				fflush(stdout);
-			}
-			i++;
-		}
-	printf("\n\n");
-	fflush(stdout);
-		tab = path->room;
-		j = 0;
-		while (tab->tab[j])
-		{
-			i = 0;
-			room = tab->tab[j];
-			printf("	%s   id = ", room->name);
+			path = tab2->tab2[l];
+			printf("\n\n	L = %d	PATH %d   POWER = %d   ID = ", l, path->id, path->power);
 			fflush(stdout);
-			while (room->id_path[i])
+//			i = 0; 
+/*			while (path->id_path[i])
 			{
-				if (room->id_path[i] == '1')
+				if (path->id_path[i] == '1')
 				{
 					printf("{%d} ", i);
 					fflush(stdout);
 				}
 				i++;
 			}
-			j++;
-	printf("\n\n");
-	fflush(stdout);
-		}
-		path = path->next;
-	}
-	int k = 1;
-	printf("NB_PATH = %d  TAB = ", ant->nb_path);
-	fflush(stdout);
-	while (k <= ant->nb_path)
-	{
-		if (ant->tab_id[k] == '1')
-		{
-			printf("{%d} ", k);
-			fflush(stdout);
+*/		printf("\n\n");
+		fflush(stdout);
+//			tab = path->room;
+//			j = 0;
+/*			while (tab->tab[j])
+			{
+				i = 0;
+				room = tab->tab[j];
+				printf("	%s   id = ", room->name);
+				fflush(stdout);
+				while (room->id_path[i])
+				{
+					if (room->id_path[i] == '1')
+					{
+						printf("{%d} ", i);
+						fflush(stdout);
+					}
+					i++;
+				}
+				j++;
+		printf("\n\n");
+		fflush(stdout);
+			}
+*/			l++;
 		}
 		k++;
 	}
+/*	int m = 1;
+	printf("NB_PATH = %d  TAB = ", ant->nb_path);
+	fflush(stdout);
+	while (m <= ant->nb_path)
+	{
+		if (ant->tab_id[m] == '1')
+		{
+			printf("{%d} ", m);
+			fflush(stdout);
+		}
+		m++;
+	}
 	printf("\n\n");
 	fflush(stdout);
-}
+*/}

@@ -17,10 +17,12 @@ static void			put_str_id_path(t_ant *ant)
 //	printf("put_str_id_path   nb_path = %d\n", ant->nb_path);
 	t_room	*room;
 	t_path	*path;
+	t_tab2	*tab;
 	int		i;
+	int		j;
+	int		k;
 
 	room = ant->room;
-	path = ant->path;
 	while (room)
 	{
 		i = 0;
@@ -29,13 +31,35 @@ static void			put_str_id_path(t_ant *ant)
 			room->id_path[i++] = '0';
 		room = room->next;
 	}
-	while (path)
+	printf("TEST\n");
+	fflush(stdout);
+	i = 0;
+	while (ant->path[i])
 	{
-		i = 0;
-		path->id_path = ft_strnew(ant->nb_path + 2);
-		while (i <= ant->nb_path + 1)
-			path->id_path[i++] = '0';
-		path = path->next;
+	printf("TEST1\n");
+	fflush(stdout);
+		tab = ant->path[i];
+	printf("TEST1.1\n");
+	fflush(stdout);
+		j = 0;
+		while (tab->tab2[j])
+		{
+	printf("TEST2\n");
+	fflush(stdout);
+			k = 0;
+			path = tab->tab2[j];
+	printf("TEST2.1\n");
+	fflush(stdout);
+			path->id_path = ft_strnew(ant->nb_path + 2);
+	printf("TEST2.2\n");
+	fflush(stdout);
+			while (k <= ant->nb_path + 1)
+				path->id_path[k++] = '0';
+	printf("TEST2.3\n");
+	fflush(stdout);
+			j++;
+		}
+		i++;
 	}
 }
 
@@ -60,48 +84,65 @@ t_ant				*put_id_path(t_ant *ant)
 {
 	t_path	*path;
 	t_room	*room;
+	t_tab2	*tab2;
 	t_tab	*tab;
 	int		i;
+	int		j;
+	int		k;
 
 	put_str_id_path(ant);
-	path = ant->path;
-	while (path != NULL)
+	j = 0;
+	while (ant->path[j])
 	{
-		tab = path->room;
-		while (tab)
+		tab2 = ant->path[j];
+		k = 0;
+		while (tab2->tab2[k])
 		{
-			i = 0;
-			while (tab->tab[i])
+			path = tab2->tab2[k];
+			tab = path->room;
+			while (tab)
 			{
-				room = tab->tab[i];
-				if (room != ant->start && room != ant->end)
-					room->id_path[path->id] = '1';
-				i++;
-				if (i % 100 == 0)
-					tab = tab->next;
+				i = 0;
+				while (tab->tab[i])
+				{
+					room = tab->tab[i];
+					if (room != ant->start && room != ant->end)
+						room->id_path[path->id] = '1';
+					i++;
+					if (i % 100 == 0)
+						tab = tab->next;
+				}
+				tab = tab->next;
 			}
-			tab = tab->next;
+			k++;
 		}
-		path = path->next;
+		j++;
 	}
-	path = ant->path;
-	while (path != NULL)
+	j = 0;
+	while (ant->path[j])
 	{
-		tab = path->room;
-		while (tab)
+		tab2 = ant->path[j];
+		k = 0;
+		while (tab2->tab2[k])
 		{
-			i = 0;
-			while (tab->tab[i])
+			path = tab2->tab2[k];
+			tab = path->room;
+			while (tab)
 			{
+				i = 0;
+				while (tab->tab[i])
+				{
 				room = tab->tab[i];
 				ant = id_path(ant, path, room);
 				i++;
 				if (i % 100 == 0)
 					tab = tab->next;
+				}
+				tab = tab->next;
 			}
-			tab = tab->next;
+			k++;
 		}
-		path = path->next;
+		j++;
 	}
 	return (ant);
 }
