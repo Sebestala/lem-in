@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/26 19:01:42 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/18 16:48:13 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 19:46:40 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int				get_next_line(const int fd, char **line)
 	char			*buf[2048];
 	int				i;
 
-	if (fd < 0 || fd > 2048 || BUFF_SIZE <= 0 || !line)
+	if (fd < 0 || fd > 1048 || BUFF_SIZE <= 0 || !line)
 		return (-1);
 	i = gnl2(fd, line, copy, buf);
 	if (i == -1)

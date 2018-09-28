@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 00:10:47 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/19 20:35:13 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 19:34:56 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,15 +159,12 @@ t_ant				*init_room(t_ant *ant)
 {
 	while (get_next_line(0, &ant->line))
 	{
-//		ft_putendl(ant->line);
+		ft_putendl(ant->line);
 		ant = init_ant(ant);
 		ant = comment(ant);
 		ant = command(ant);
 		if (ant->check == 0 && !is_str_on(ant->line, " ") && ant->line[0] && ant->line[0] != '#')
-		{
 			ant->check = 1;
-//			make_room_tab(ant);
-		}
 		if (ant->check == 0)
 		{
 			if (ant->line[0] && ant->line[0] != '#')

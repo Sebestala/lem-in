@@ -6,23 +6,14 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/31 16:18:32 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/19 21:43:16 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 18:57:34 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
 
-static void			put_str_id_path(t_ant *ant)
+static void			put_str_id_path2(t_ant *ant, t_room *room, int i)
 {
-//	printf("put_str_id_path   nb_path = %d\n", ant->nb_path);
-	t_room	*room;
-	t_path	*path;
-	t_tab2	*tab;
-	int		i;
-	int		j;
-	int		k;
-
-	room = ant->room;
 	while (room)
 	{
 		i = 0;
@@ -31,7 +22,15 @@ static void			put_str_id_path(t_ant *ant)
 			room->id_path[i++] = '0';
 		room = room->next;
 	}
-	i = 0;
+}
+
+static void			put_str_id_path(t_ant *ant, t_room *room, int i, int j)
+{
+	t_path	*path;
+	t_tab2	*tab;
+	int		k;
+
+	put_str_id_path2(ant, room, i);
 	while (ant->path[i])
 	{
 		tab = ant->path[i];
@@ -51,7 +50,6 @@ static void			put_str_id_path(t_ant *ant)
 
 static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 {
-//	printf("id_path\n");
 	int	i;
 
 	i = 0;
@@ -66,115 +64,80 @@ static t_ant		*id_path(t_ant *ant, t_path *path, t_room *room)
 	return (ant);
 }
 
-t_ant				*put_id_path(t_ant *ant)
+static void		put_id_path3(t_ant *ant, t_tab *tab, t_path *path)
+{
+	int		i;
+	t_room	*room;
+
+	while (tab)
+	{
+		i = 0;
+		while (tab->tab[i])
+		{
+			room = tab->tab[i];
+			if (room != ant->start && room != ant->end)
+				room->id_path[path->id] = '1';
+			i++;
+		}
+		tab = tab->next;
+	}
+}
+
+static void		put_id_path2(t_ant *ant, int j, int k)
 {
 	t_path	*path;
-	t_room	*room;
 	t_tab2	*tab2;
-	t_tab	*tab;
-	int		i;
-	int		j;
-	int		k;
 
-	put_str_id_path(ant);
-	j = 0;
-	printf("1\n");
-	fflush(stdout);
 	while (ant->path[j])
 	{
-	printf("2\n");
-	fflush(stdout);
 		tab2 = ant->path[j];
 		k = 0;
-	printf("2.1\n");
-	fflush(stdout);
 		while (tab2->tab2[k])
 		{
-	printf("3\n");
-	fflush(stdout);
 			path = tab2->tab2[k];
-	printf("3.1\n");
-	fflush(stdout);
-			tab = path->room;
-	printf("3.2\n");
-	fflush(stdout);
-			while (tab)
-			{
-	printf("4\n");
-	fflush(stdout);
-				i = 0;
-				while (tab->tab[i])
-				{
-	printf("5\n");
-	fflush(stdout);
-					room = tab->tab[i];
-	printf("5.1\n");
-	fflush(stdout);
-					if (room != ant->start && room != ant->end)
-						room->id_path[path->id] = '1';
-	printf("5.2\n");
-	fflush(stdout);
-					i++;
-					if (i % 100 == 0)
-						tab = tab->next;
-	printf("5.3\n");
-	fflush(stdout);
-				}
-				tab = tab->next;
-			}
+			put_id_path3(ant, path->room, path);
 			k++;
 		}
 		j++;
 	}
-	j = 0;
-	printf("6\n");
-	fflush(stdout);
+}
+
+static void		put_id_path1(t_ant *ant, t_tab *tab, t_path *path)
+{
+	int		i;
+	t_room	*room;
+
+	while (tab)
+	{
+		i = 0;
+		while (tab->tab[i])
+		{
+			room = tab->tab[i];
+			ant = id_path(ant, path, room);
+			i++;
+		}
+		tab = tab->next;
+	}
+}
+
+t_ant				*put_id_path(t_ant *ant, int j, int k)
+{
+	t_path	*path;
+	t_tab2	*tab2;
+
+	put_str_id_path(ant, ant->room, 0, 0);
+	put_id_path2(ant, j, k);
 	while (ant->path[j])
 	{
-	printf("6.1\n");
-	fflush(stdout);
 		tab2 = ant->path[j];
-	printf("6.2\n");
-	fflush(stdout);
 		k = 0;
 		while (tab2->tab2[k])
 		{
-	printf("7\n");
-	fflush(stdout);
 			path = tab2->tab2[k];
-	printf("7.1\n");
-	fflush(stdout);
-			tab = path->room;
-	printf("7.2\n");
-	fflush(stdout);
-			while (tab)
-			{
-				i = 0;
-	printf("8\n");
-	fflush(stdout);
-				while (tab->tab[i])
-				{
-	printf("9\n");
-	fflush(stdout);
-				room = tab->tab[i];
-	printf("9.1\n");
-	fflush(stdout);
-				ant = id_path(ant, path, room);
-	printf("9.2\n");
-	fflush(stdout);
-				i++;
-				if (i % 100 == 0)
-					tab = tab->next;
-	printf("9.3\n");
-	fflush(stdout);
-				}
-				tab = tab->next;
-			}
+			put_id_path1(ant, path->room, path);
 			k++;
 		}
 		j++;
 	}
-	printf("10\n");
-	fflush(stdout);
 	return (ant);
 }

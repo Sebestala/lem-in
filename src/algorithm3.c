@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 18:38:41 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 16:45:17 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 19:04:18 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static t_path	*del_path2(t_ant *ant, int id)
 {
-//	printf("del_path2\n");
 	t_tab2	*tab2;
 	t_path	*path;
 	int		i;
@@ -40,13 +39,10 @@ static t_path	*del_path2(t_ant *ant, int id)
 
 static void		new_ptr_id(t_ant *ant, t_path *path)
 {
-//	printf("new_ptr_id\n");
 	t_ptr	*ptr;
 	t_poss	*poss;
 	t_ptr	*ptr1;
 
-//	printf("TESTEUH   PATH ID = %d\n", path->id);
-//	fflush(stdout);
 	poss = ant->poss_end;
 	ptr = memalloc_sterr(sizeof(t_ptr), "new_ptr_id");
 	ptr1 = poss->id_path;
@@ -62,7 +58,6 @@ static void		new_ptr_id(t_ant *ant, t_path *path)
 
 static t_poss	*new_value(t_ant *ant, t_poss *poss)
 {
-//	printf("new_value\n");
 	t_ptr	*ptr;
 
 	ptr = poss->id_path;
@@ -80,7 +75,6 @@ static t_poss	*new_value(t_ant *ant, t_poss *poss)
 
 static t_ant	*copy_poss(t_ant *ant)
 {
-//	printf("copy_poss\n");
 	t_poss	*copy;
 	t_poss	*poss;
 	t_ptr	*ptr;
@@ -104,7 +98,6 @@ static t_ant	*copy_poss(t_ant *ant)
 
 static t_ant	*start_poss(t_ant *ant)
 {
-//	printf("start_poss\n");
 	t_poss		*poss;
 	t_path		*path;
 	t_tab2		*tab2;
@@ -116,8 +109,6 @@ static t_ant	*start_poss(t_ant *ant)
 	ant->poss_end = poss;
 	poss->id_poss = 1;
 	poss->nb_path = 1;
-//	printf("TEST  id = %d     power = %d\n", path->id, path->power);
-//	fflush(stdout);
 	poss->total_power = path->power;
 	new_ptr_id(ant, path);
 	ant = copy_poss(ant);
@@ -126,7 +117,6 @@ static t_ant	*start_poss(t_ant *ant)
 
 static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 {
-//	printf("modif_tab\n");
 	int		i;
 	t_ptr	*ptr;
 
@@ -134,13 +124,9 @@ static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 	i = 0;
 	while (i <= ant->nb_path)
 		ant->tab_id[i++] = '0';
-//	printf("TAB = |%s|   ID = %d     ID_PATH = %d\n", ant->tab_id, id, poss->id_path->id);
-//	fflush(stdout);
 	i = 0;
 	while (i <= id || i <= poss->id_path->id)
 		ant->tab_id[i++] = '1';
-//	printf("TAB = |%s|   ID = %d     ID_PATH = %d\n", ant->tab_id, id, poss->id_path->id);
-//	fflush(stdout);
 	while (ptr != NULL)
 	{
 		i = 0;
@@ -152,34 +138,35 @@ static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 		}
 		ptr = ptr->next;
 	}
-//	printf("TAB = |%s|   ID = %d     ID_PATH = %d\n", ant->tab_id, id, poss->id_path->id);
-//	fflush(stdout);
 	return (poss);
+}
+
+static t_ant	*del_path1(t_ant *ant, t_poss *poss, t_ptr *ptr1)
+{
+	t_path	*ptr;
+
+	ptr1->id++;
+	if (ptr1->id > ant->nb_path)
+	{
+		poss->nb_path = 0;
+		return (ant);
+	}
+	ptr = del_path2(ant, ptr1->id);
+	ptr1->ptr_path = ptr;
+	ant->j = ptr1->id;
+	ant = copy_poss(ant);
+	return (ant);
 }
 
 static t_ant	*del_path(t_ant *ant, t_poss *poss)
 {
-//	printf("del_path\n");
-	t_path	*ptr;
 	t_ptr	*ptr1;
 	t_ptr	*ptr3;
 
 	poss = new_value(ant, poss);
 	ptr1 = poss->id_path;
 	if (poss->nb_path == 1)
-	{
-		ptr1->id++;
-		if (ptr1->id > ant->nb_path)
-		{
-			poss->nb_path = 0;
-			return (ant);
-		}
-		ptr = del_path2(ant, ptr1->id);
-		ptr1->ptr_path = ptr;
-		ant->j = ptr1->id;
-		ant = copy_poss(ant);
-		return (ant);
-	}
+		return (del_path1(ant, poss, ptr1));
 	ptr1 = poss->id_path;
 	while (ptr1 && ptr1->next->next)
 		ptr1 = ptr1->next;
@@ -192,7 +179,6 @@ static t_ant	*del_path(t_ant *ant, t_poss *poss)
 
 static void		new_poss(t_ant *ant, int id)
 {
-//	printf("new_poss   ANT->I = %d\n", id);
 	t_path	*path;
 	t_tab2	*tab2;
 	int		i;
@@ -200,7 +186,6 @@ static void		new_poss(t_ant *ant, int id)
 
 	i = 0;
 	j = 0;
-//	ant->j = ant->i;
 	while (j >= 0 && ant->path[i])
 	{
 		j = 0;
@@ -218,10 +203,8 @@ static void		new_poss(t_ant *ant, int id)
 	ant = copy_poss(ant);
 }
 
-t_ant			*possibility(t_ant *ant)
+t_ant			*possibility(t_ant *ant, t_poss *poss)
 {
-	t_poss	*poss;
-
 	ant->tab_id = memalloc_sterr((ant->nb_path + 1) * sizeof(char), "main");
 	ant = start_poss(ant);
 	poss = ant->poss->next;

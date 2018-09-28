@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/19 19:56:42 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 19:03:46 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef	struct		s_ant
 	int				j;
 	int				power;
 	int				check;
-	int				firewall;
 	int				nb_ant;
 	int				nb_path;
 	int				*verif_path_answer;
@@ -97,7 +96,6 @@ typedef	struct		s_ant
 	t_room			*start;
 	t_room			*end;
 	t_tab2			*path[MAX_PATH];
-//	t_path			*path;
 	t_path			*path_end;
 	t_poss			*poss;
 	t_poss			*poss_end;
@@ -114,8 +112,8 @@ int					verif_name(t_ant *ant, char *name2);
 t_ant				*init_ant(t_ant *ant);
 t_ant				*find_final_room(t_ant *ant);
 t_ant				*deep_way(t_ant *ant);
-t_ant				*put_id_path(t_ant *ant);
-t_ant				*possibility(t_ant *ant);
+t_ant				*put_id_path(t_ant *ant, int j, int k);
+t_ant				*possibility(t_ant *ant, t_poss *poss);
 t_ant				*choose_best_poss(t_ant *ant);
 t_ant				*begin_answer(t_ant *ant);
 t_ant				*answer(t_ant *ant);
@@ -123,7 +121,6 @@ void				delete_last_path(t_ant *ant, t_path *ptr1);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
 void				delete_lemin(t_ant *ant);
-//void				make_room_tab(t_ant *ant);
 void				fct_test(t_ant *ant);
 void				fct_test1(t_ant *ant);
 void				fct_test2(t_ant *ant);

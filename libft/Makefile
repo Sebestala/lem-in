@@ -6,7 +6,7 @@
 #    By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/01 13:58:01 by sgarcia           #+#    #+#              #
-#    Updated: 2018/09/18 16:45:32 by sgarcia          ###   ########.fr        #
+#    Updated: 2018/09/28 18:26:10 by sgarcia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ SRC =		ft_bzero.c				\
 			strdup_free.c			\
 			first_occ_of_char.c		\
 			strdup_free.c			\
+			strjoin_free.c			\
 			strjoin_free1.c			\
 			strjoin_free2.c			\
 			atoi_end_index.c		\

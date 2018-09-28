@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:45:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/12 16:49:08 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 19:17:13 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,34 @@ void		delete_last_poss(t_ant *ant)
 	memdel_zero(poss, sizeof(t_poss));
 }
 
+static void	delete_all_path(t_ant *ant, int i, int j)
+{
+	t_tab2	*tab2;
+	t_tab2	*tab3;
+	t_path	*path;
+
+	tab3 = NULL;
+	while (ant->path[i])
+	{
+		j = 0;
+		tab2 = ant->path[i];
+		if (tab3)
+			memdel_zero(tab3, sizeof(t_tab2));
+		while (tab2->tab2[j])
+		{
+			path = tab2->tab2[j];
+			delete_last_path2(path->room);
+			ft_strdel(&path->id_path);
+			memdel_zero(path, sizeof(t_path));
+			j++;
+		}
+		i++;
+		tab3 = tab2;
+	}
+	memdel_zero(tab3, sizeof(t_tab2));
+	ant->path_end = NULL;
+}
+
 static void	delete_all_poss(t_ant *ant)
 {
 	t_ptr	*ptr2;
@@ -110,7 +138,6 @@ static void	delete_all_room(t_room *room, t_tab *ptr2)
 		ptr2 = room->tube;
 		while (ptr2)
 		{
-//			ft_memdel(ptr2->tab);
 			ptr3 = ptr2;
 			ptr2 = ptr2->next;
 			memdel_zero(ptr3, sizeof(t_tab));
@@ -125,17 +152,9 @@ static void	delete_all_room(t_room *room, t_tab *ptr2)
 
 void		delete_lemin(t_ant *ant)
 {
-//	t_path	*ptr;
-
+	memdel_zero(ant->verif_path_answer, sizeof(int) * ant->best_poss->nb_path);
 	delete_all_poss(ant);
-//	ptr =  ant->path;
-//	while (ptr->next != NULL)
-//		ptr = ptr->next;
-//	while (ptr != NULL)
-//	{
-//		ptr = ptr->back;
-//		delete_last_path(ant, ant->path_end);
-//	}
+	delete_all_path(ant, 0, 0);
 	delete_all_pawn(ant);
 	delete_all_room(ant->room, NULL);
 	ft_strdel(&ant->line);

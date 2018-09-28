@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/19 19:45:46 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/28 19:35:14 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static t_ant		*verif(t_ant *ant)
 		}
 		ptr2 = ptr2->next;
 	}
-	ant = init_ant(ant);
 	return (ant);
 }
 
@@ -95,6 +94,7 @@ int				main(void)
 	printf("VERIF\n");
 	fflush(stdout);
 	ant = verif(ant);
+	ant = init_ant(ant);
 	printf("DEEP WAY\n");
 	fflush(stdout);
 	ant = deep_way(ant);
@@ -102,12 +102,12 @@ int				main(void)
 	ant->nb_path = ant->path_end->id;
 	printf("PUT ID PATH   nb = %d\n", ant->nb_path);
 	fflush(stdout);
-	ant = put_id_path(ant);
+	ant = put_id_path(ant, 0, 0);
 	printf("POSSIBILITY\n");
 	fflush(stdout);
-	if (!ant->path)
+	if (!ant->path[0])
 		exit_str("Error : no path possible");
-	ant = possibility(ant);
+	ant = possibility(ant, NULL);
 	printf("CHOOSE BEST POSS\n");
 	fflush(stdout);
 	delete_last_poss(ant);
@@ -125,6 +125,5 @@ int				main(void)
 //	fct_test2(ant);
 //	fct_test3(ant);
 	delete_lemin(ant);
-
 	return (0);
 }
