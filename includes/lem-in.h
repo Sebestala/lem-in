@@ -41,7 +41,6 @@ typedef	struct		s_path
 	char			*id_path;
 	int				room_end;
 	t_tab			*room;
-	struct s_path	*next;
 }					t_path;
 
 typedef	struct		s_pawn

@@ -25,8 +25,6 @@ static void		put_path_in_tab2(t_ant *ant, t_path *path)
 	}
 	tab = ant->path[i / 1000];
 	tab->tab2[i % 1000] = path;
-	fflush(stdout);
-	printf("I = %d\n", i);
 }
 
 static void		make_tab2(t_ant *ant, t_path *path)
@@ -153,7 +151,6 @@ static t_ant	*make_enter_path(t_ant *ant)
 	else
 	{
 		path->id = ant->path_end->id;
-		ant->path_end->next = path;
 		ant->path_end = path;
 		put_path_in_tab2(ant, path);
 	}
@@ -222,6 +219,25 @@ static t_ant	*find_end(t_ant *ant, t_room *ptr, t_room *element)
 	return (ant);
 }
 
+static int		check_nb_room_in_path(t_ant *ant)
+{
+	if (ant->path_end->id < 1)
+		return (0);
+	if (ant->path_end->id > 100 && ant->path_end->room_end > 100)
+		return (1);
+	if (ant->path_end->id > 500 && ant->path_end->room_end > 50)
+		return (1);
+	if (ant->path_end->id > 1000 && ant->path_end->room_end > 30)
+		return (1);
+	if (ant->path_end->id > 2000 && ant->path_end->room_end > 20)
+		return (1);
+	if (ant->path_end->id > 5000 && ant->path_end->room_end > 15)
+		return (1);
+	if (ant->path_end->id > 50000 && ant->path_end->room_end > 8)
+		return (1);
+	return (0);
+}
+
 t_ant			*deep_way(t_ant *ant)
 {
 //	printf("ANT_ROOM = |%s|\n", ant->room->name);
@@ -262,7 +278,7 @@ ant->firewall = 1;
 		}
 //	if (ptr)
 //	printf("				NAME2 = |%s|\n", ptr->name);
-		while (ptr == NULL || (ant->path_end->id > 1 && ant->path_end->room_end > 5))
+		while (ptr == NULL || check_nb_room_in_path(ant))
 		{
 //		printf("QQQ\n");
 			if (element == ant->start)

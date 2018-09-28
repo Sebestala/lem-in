@@ -78,25 +78,47 @@ t_ant				*put_id_path(t_ant *ant)
 
 	put_str_id_path(ant);
 	j = 0;
+	printf("1\n");
+	fflush(stdout);
 	while (ant->path[j])
 	{
+	printf("2\n");
+	fflush(stdout);
 		tab2 = ant->path[j];
 		k = 0;
+	printf("2.1\n");
+	fflush(stdout);
 		while (tab2->tab2[k])
 		{
+	printf("3\n");
+	fflush(stdout);
 			path = tab2->tab2[k];
+	printf("3.1\n");
+	fflush(stdout);
 			tab = path->room;
+	printf("3.2\n");
+	fflush(stdout);
 			while (tab)
 			{
+	printf("4\n");
+	fflush(stdout);
 				i = 0;
 				while (tab->tab[i])
 				{
+	printf("5\n");
+	fflush(stdout);
 					room = tab->tab[i];
+	printf("5.1\n");
+	fflush(stdout);
 					if (room != ant->start && room != ant->end)
 						room->id_path[path->id] = '1';
+	printf("5.2\n");
+	fflush(stdout);
 					i++;
 					if (i % 100 == 0)
 						tab = tab->next;
+	printf("5.3\n");
+	fflush(stdout);
 				}
 				tab = tab->next;
 			}
@@ -105,24 +127,46 @@ t_ant				*put_id_path(t_ant *ant)
 		j++;
 	}
 	j = 0;
+	printf("6\n");
+	fflush(stdout);
 	while (ant->path[j])
 	{
+	printf("6.1\n");
+	fflush(stdout);
 		tab2 = ant->path[j];
+	printf("6.2\n");
+	fflush(stdout);
 		k = 0;
 		while (tab2->tab2[k])
 		{
+	printf("7\n");
+	fflush(stdout);
 			path = tab2->tab2[k];
+	printf("7.1\n");
+	fflush(stdout);
 			tab = path->room;
+	printf("7.2\n");
+	fflush(stdout);
 			while (tab)
 			{
 				i = 0;
+	printf("8\n");
+	fflush(stdout);
 				while (tab->tab[i])
 				{
+	printf("9\n");
+	fflush(stdout);
 				room = tab->tab[i];
+	printf("9.1\n");
+	fflush(stdout);
 				ant = id_path(ant, path, room);
+	printf("9.2\n");
+	fflush(stdout);
 				i++;
 				if (i % 100 == 0)
 					tab = tab->next;
+	printf("9.3\n");
+	fflush(stdout);
 				}
 				tab = tab->next;
 			}
@@ -130,5 +174,7 @@ t_ant				*put_id_path(t_ant *ant)
 		}
 		j++;
 	}
+	printf("10\n");
+	fflush(stdout);
 	return (ant);
 }
