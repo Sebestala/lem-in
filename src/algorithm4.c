@@ -35,6 +35,7 @@ t_ant			*choose_best_poss(t_ant *ant)
 	}
 	ant = init_ant(ant);
 	ant->i++;
+	ant->verif_path_answer = memalloc_sterr((sizeof(int) * ant->best_poss->nb_path), "choose_best_poss");
 	return (ant);
 }
 
@@ -100,12 +101,47 @@ t_ant			*begin_answer(t_ant *ant)
 	return (ant);
 }
 
+static int		verif_answer(t_ant *ant, int i, int j)
+{
+	while (j < ant->best_poss->nb_path && ant->verif_path_answer[j] != 0)
+	{
+		if (ant->verif_path_answer[j] == i)
+		{
+			ant->i = ant->best_poss->nb_path + 1;
+			ft_bzero(ant->verif_path_answer, (sizeof(int) * ant->best_poss->nb_path));
+			return (0);
+		}
+		j++;
+	}
+	if (j >= ant->best_poss->nb_path)
+		ft_bzero(ant->verif_path_answer, (sizeof(int) * ant->best_poss->nb_path));
+	j = 0;
+	while (j < ant->best_poss->nb_path)
+	{
+		if (ant->verif_path_answer[j] == 0)
+		{
+			ant->verif_path_answer[j] = i;
+			break ;
+		}
+		j++;
+	}
+	if (j == ant->best_poss->nb_path - 1)
+		ft_bzero(ant->verif_path_answer, (sizeof(int) * ant->best_poss->nb_path));
+
+	return (1);
+}
+
 static t_ant	*answer2(t_ant *ant, t_pawn *pawn)
 {
 	t_room	*room;
 	t_tab	*tab;
 	int		i;
 
+	if (pawn->check == 1 && verif_answer(ant, pawn->path->id, 0) == 0)
+	{
+		pawn->check--;
+		return (ant);
+	}
 	tab = pawn->path->room;
 	i = pawn->check;
 	while (tab->next && pawn->check / 100 >= 1)

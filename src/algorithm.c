@@ -153,7 +153,6 @@ static t_ant	*make_enter_path(t_ant *ant)
 	else
 	{
 		path->id = ant->path_end->id;
-		path->back = ant->path_end;
 		ant->path_end->next = path;
 		ant->path_end = path;
 		put_path_in_tab2(ant, path);

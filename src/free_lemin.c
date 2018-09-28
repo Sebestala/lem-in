@@ -26,24 +26,17 @@ static void		delete_last_path2(t_tab *tab)
 
 void			delete_last_path(t_ant *ant, t_path *ptr1)
 {
-	t_path	*ptr2;
-	t_path	*path;
 	t_tab2	*tab2;
 
 	ft_strdel(&ptr1->id_path);
 	delete_last_path2(ptr1->room);
-	if (ptr1->back != NULL)
-	{
-		ptr2 = ptr1->back;
-		ptr2->next = NULL;
-	}
-	else
+	tab2 = ant->path[(ant->path_end->id - 1) / 1000];
+	tab2->tab2[(ant->path_end->id - 1) % 1000] = NULL;
+	if (ptr1->id == 1)
 		ant->path_end = NULL;
-	path = ptr1;
-	ant->path_end = ant->path_end->back;
-	tab2 = ant->path[ant->path_end->id / 1000];
-	tab2->tab2[ant->path_end->id % 1000] = NULL;
-	memdel_zero(path, sizeof(t_path));
+	else
+		ant->path_end = tab2->tab2[(ant->path_end->id - 2) % 1000];
+	memdel_zero(ptr1, sizeof(t_path));
 }
 
 void		delete_last_poss(t_ant *ant)

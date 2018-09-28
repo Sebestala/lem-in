@@ -42,7 +42,6 @@ typedef	struct		s_path
 	int				room_end;
 	t_tab			*room;
 	struct s_path	*next;
-	struct s_path	*back;
 }					t_path;
 
 typedef	struct		s_pawn
@@ -91,6 +90,7 @@ typedef	struct		s_ant
 	int				firewall;
 	int				nb_ant;
 	int				nb_path;
+	int				*verif_path_answer;
 	char			*tab_id;
 	char			*line;
 	t_room			*room;

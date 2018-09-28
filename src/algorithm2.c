@@ -31,32 +31,18 @@ static void			put_str_id_path(t_ant *ant)
 			room->id_path[i++] = '0';
 		room = room->next;
 	}
-	printf("TEST\n");
-	fflush(stdout);
 	i = 0;
 	while (ant->path[i])
 	{
-	printf("TEST1\n");
-	fflush(stdout);
 		tab = ant->path[i];
-	printf("TEST1.1\n");
-	fflush(stdout);
 		j = 0;
 		while (tab->tab2[j])
 		{
-	printf("TEST2\n");
-	fflush(stdout);
 			k = 0;
 			path = tab->tab2[j];
-	printf("TEST2.1\n");
-	fflush(stdout);
 			path->id_path = ft_strnew(ant->nb_path + 2);
-	printf("TEST2.2\n");
-	fflush(stdout);
 			while (k <= ant->nb_path + 1)
 				path->id_path[k++] = '0';
-	printf("TEST2.3\n");
-	fflush(stdout);
 			j++;
 		}
 		i++;
