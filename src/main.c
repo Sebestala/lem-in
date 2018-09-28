@@ -88,35 +88,19 @@ int				main(void)
 	t_ant	*ant;
 
 	ant = memalloc_sterr(sizeof(t_ant), "main");
-	printf("IS VALID\n");
-	fflush(stdout);
 	ant = is_valid(ant);
-	printf("VERIF\n");
-	fflush(stdout);
 	ant = verif(ant);
 	ant = init_ant(ant);
-	printf("DEEP WAY\n");
-	fflush(stdout);
 	ant = deep_way(ant);
 	delete_last_path(ant, ant->path_end);
 	ant->nb_path = ant->path_end->id;
-	printf("PUT ID PATH   nb = %d\n", ant->nb_path);
-	fflush(stdout);
 	ant = put_id_path(ant, 0, 0);
-	printf("POSSIBILITY\n");
-	fflush(stdout);
 	if (!ant->path[0])
 		exit_str("Error : no path possible");
 	ant = possibility(ant, NULL);
-	printf("CHOOSE BEST POSS\n");
-	fflush(stdout);
 	delete_last_poss(ant);
 	ant = choose_best_poss(ant);
-	printf("BEGIN ANSWER\n");
-	fflush(stdout);
 	ant = begin_answer(ant);
-	printf("ANSWER\n");
-	fflush(stdout);
 	ant = init_ant(ant);
 	ant = answer(ant);
 	write(1, "\n", 1);

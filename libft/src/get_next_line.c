@@ -12,6 +12,13 @@
 
 #include "./get_next_line.h"
 
+static void		put_in_str2(int fd, char **line, char **copy, char **buf)
+{
+	*line = ft_strdup(copy[fd]);
+	ft_strdel(&copy[fd]);
+	ft_strdel(&buf[fd]);
+}
+
 static void		put_in_str(int fd, char **line, char **copy, char **buf)
 {
 	int		i;
@@ -20,19 +27,15 @@ static void		put_in_str(int fd, char **line, char **copy, char **buf)
 	j = 0;
 	i = first_occ_of_char(copy[fd], '\n');
 	if (i == -1)
-	{
-		*line = ft_strdup(copy[fd]);
-		ft_strdel(&copy[fd]);
-		ft_strdel(&buf[fd]);
-		return ;
-	}
+		return (put_in_str2(fd, line, copy, buf));
 	*line = ft_strnew(i);
 	*line = ft_strncpy(*line, copy[fd], i);
 	while (copy[fd] && copy[fd][i + j])
 		j++;
 	buf[fd] = strnew_del(j, buf[fd]);
 	j = 0;
-	while ((first_occ_of_char(copy[fd], '\0') >= i + j + 1) && copy[fd] && copy[fd][i + j + 1])
+	while ((first_occ_of_char(copy[fd], '\0') >= i + j + 1)
+	&& copy[fd] && copy[fd][i + j + 1])
 	{
 		buf[fd][j] = copy[fd][i + j + 1];
 		j++;

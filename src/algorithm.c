@@ -12,71 +12,7 @@
 
 #include "../includes/lem-in.h"
 
-static void		put_path_in_tab2(t_ant *ant, t_path *path)
-{
-	t_tab2	*tab;
-	int		i;
-
-	i = ant->path_end->id;
-	if (i % 1000 == 0)
-	{
-		tab = memalloc_sterr(sizeof(t_tab2), "make_tab2");
-		ant->path[i / 1000] = tab;
-	}
-	tab = ant->path[i / 1000];
-	tab->tab2[i % 1000] = path;
-}
-
-static void		make_tab2(t_ant *ant, t_path *path)
-{
-	t_tab2	*tab;
-
-	tab = memalloc_sterr(sizeof(t_tab2), "make_tab2");
-	ant->path[0] = tab;
-	tab->tab2[0] = path;
-}
-
-static t_room	*room_in_path_room(t_ant *ant)
-{
-	t_tab	*tab;
-
-	tab = ant->path_end->room;
-	while (tab->next)
-		tab = tab->next;
-	return (tab->tab[ant->path_end->room_end % 100]);
-}
-
-static t_room	*room_in_tab_tube(t_room *room)
-{
-	t_tab	*tab;
-	int		nb;
-
-	if (!room)
-		return (NULL);
-	nb = room->check;
-	tab = room->tube;
-	while (nb > 99)
-	{
-		tab = tab->next;
-		nb -= 100;
-	}
-	return (tab->tab[nb]);
-}
-
-static t_room	*ptr_room(t_ant *ant, t_room *room)
-{
-	t_room	*ptr;
-
-	ptr = room_in_tab_tube(room);
-	if (ptr && ant->path_end->room_end > 1 && ptr->last_room == -1)
-	{
-		room->check++;
-		ptr = ptr->next;
-	}
-	return (ptr);
-}
-
-static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
+t_ant			*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
 	t_tab	*struct_ptr;
 	t_tab	*tab;
@@ -98,7 +34,7 @@ static t_ant	*make_ptr_path(t_ant *ant, t_room *ptr_room)
 	return (ant);
 }
 
-static t_ant	*del_ptr_path(t_ant *ant)
+t_ant			*del_ptr_path(t_ant *ant)
 {
 	t_room	*room;
 	t_tab	*tab;
@@ -119,60 +55,6 @@ static t_ant	*del_ptr_path(t_ant *ant)
 		tab2->next = NULL;
 		memdel_zero(tab, sizeof(t_tab));
 	}
-	return (ant);
-}
-
-static t_ant	*make_enter_path(t_ant *ant)
-{
-	t_path	*path;
-	t_tab	*struct_ptr_in_path;
-
-	path = memalloc_sterr(sizeof(t_path), "make_enter_path");
-	struct_ptr_in_path = memalloc_sterr(sizeof(t_tab), "make_enter_path");
-	if (!ant->path[0])
-	{
-		make_tab2(ant, path);
-		ant->path_end = path;
-	}
-	else
-	{
-		path->id = ant->path_end->id;
-		ant->path_end = path;
-		put_path_in_tab2(ant, path);
-	}
-	path->id = ant->path_end->id + 1;
-	path->room = struct_ptr_in_path;
-	struct_ptr_in_path->tab[0] = ant->start;
-	return (ant);
-}
-
-t_ant		*valid_path(t_ant *ant)
-{
-	t_tab	*tab;
-	t_room	*room;
-	int		i;
-
-	tab = ant->path_end->room;
-	ant = make_enter_path(ant);
-	while (tab)
-	{
-		i = 0;
-		while (tab->tab[i])
-		{
-			room = tab->tab[i];
-			ant = make_ptr_path(ant, room);
-			i++;
-		}
-		tab = tab->next;
-	}
-	return (ant);
-}
-
-static t_ant	*on_end(t_ant *ant)
-{
-	ant = valid_path(ant);
-	ant->start->check++;
-	ant = del_ptr_path(ant);
 	return (ant);
 }
 

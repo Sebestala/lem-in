@@ -12,7 +12,7 @@
 
 #include "../includes/lem-in.h"
 
-static t_ant	*init_struct(t_ant *ant)
+t_ant				*init_struct_room(t_ant *ant)
 {
 	t_room		*room;
 
@@ -24,7 +24,7 @@ static t_ant	*init_struct(t_ant *ant)
 	room->name = memalloc_sterr(ant->i, "init_struct");
 	room->name = ft_strncpy(room->name, ant->line, ant->i);
 	if (verif_name(ant, room->name) > 0)
-		exit_str("Error : dynamic allocation problem in init_struct");
+		exit_str("Error : 2 room have the same name");
 	if (!ant->room)
 	{
 		ant->room = room;
@@ -35,59 +35,6 @@ static t_ant	*init_struct(t_ant *ant)
 		room->id = ant->room_end->id + 1;
 		ant->room_end->next = room;
 		ant->room_end = room;
-	}
-	return (ant);
-}
-
-static t_ant		*init_room2(t_ant *ant)
-{
-	ant->i++;
-	if (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
-		ant->j++;
-	while (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
-		ant->i++;
-	if (ant->line[ant->i] && ant->line[ant->i] == ' ')
-		ant->j++;
-	if (ant->line[ant->i] && ant->line[ant->i] == ' ')
-		ant->i++;
-	if (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
-		ant->j++;
-	while (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
-		ant->i++;
-	if (ant->line[ant->i] != '\0' || ant->j != 3)
-	{
-		ft_putendl(ant->line);
-		exit_str("Error : room enter is incorrect");
-	}
-	ant = init_ant(ant);
-	return (ant);
-}
-
-t_ant		*command(t_ant *ant)
-{
-	int		i;
-
-	i = 0;
-	if (ft_strcmp(ant->line, "##start") == 0)
-		i = 1;
-	if (ft_strcmp(ant->line, "##end") == 0)
-		i = 2;
-	if ((i == 1 && ant->start != NULL) || (i == 2 && ant->end != NULL))
-		exit_str("Error : there must be only 1 start and 1 end");
-	if (i > 0)
-	{
-		get_next_line(0, &ant->line);
-		ft_putendl(ant->line);
-		ant = comment(ant);
-		ant = init_struct(ant);
-		if (i == 1)
-			ant->start = ant->room_end;
-		if (i == 2)
-			ant->end = ant->room_end;
-		ant = init_room2(ant);
-		get_next_line(0, &ant->line);
-		ft_putendl(ant->line);
-		ant = command(ant);
 	}
 	return (ant);
 }
@@ -169,7 +116,7 @@ t_ant				*init_room(t_ant *ant)
 		{
 			if (ant->line[0] && ant->line[0] != '#')
 			{
-				ant = init_struct(ant);
+				ant = init_struct_room(ant);
 				ant = init_room2(ant);
 			}
 		}

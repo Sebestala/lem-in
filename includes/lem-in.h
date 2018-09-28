@@ -14,6 +14,7 @@
 # define LEM_IN_H
 # define MAX_PATH 1000
 # include "../libft/src/libft.h"
+# include "../libft/src/ft_printf/include/ft_printf.h"
 
 typedef	struct		s_ptr t_ptr;
 typedef	struct		s_room t_room;
@@ -121,9 +122,28 @@ void				delete_last_path(t_ant *ant, t_path *ptr1);
 void				delete_last_poss(t_ant *ant);
 int					finish(t_ant *ant);
 void				delete_lemin(t_ant *ant);
+t_room				*room_in_tab_tube(t_room *room);
+t_room				*room_in_path_room(t_ant *ant);
+void				make_tab2(t_ant *ant, t_path *path);
+t_room				*ptr_room(t_ant *ant, t_room *room);
+void				put_path_in_tab2(t_ant *ant, t_path *path);
 void				fct_test(t_ant *ant);
 void				fct_test1(t_ant *ant);
 void				fct_test2(t_ant *ant);
-void				fct_test3(t_ant *ant);
+//void				fct_test3(t_ant *ant);
+t_ant				*on_end(t_ant *ant);
+t_ant				*valid_path(t_ant *ant);
+t_ant				*make_enter_path(t_ant *ant);
+t_ant				*del_ptr_path(t_ant *ant);
+t_ant				*make_ptr_path(t_ant *ant, t_room *ptr_room);
+void				put_str_id_path(t_ant *ant, t_room *room, int i, int j);
+t_ant				*start_poss(t_ant *ant);
+t_ant				*copy_poss(t_ant *ant);
+t_poss				*new_value(t_ant *ant, t_poss *poss);
+void				new_ptr_id(t_ant *ant, t_path *path);
+t_path				*del_path2(t_ant *ant, int id);
+void				delete_last_path2(t_tab *tab);
+t_ant				*init_struct_room(t_ant *ant);
+t_ant				*init_room2(t_ant *ant);
 
 #endif

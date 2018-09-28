@@ -13,12 +13,18 @@ DSRC = src/
 
 SRC = 	main.c		\
 		algorithm.c	\
+		algorithm0.c	\
+		algorithm0_1.c	\
 		algorithm2.c\
+		algorithm2_1.c\
 		algorithm3.c\
+		algorithm3_1.c\
 		algorithm4.c\
+		algorithm4_1.c\
 		parsing.c	\
 		parsing2.c	\
 		free_lemin.c\
+		free_lemin2.c\
 		tests.c
 
 OBJ = $(addprefix $(DSRC), $(SRC:.c=.o))

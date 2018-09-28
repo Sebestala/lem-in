@@ -1,0 +1,56 @@
+
+#include "../includes/lem-in.h"
+
+t_ant		*make_enter_path(t_ant *ant)
+{
+	t_path	*path;
+	t_tab	*struct_ptr_in_path;
+
+	path = memalloc_sterr(sizeof(t_path), "make_enter_path");
+	struct_ptr_in_path = memalloc_sterr(sizeof(t_tab), "make_enter_path");
+	if (!ant->path[0])
+	{
+		make_tab2(ant, path);
+		ant->path_end = path;
+	}
+	else
+	{
+		path->id = ant->path_end->id;
+		ant->path_end = path;
+		put_path_in_tab2(ant, path);
+	}
+	path->id = ant->path_end->id + 1;
+	path->room = struct_ptr_in_path;
+	struct_ptr_in_path->tab[0] = ant->start;
+	return (ant);
+}
+
+t_ant		*valid_path(t_ant *ant)
+{
+	t_tab	*tab;
+	t_room	*room;
+	int		i;
+
+	tab = ant->path_end->room;
+	ant = make_enter_path(ant);
+	while (tab)
+	{
+		i = 0;
+		while (tab->tab[i])
+		{
+			room = tab->tab[i];
+			ant = make_ptr_path(ant, room);
+			i++;
+		}
+		tab = tab->next;
+	}
+	return (ant);
+}
+
+t_ant		*on_end(t_ant *ant)
+{
+	ant = valid_path(ant);
+	ant->start->check++;
+	ant = del_ptr_path(ant);
+	return (ant);
+}

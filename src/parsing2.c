@@ -11,24 +11,32 @@
 /* ************************************************************************** */
 
 #include "../includes/lem-in.h"
-/*
-void	make_room_tab(t_ant *ant)
-{
-	int		i;
-	t_room	*room;
 
-	ant->room_tab = memalloc_sterr(sizeof(t_room *) * (ant->room_end->id + 1), "make_room_tab");
-	i = 0;
-	room = ant->room;
-	while (room)
+t_ant		*init_room2(t_ant *ant)
+{
+	ant->i++;
+	if (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
+		ant->j++;
+	while (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
+		ant->i++;
+	if (ant->line[ant->i] && ant->line[ant->i] == ' ')
+		ant->j++;
+	if (ant->line[ant->i] && ant->line[ant->i] == ' ')
+		ant->i++;
+	if (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
+		ant->j++;
+	while (ant->line[ant->i] && ant->line[ant->i] >= '0' && ant->line[ant->i] <= '9')
+		ant->i++;
+	if (ant->line[ant->i] != '\0' || ant->j != 3)
 	{
-		ant->room_tab[i] = room;
-		room = room->next;
-		i++;
+		ft_putendl(ant->line);
+		exit_str("Error : room enter is incorrect");
 	}
+	ant = init_ant(ant);
+	return (ant);
 }
-*/
-int		finish(t_ant *ant)
+
+int			finish(t_ant *ant)
 {
 	t_pawn	*pawn;
 
@@ -42,7 +50,7 @@ int		finish(t_ant *ant)
 	return (1);
 }
 
-t_ant	*find_final_room(t_ant *ant)
+t_ant		*find_final_room(t_ant *ant)
 {
 	t_tab	*begin;
 	t_room	*room;
@@ -73,7 +81,7 @@ t_ant	*find_final_room(t_ant *ant)
 	return (ant);
 }
 
-int		verif_name(t_ant *ant, char *name2)
+int			verif_name(t_ant *ant, char *name2)
 {
 	t_room	*room;
 
@@ -88,4 +96,33 @@ int		verif_name(t_ant *ant, char *name2)
 		room = room->next;
 	}
 	return (0);
+}
+
+t_ant		*command(t_ant *ant)
+{
+	int		i;
+
+	i = 0;
+	if (ft_strcmp(ant->line, "##start") == 0)
+		i = 1;
+	if (ft_strcmp(ant->line, "##end") == 0)
+		i = 2;
+	if ((i == 1 && ant->start != NULL) || (i == 2 && ant->end != NULL))
+		exit_str("Error : there must be only 1 start and 1 end");
+	if (i > 0)
+	{
+		get_next_line(0, &ant->line);
+		ft_putendl(ant->line);
+		ant = comment(ant);
+		ant = init_struct_room(ant);
+		if (i == 1)
+			ant->start = ant->room_end;
+		if (i == 2)
+			ant->end = ant->room_end;
+		ant = init_room2(ant);
+		get_next_line(0, &ant->line);
+		ft_putendl(ant->line);
+		ant = command(ant);
+	}
+	return (ant);
 }
