@@ -1,5 +1,10 @@
 42
+##onus
+#comment
 ##start
+#comment
+##onus
+#comment
 room_start 5 4
 room1 515 4
 room2 15 4
@@ -8,6 +13,10 @@ room4 5 4
 room5 15 4
 room6 5 4546
 room7 8945 4
+#comment
+#comment
+#comment
+#comment
 room8 785 4546
 room9 456456546456 456565464
 room10 44565 4
@@ -15,12 +24,13 @@ room11 44565 4
 room12 44565 4
 room13 44565 4
 room14 44565 4
-room15 44565 4
 ##end
+room15 44565 4
 room_end 0 4
 room_start-room1
 room1-room2
 room2-room3
+##onus
 room3-room4
 room4-room5
 room5-room_end
@@ -29,6 +39,8 @@ room7-room6
 room7-room8
 room8-room9
 room10-room9
+##ddbonus
+##bonusp
 room10-room_end
 room_start-room11
 room11-room12
@@ -38,3 +50,6 @@ room14-room15
 room15-room_end
 room1-room8
 room8-room15
+##bonusp
+
+##bonusp

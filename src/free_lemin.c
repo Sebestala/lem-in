@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:45:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 19:17:13 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/29 16:48:46 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	delete_all_room(t_room *room, t_tab *ptr2)
 
 void		delete_lemin(t_ant *ant)
 {
-	memdel_zero(ant->verif_path_answer, sizeof(int) * ant->best_poss->nb_path);
+	memdel_zero(ant->verif, sizeof(int) * ant->best_poss->nb_path);
 	delete_all_poss(ant);
 	delete_all_path(ant, 0, 0);
 	delete_all_pawn(ant);

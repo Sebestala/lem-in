@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 18:32:51 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/30 17:08:22 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,6 @@ t_ant			*del_ptr_path(t_ant *ant)
 	return (ant);
 }
 
-static t_ant	*find_end(t_ant *ant, t_room *ptr, t_room *element)
-{
-	while (ptr != NULL)
-	{
-		if (ptr == ant->end)
-			break ;
-		ptr = room_in_tab_tube(element);
-		element->check++;
-	}
-	if (ptr != NULL)
-	{
-		ant = make_ptr_path(ant, ptr);
-		ant = valid_path(ant);
-		ant = del_ptr_path(ant);
-	}
-	else
-		exit_str("Error : end's room not find");
-	return (ant);
-}
-
 static int		check_nb_room_in_path(t_ant *ant)
 {
 	if (ant->path_end->id < 1)
@@ -93,6 +73,31 @@ static int		check_nb_room_in_path(t_ant *ant)
 	return (0);
 }
 
+static	void	deep_way2(t_ant *ant, t_room **element, t_room **ptr)
+{
+	if ((*element)->check > 1 && (*element)->last_room <= 0 && *ptr != NULL)
+		*ptr = ptr_room(ant, *element);
+	(*element)->check++;
+	if (*ptr && (*ptr)->check == 0 && (*ptr)->tube != NULL)
+	{
+		ant = make_ptr_path(ant, *ptr);
+		*element = *ptr;
+	}
+	if (*element == ant->end)
+	{
+		ant = on_end(ant);
+		*element = ant->start;
+		*ptr = room_in_tab_tube(*element);
+	}
+	else if ((*element)->last_room == 1 && *element != ant->start)
+	{
+		ant = find_end(ant, *ptr, *element);
+		ant = del_ptr_path(ant);
+		*element = room_in_path_room(ant);
+		*ptr = room_in_tab_tube(*element);
+	}
+}
+
 t_ant			*deep_way(t_ant *ant)
 {
 	t_room	*element;
@@ -100,31 +105,11 @@ t_ant			*deep_way(t_ant *ant)
 
 	element = ant->start;
 	ant = make_enter_path(ant);
-		ptr = room_in_tab_tube(element);
+	ptr = room_in_tab_tube(element);
 	while (element != ant->start || ptr != NULL)
 	{
 		ptr = room_in_tab_tube(element);
-		if (element->check > 1 && element->last_room <= 0 && ptr != NULL)
-		ptr = ptr_room(ant, element);
-		element->check++;
-		if (ptr && ptr->check == 0 && ptr->tube != NULL)
-		{
-			ant = make_ptr_path(ant, ptr);
-			element = ptr;
-		}
-		if (element == ant->end)
-		{
-			ant = on_end(ant);
-			element = ant->start;
-			ptr = room_in_tab_tube(element);
-		}
-		else if (element->last_room == 1 && element != ant->start)
-		{
-			ant = find_end(ant, ptr, element);
-			ant = del_ptr_path(ant);
-			element = room_in_path_room(ant);
-			ptr = room_in_tab_tube(element);
-		}
+		deep_way2(ant, &element, &ptr);
 		while (ptr == NULL || check_nb_room_in_path(ant))
 		{
 			if (element == ant->start)

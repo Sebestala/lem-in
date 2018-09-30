@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_lemin2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/29 16:23:57 by sgarcia           #+#    #+#             */
+/*   Updated: 2018/09/30 20:00:29 by sgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/lem-in.h"
 
@@ -42,6 +53,7 @@ void		delete_last_poss(t_ant *ant)
 		poss = poss->next;
 	}
 	poss2->next = NULL;
+	ant->poss_end = poss2;
 	ptr2 = poss->id_path;
 	while (ptr2 != NULL)
 	{

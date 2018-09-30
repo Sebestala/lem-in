@@ -6,13 +6,13 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 19:03:46 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/30 19:12:42 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEM_IN_H
 # define LEM_IN_H
-# define MAX_PATH 1000
+# define MAX_PATH 100000
 # include "../libft/src/libft.h"
 # include "../libft/src/ft_printf/include/ft_printf.h"
 
@@ -86,10 +86,11 @@ typedef	struct		s_ant
 	int				i;
 	int				j;
 	int				power;
+	int				bonus;
 	int				check;
 	int				nb_ant;
 	int				nb_path;
-	int				*verif_path_answer;
+	int				*verif;
 	char			*tab_id;
 	char			*line;
 	t_room			*room;
@@ -111,7 +112,7 @@ t_ant				*comment(t_ant *ant);
 t_ant				*command(t_ant *ant);
 int					verif_name(t_ant *ant, char *name2);
 t_ant				*init_ant(t_ant *ant);
-t_ant				*find_final_room(t_ant *ant);
+t_ant				*find_final_room(t_ant *ant, int i);
 t_ant				*deep_way(t_ant *ant);
 t_ant				*put_id_path(t_ant *ant, int j, int k);
 t_ant				*possibility(t_ant *ant, t_poss *poss);
@@ -127,10 +128,9 @@ t_room				*room_in_path_room(t_ant *ant);
 void				make_tab2(t_ant *ant, t_path *path);
 t_room				*ptr_room(t_ant *ant, t_room *room);
 void				put_path_in_tab2(t_ant *ant, t_path *path);
-void				fct_test(t_ant *ant);
+void				fct_test(t_ant *ant, int i);
 void				fct_test1(t_ant *ant);
 void				fct_test2(t_ant *ant);
-//void				fct_test3(t_ant *ant);
 t_ant				*on_end(t_ant *ant);
 t_ant				*valid_path(t_ant *ant);
 t_ant				*make_enter_path(t_ant *ant);
@@ -145,5 +145,6 @@ t_path				*del_path2(t_ant *ant, int id);
 void				delete_last_path2(t_tab *tab);
 t_ant				*init_struct_room(t_ant *ant);
 t_ant				*init_room2(t_ant *ant);
+t_ant				*find_end(t_ant *ant, t_room *ptr, t_room *element);
 
 #endif

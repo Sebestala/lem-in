@@ -1,12 +1,16 @@
 4
-room2 15 4
-room3 15 454
-##start
+#comment
+##end
 room0 5 4
+room2 15 4
 #comment
 room1 515 4
-##end
+room3 15 454
+#comment
+##start
+#comment
 room5 0 4
+#comment a la con
 #comment a la con
 room4 5 4
 room7 8945 4
@@ -18,6 +22,7 @@ room0-room1
 room2-room3
 room1-room2
 room3-room4
+#comment
 room4-room5
 room0-room6
 room10-room5

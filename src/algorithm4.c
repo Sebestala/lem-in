@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:45:21 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 19:16:13 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/30 14:58:03 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,37 +35,37 @@ t_ant			*choose_best_poss(t_ant *ant)
 	}
 	ant = init_ant(ant);
 	ant->i++;
-	ant->verif_path_answer = memalloc_sterr((sizeof(int) * ant->best_poss->nb_path), "choose_best_poss");
+	ant->verif = memalloc_sterr((sizeof(int) * ant->best_poss->nb_path),
+			"choose_best_poss");
 	return (ant);
 }
 
-
 static int		verif_answer(t_ant *ant, int i, int j)
 {
-	while (j < ant->best_poss->nb_path && ant->verif_path_answer[j] != 0)
+	while (j < ant->best_poss->nb_path && ant->verif[j] != 0)
 	{
-		if (ant->verif_path_answer[j] == i)
+		if (ant->verif[j] == i)
 		{
 			ant->i = ant->best_poss->nb_path + 1;
-			ft_bzero(ant->verif_path_answer, (sizeof(int) * ant->best_poss->nb_path));
+			ft_bzero(ant->verif, (sizeof(int) * ant->best_poss->nb_path));
 			return (0);
 		}
 		j++;
 	}
 	if (j >= ant->best_poss->nb_path)
-		ft_bzero(ant->verif_path_answer, (sizeof(int) * ant->best_poss->nb_path));
+		ft_bzero(ant->verif, (sizeof(int) * ant->best_poss->nb_path));
 	j = 0;
 	while (j < ant->best_poss->nb_path)
 	{
-		if (ant->verif_path_answer[j] == 0)
+		if (ant->verif[j] == 0)
 		{
-			ant->verif_path_answer[j] = i;
+			ant->verif[j] = i;
 			break ;
 		}
 		j++;
 	}
 	if (j == ant->best_poss->nb_path - 1)
-		ft_bzero(ant->verif_path_answer, (sizeof(int) * ant->best_poss->nb_path));
+		ft_bzero(ant->verif, (sizeof(int) * ant->best_poss->nb_path));
 	return (1);
 }
 
@@ -121,8 +121,9 @@ static t_pawn	*answer0(t_ant *ant, t_pawn *pawn)
 t_ant			*answer(t_ant *ant)
 {
 	t_pawn		*pawn;
-	int			i = 0;
+	int			i;
 
+	i = 0;
 	pawn = ant->pawn;
 	while (1)
 	{

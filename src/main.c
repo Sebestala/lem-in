@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 19:35:14 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/30 21:31:22 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@ t_ant			*init_ant(t_ant *ant)
 t_ant			*comment(t_ant *ant)
 {
 	while (ant->line && ant->line[0]
-	&& ant->line[0] == '#' && ant->line[1] != '#')
+	&& ant->line[0] == '#')
 	{
+		ant = command(ant);
 		ant = init_ant(ant);
-		ft_putendl(ant->line);
-		get_next_line(0, &ant->line);
-		ft_putendl(ant->line);
 	}
 	return (ant);
 }
 
-static t_ant		*is_valid(t_ant *ant)
+static t_ant	*is_valid(t_ant *ant)
 {
 	ant = init_ant(ant);
 	get_next_line(0, &ant->line);
+	if (!ant->line || !ant->line[0])
+		exit_str("Error : line is empty");
 	ft_putendl(ant->line);
 	ant = comment(ant);
 	if (!ant->line)
@@ -47,14 +47,14 @@ static t_ant		*is_valid(t_ant *ant)
 		ant->i++;
 	}
 	ant->nb_ant = atoi_my(ant->line);
-	if (ant->nb_ant <= 0)
-		exit_str("Error : number ant must be more higher than 0");
+	if (ant->nb_ant <= 0 || ant->nb_ant > 10000)
+		exit_str("Error : number ant must be between 0 and 10.000");
 	ant = init_room(ant);
 	ant = init_ant(ant);
 	return (ant);
 }
 
-static t_ant		*verif(t_ant *ant)
+static t_ant	*verif(t_ant *ant)
 {
 	t_room	*ptr;
 	t_room	*ptr2;
@@ -67,7 +67,7 @@ static t_ant		*verif(t_ant *ant)
 		exit_str("Error : start room and end room should'nt be the same room");
 	if (ant->start->tube == NULL || ant->end->tube == NULL)
 		exit_str("Error : no path possible");
-	ant = find_final_room(ant);
+	ant = find_final_room(ant, 0);
 	ptr2 = ant->room;
 	while (ptr2 != NULL)
 	{
@@ -93,10 +93,10 @@ int				main(void)
 	ant = init_ant(ant);
 	ant = deep_way(ant);
 	delete_last_path(ant, ant->path_end);
+	if (!ant->path_end)
+		exit_str("Error : no path possible");
 	ant->nb_path = ant->path_end->id;
 	ant = put_id_path(ant, 0, 0);
-	if (!ant->path[0])
-		exit_str("Error : no path possible");
 	ant = possibility(ant, NULL);
 	delete_last_poss(ant);
 	ant = choose_best_poss(ant);
@@ -104,10 +104,8 @@ int				main(void)
 	ant = init_ant(ant);
 	ant = answer(ant);
 	write(1, "\n", 1);
-//	fct_test(ant);
-//	fct_test1(ant);
-//	fct_test2(ant);
-//	fct_test3(ant);
+	if (ant->bonus == 1)
+		fct_test(ant, 0);
 	delete_lemin(ant);
 	return (0);
 }

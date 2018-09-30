@@ -1,3 +1,14 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/09/30 18:54:40 by sgarcia           #+#    #+#              #
+#    Updated: 2018/09/30 19:15:50 by sgarcia          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 NAME = lem-in
 
@@ -23,6 +34,7 @@ SRC = 	main.c		\
 		algorithm4_1.c\
 		parsing.c	\
 		parsing2.c	\
+		parsing3.c	\
 		free_lemin.c\
 		free_lemin2.c\
 		tests.c
@@ -32,10 +44,10 @@ OBJ = $(addprefix $(DSRC), $(SRC:.c=.o))
 all: $(NAME)
 
 $(NAME) : $(LIB) $(OBJ)
-	cd $(DLIB) && cp $< ../lem-in.a
-	ar rc $(NAME).a $(OBJ)
-	ranlib $(NAME).a
-	$(CC) $(FLAGS) -o $@ $(NAME).a
+	@cd $(DLIB) && cp $< ../lem-in.a
+	@ar rc $(NAME).a $(OBJ)
+	@ranlib $(NAME).a
+	@$(CC) $(FLAGS) -o $@ $(NAME).a
 
 $(DSRC)%.o : $(DSRC)%.c includes/$(NAME).h
 	@echo "compilation de $< \033[32m ok \033[0m"
@@ -46,11 +58,11 @@ $(LIB) :
 
 clean :
 	make -C $(DLIB) clean
-	rm -r $(OBJ)
+	rm -fr $(OBJ)
 
 fclean : clean
 	make -C $(DLIB) fclean
-	rm -r $(NAME)
-	rm -r $(NAME).a
+	rm -fr $(NAME)
+	rm -fr $(NAME).a
 
 re : fclean all

@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 00:10:47 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 19:34:56 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/09/30 21:31:47 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void			path2(t_room *room, t_room *room0, t_room *room1, int i)
 	t_tab	*tab;
 	t_tab	*tab2;
 
-	while (i < 2)
+	while (i++ < 2)
 	{
 		tab = room->tube;
 		if (tab)
@@ -65,7 +65,6 @@ static void			path2(t_room *room, t_room *room0, t_room *room1, int i)
 		room1 = room0;
 		room0 = room;
 		room = room1;
-		i++;
 	}
 }
 
@@ -106,11 +105,13 @@ t_ant				*init_room(t_ant *ant)
 {
 	while (get_next_line(0, &ant->line))
 	{
+		if (!ant->line || !ant->line[0])
+			exit_str("Error : line is empty");
 		ft_putendl(ant->line);
 		ant = init_ant(ant);
 		ant = comment(ant);
-		ant = command(ant);
-		if (ant->check == 0 && !is_str_on(ant->line, " ") && ant->line[0] && ant->line[0] != '#')
+		if (ant->check == 0 && !is_str_on(ant->line, " ")
+				&& ant->line[0] && ant->line[0] != '#')
 			ant->check = 1;
 		if (ant->check == 0)
 		{
@@ -120,7 +121,7 @@ t_ant				*init_room(t_ant *ant)
 				ant = init_room2(ant);
 			}
 		}
-		if (ant->check == 1)
+		if (ant->check == 1 && ant->line && ant->line[0])
 			ant = path(ant);
 	}
 	write(1, "\n", 1);

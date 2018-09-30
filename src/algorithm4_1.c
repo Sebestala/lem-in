@@ -1,22 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   algorithm4_1.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/29 16:23:48 by sgarcia           #+#    #+#             */
+/*   Updated: 2018/09/29 16:26:35 by sgarcia          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/lem-in.h"
 
-static void		begin_answer3(t_ant *ant, t_ptr *element, t_pawn *pawn, int best)
+static void		begin_answer3(t_ant *ant, t_ptr *elem, t_pawn *pawn, int best)
 {
 	while (pawn != NULL)
 	{
-		element = ant->best_poss->id_path;
-		while (element != NULL && best != element->ptr_path->power)
+		elem = ant->best_poss->id_path;
+		while (elem != NULL && best != elem->ptr_path->power)
 		{
-			element = element->next;
-			if (!element)
+			elem = elem->next;
+			if (!elem)
 			{
 				best++;
-				element = ant->best_poss->id_path;
+				elem = ant->best_poss->id_path;
 			}
 		}
-		element->ptr_path->power++;
-		pawn->path = element->ptr_path;
+		elem->ptr_path->power++;
+		pawn->path = elem->ptr_path;
 		pawn = pawn->back;
 	}
 }
