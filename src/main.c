@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 22:28:26 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/30 21:31:22 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 22:16:57 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 t_ant			*init_ant(t_ant *ant)
 {
@@ -87,6 +87,7 @@ int				main(void)
 {
 	t_ant	*ant;
 
+	ft_printf("{-LIGHT}");
 	ant = memalloc_sterr(sizeof(t_ant), "main");
 	ant = is_valid(ant);
 	ant = verif(ant);

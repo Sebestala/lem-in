@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:45:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/29 16:48:46 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 17:48:30 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 static void	delete_all_path(t_ant *ant, int i, int j)
 {

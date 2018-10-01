@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 18:38:41 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/28 19:04:18 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 19:50:46 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 static t_poss	*modif_tab(t_ant *ant, t_poss *poss, int id)
 {
@@ -105,7 +105,7 @@ t_ant			*possibility(t_ant *ant, t_poss *poss)
 	ant->tab_id = memalloc_sterr((ant->nb_path + 1) * sizeof(char), "main");
 	ant = start_poss(ant);
 	poss = ant->poss->next;
-	while (poss->nb_path != 0)
+	while (poss->nb_path != 0 && ant->poss_end->id_poss < 1000000)
 	{
 		poss = modif_tab(ant, poss, ant->j);
 		ant->i = 1;

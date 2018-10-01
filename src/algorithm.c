@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/26 18:31:34 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/30 17:08:22 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 19:51:45 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 t_ant			*make_ptr_path(t_ant *ant, t_room *ptr_room)
 {
@@ -60,16 +60,16 @@ t_ant			*del_ptr_path(t_ant *ant)
 
 static int		check_nb_room_in_path(t_ant *ant)
 {
-	if (ant->path_end->id < 1)
-		return (0);
 	if (ant->path_end->id > 100 && ant->path_end->room_end > 5)
 		return (1);
 	if (ant->path_end->id > 50 && ant->path_end->room_end > 7)
 		return (1);
 	if (ant->path_end->id > 20 && ant->path_end->room_end > 10)
 		return (1);
-	if (ant->path_end->id >= 1 && ant->path_end->room_end > 15)
+	if (ant->path_end->id >= 0 && ant->path_end->room_end > 15)
 		return (1);
+	if (ant->path_end->id < 1)
+		return (0);
 	return (0);
 }
 

@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 16:23:24 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/30 14:42:16 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 17:47:38 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 t_ant		*make_enter_path(t_ant *ant)
 {

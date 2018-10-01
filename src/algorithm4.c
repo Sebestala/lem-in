@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 16:45:21 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/30 14:58:03 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 22:15:16 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 t_ant			*choose_best_poss(t_ant *ant)
 {
@@ -87,12 +87,10 @@ static t_ant	*answer2(t_ant *ant, t_pawn *pawn, int i)
 		tab = tab->next;
 	}
 	room = tab->tab[i];
-	write(1, "L", 1);
-	ft_putnbr(pawn->id_pawn);
-	write(1, "-", 1);
-	ft_putstr(room->name);
+	ft_printf("{-PINK-LIGHT}L%d{-GREY}-{-CYAN}%s\033[0m"
+	, pawn->id_pawn, room->name);
 	if (ant->i != ant->best_poss->nb_path)
-		write(1, " ", 1);
+		write(1, "	", 1);
 	if (room == ant->end)
 		pawn->check = -1;
 	return (ant);
@@ -135,7 +133,8 @@ t_ant			*answer(t_ant *ant)
 			break ;
 		write(1, "\n", 1);
 	}
-	printf("\n\nTurn = %d    Number path find = %d    Number path use = %d    "
-	"Number ant = %d\n", i, ant->nb_path, ant->best_poss->nb_path, ant->nb_ant);
+	ft_printf("\n\n{-GREEN-ITALIC-LIGHT-LINE}Turn = %d	Path find = %d	"
+	"	Path use = %d	Ant = %d\033[0m   %S  \n"
+	, i, ant->nb_path, ant->best_poss->nb_path, ant->nb_ant, L"😁  🙌  🚀  🌟 ");
 	return (ant);
 }

@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 16:23:42 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/29 16:23:43 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 20:24:35 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 t_path		*del_path2(t_ant *ant, int id)
 {

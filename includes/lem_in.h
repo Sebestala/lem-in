@@ -6,7 +6,7 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 18:34:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/30 19:12:42 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 17:50:30 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,6 @@
 # define MAX_PATH 100000
 # include "../libft/src/libft.h"
 # include "../libft/src/ft_printf/include/ft_printf.h"
-
-typedef	struct		s_ptr t_ptr;
-typedef	struct		s_room t_room;
-typedef	struct		s_path t_path;
-typedef	struct		s_ant t_ant;
-typedef	struct		s_poss t_poss;
-typedef	struct		s_pawn t_pawn;
-typedef	struct		s_tab t_tab;
 
 typedef	struct		s_tab2
 {
@@ -104,7 +96,6 @@ typedef	struct		s_ant
 	t_poss			*best_poss;
 	t_pawn			*pawn;
 }					t_ant;
-
 
 int					main(void);
 t_ant				*init_room(t_ant *ant);

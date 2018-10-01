@@ -1,0 +1,32 @@
+42
+room2 15 4
+room3 15 454
+##start
+room0 5 4
+#comment
+room1 515 4
+##end
+room5 0 4
+#comment a la con
+room4 5 4
+room7 8945 4
+room6 5 4546
+room8 785 4546
+room9 456456546456 456565464
+room10 44565 4
+room11 44565 4
+room12 44565 4
+room0-room1
+room2-room3
+room1-room2
+room3-room4
+room4-room5
+room0-room6
+room10-room5
+room7-room8
+room7-room6
+room10-room9
+room8-room9
+room0-room11
+room11-room12
+room12-room5

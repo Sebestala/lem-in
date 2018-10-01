@@ -6,11 +6,11 @@
 /*   By: sgarcia <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/30 19:09:43 by sgarcia           #+#    #+#             */
-/*   Updated: 2018/09/30 20:43:33 by sgarcia          ###   ########.fr       */
+/*   Updated: 2018/10/01 17:49:15 by sgarcia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lem_in.h"
 
 t_ant			*init_room2(t_ant *ant)
 {
